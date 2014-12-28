@@ -1,0 +1,85 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle Configuration
+" Author Franky Martinez <frankymartz@gmail.com>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype off                " Required
+let g:vundle_default_git_proto = 'git'
+
+set rtp+=~/.nvim/bundle/vundle/
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call vundle#begin('~/.nvim/bundle')         " Required
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" let Vundle manage Vundle
+Plugin 'gmarik/vundle'      " Required
+
+" General
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'UltiSnips'
+Plugin 'honza/vim-snippets'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Gundo'
+Plugin 'Splice'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-fugitive' " Required by vim-airline
+
+" Window
+Plugin 'bling/vim-airline'
+Plugin 'KabbAmine/vCoolor.vim'
+Plugin 'Tagbar'
+
+" Editing
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-surround'
+Plugin 'matchit.zip'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'godlygeek/tabular'
+
+" Filetype
+Plugin 'editorconfig-vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'dbakker/vim-lint'
+
+" >> Apache
+Plugin 'apachelogs.vim'
+Plugin 'apachestyle'
+
+" >> CSS
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'wavded/vim-stylus'
+
+" >> Go Lang
+Plugin 'fatih/vim-go'
+
+" >> HTML
+Plugin 'othree/html5.vim'
+
+" >> JavaScript
+Plugin 'marijnh/tern_for_vim'
+Plugin 'elzr/vim-json'
+Plugin 'heavenshell/vim-jsdoc'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'facebook/vim-flow'
+
+" >> Markdown
+Plugin 'gabrielelana/vim-markdown'
+Plugin 'tpope/vim-liquid'
+
+" >> PHP
+Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'joshtronic/php.vim'
+Plugin 'tobyS/pdv'
+Plugin 'markwu/vim-laravel4-snippets'
+Plugin 'xsbeats/vim-blade'
+
+" Color and Font
+Plugin 'chriskempson/base16-vim'
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call vundle#end()           " Required
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+filetype plugin indent on   " Required
