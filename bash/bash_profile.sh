@@ -36,7 +36,7 @@ export IRCSERVER=http://chat.freenode.net
 #===============================================================================
 # ALIASES
 #===============================================================================
-alias ll='ls -FalhG' # color-mode
+alias ll='ls -FalhG --color' # color-mode
 alias vim='mvim -v'
 alias vi='mvim -v'
 alias irc='screen -t 1 irssi'

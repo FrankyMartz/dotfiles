@@ -455,7 +455,7 @@ source ~/.nvim/vundlerc
 "-------------------------------------------------------------------------------
 " => Color and Font {{{
 "-------------------------------------------------------------------------------
-set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
+set guifont=Menlo:h11
 
 set synmaxcol=3000              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
@@ -591,6 +591,11 @@ nmap <leader>l :JsDoc<CR>
 
 " vim-json {{{
 let g:vim_json_syntax_conceal=0
+" }}}
+
+" vim-flow {{{
+" Use Syntastic instead. (vim-flow) includes autocompletion so keep around.
+let g:flow#enable = 0
 " }}}
 
 " }}}
