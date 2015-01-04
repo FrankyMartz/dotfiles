@@ -24,8 +24,7 @@ NORMAL=$(tput sgr0)
 #-------------------------------------------------------------------------------
 dLog() {
     # Debug Log
-    # $1 = message
-    # $2 = Color
+    # $* = message
     echo "${*}${NORMAL}"
 }
 
@@ -57,7 +56,7 @@ pLog(){
     local remaining=$(( 50 - $completed ))
 
     echo -ne "\r${GREEN}${2} ${YELLOW}["
-    printf "%0.s•" `seq $completed`
+    printf "%0.s=" `seq $completed`
     echo -n ">"
     [[ $remaining != 0 ]] && printf "%0.s." `seq $remaining`
     echo -n "] ${GREEN}${percent}% ${BLUE}($1)${NORMAL}"
@@ -67,6 +66,11 @@ pLog(){
 }
 
 error() {
+    # Throw Error with Message
+    # params:
+    # $1 = line number
+    # $2 = Message
+    # $3 = Error Code (default=1)
     local parent_lineno="$1"
     local message="$2"
     local code="${3:-1}"
