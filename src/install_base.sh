@@ -15,10 +15,10 @@ __configBase(){
         python
         node
         go
-        rbenv
     )
 
     local brew_tools=(
+        rbenv
         git
         mercurial
         wget
@@ -117,14 +117,43 @@ __configBase(){
         npm install --global ${npm_packages[*]}
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
+        #-----------------------------------------------------------------------
+        # Install: GoLang Packages
+        #-----------------------------------------------------------------------
+        dLog "${GREEN}==> Installing GoLang Tools..."
+        go get golang.org/x/tools/cmd/vet
+        go get golang.org/x/tools/cmd/godoc
+        dLog "${GREEN}==> Installing GoLang Tools...DONE"
+
     else
         #-----------------------------------------------------------------------
-        # Update
+        # Update: Homebrew
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Homebrew Packages..."
         brew update
+        brew upgrade
         dLog "${GREEN}==> Updating Homebrew Packages...DONE"
 
+        #-----------------------------------------------------------------------
+        # Update: NPM
+        #-----------------------------------------------------------------------
+        dLog "${GREEN}==> Updating NPM Packages..."
+        npm update -g $(ls `npm root -g` | grep -v "npm")
+        dLog "${GREEN}==> Updating NPM Packages...DONE"
+
+        #-----------------------------------------------------------------------
+        # Update: Ruby Gems
+        #-----------------------------------------------------------------------
+        dLog "${GREEN}==> Updating Ruby Gems..."
+        gem update
+        dLog "${GREEN}==> Updating Ruby Gems...DONE"
+
+        #-----------------------------------------------------------------------
+        # Update: Python pip
+        #-----------------------------------------------------------------------
+        dLog "${GREEN}==> Updating Python pip..."
+        pip install -U $(pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox')
+        dLog "${GREEN}==> Updating Python pip...DONE"
     fi
 
     dLog "${BLUE}Base Configuration...DONE"

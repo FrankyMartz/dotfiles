@@ -36,14 +36,7 @@ source ./src/utils.sh
 #===============================================================================
 cLog "==> Validating \"./bin\" Directory..."
 
-if [[ ! -d $BIN ]]; then
-    mkdir $PWD/bin
-    mkdir $BIN/python
-else
-    if [[ ! -d "${BIN}/python" ]]; then
-        mkdir $BIN/python
-    fi
-fi
+[[ -d $BIN/python ]] || mkdir -p $BIN/python
 
 cLog "==> Validate \"./bin\" Directory...DONE" 1
 
