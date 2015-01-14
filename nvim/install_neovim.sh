@@ -16,12 +16,12 @@ fi
 
 __configNVIM(){
     dLog "${BLUE}Configuring Neovim..."
-    local NEOVIM="${PWD}/nvim"
+    local NEOVIM="${pwd}/nvim"
     #===========================================================================
     # Symbolic Links
     #===========================================================================
-    [[ -L ~/.nvim ]] || ln -bfs ${NEOVIM}/.nvim ~/.nvim
-    [[ -L ~/.nvimrc ]] || ln -bfs ${NEOVIM}/.nvimrc ~/.nvimrc
+    [[ -L ~/.nvim ]] || ln -fs $NEOVIM ~/.nvim
+    [[ -L ~/.nvimrc ]] || ln -fs ${NEOVIM}/nvimrc ~/.nvimrc
 
     #===========================================================================
     # Neovim Plugins
@@ -31,18 +31,18 @@ __configNVIM(){
         # Vundle ---------------------------------------------------------------
         dLog "${GREEN}==> Installing Neovim Vundle..."
         mkdir $BUNDLE
-        git clone https://github.com/gmarik/Vundle.vim.git $BUNDLE/vundle
+        /usr/bin/env git clone https://github.com/gmarik/Vundle.vim.git $BUNDLE/vundle
         dLog "${GREEN}==> Installing Neovim Vundle...DONE"
 
         # Plugins --------------------------------------------------------------
         dLog "${GREEN}==> Installing Neovim Plugins..."
-        nvim +PluginInstall +qall
+        /usr/bin/env nvim +PluginInstall +qall
         dLog "${GREEN}==> Installing Neovim Plugins...DONE"
 
         # TernJS ---------------------------------------------------------------
         dLog "${GREEN}==> Installing TernJS..."
         cd ${BUNDLE}/tern_for_vim
-        npm install
+        /usr/bin/env npm install
         cd $PWD
         dLog "${GREEN}==> Installing TernJS...DONE"
 
@@ -55,7 +55,7 @@ __configNVIM(){
 
     else
         dLog "${GREEN}==> Updating Neovim Plugins..."
-        nvim +PluginUpdate +qall
+        /usr/bin/env nvim +PluginUpdate +qall
         dLog "${GREEN}==> Updating Neovim Plugins...DONE"
     fi
 

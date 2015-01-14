@@ -10,12 +10,12 @@
 __configBASH(){
     dLog "${BLUE}Bash Shell Configuration..."
 
-    local BASH="${PWD}/bash"
+    local bash="${pwd}/bash"
     #===========================================================================
     # Symbolic Links
     #===========================================================================
 
-    [[ -L ~/.bash_profile ]] || ln -bfs $BASH/bash_profile.sh ~/.bash_profile
+    [[ -L ~/.bash_profile ]] || ln -fs $bash/bash_profile.sh ~/.bash_profile
 
     #===========================================================================
     # Base16-Shell
@@ -23,13 +23,13 @@ __configBASH(){
     local BASE16SHELL="${BIN}/base16-shell"
     if [[ ! -d $BASE16SHELL ]]; then
         dLog "${BLUE}Installing Base16-Shell..."
-        git clone https://github.com/chriskempson/base16-shell.git $BASE16SHELL
+        /usr/bin/env git clone https://github.com/chriskempson/base16-shell.git $BASE16SHELL
         dLog "${BLUE}Installing Base16-Shell...DONE"
     else
         dLog "${BLUE}Updating Base16-Shell..."
-        cd $BASE16SHELL
-        git pull origin
-        cd $PWD
+        cd "${BASE16SHELL}"
+        /usr/bin/env git pull origin
+        cd "$pwd"
         dLog "${BLUE}Updating Base16-Shell...DONE"
     fi
 

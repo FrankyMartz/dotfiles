@@ -46,6 +46,7 @@ __configBase(){
         trash
         svgo
         webpack
+        bower
     )
 
     if [[ ! -x $(which brew) ]]; then
@@ -53,7 +54,7 @@ __configBase(){
         # Install: Homebrew
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing Homebrew..."
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        #/usr/bin/env ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         dLog "${GREEN}==> Installing Homebrew...DONE"
 
 
@@ -63,18 +64,18 @@ __configBase(){
         dLog "${GREEN}==> Installing GNU Tools..."
 
         #Install GNU core utilities (those that come with OS X are outdated)
-        brew install coreutils
+        /usr/bin/env brew install coreutils
 
         # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-        brew install findutils
+        /usr/bin/env brew install findutils
 
         # Install Bash 4
-        brew install bash
-        brew install bash-completion
+        /usr/bin/env brew install bash
+        /usr/bin/env brew install bash-completion
 
         # Install more recent versions of some OS X tools
-        brew tap homebrew/dupes
-        brew install homebrew/dupes/grep
+        /usr/bin/env brew tap homebrew/dupes
+        /usr/bin/env brew install homebrew/dupes/grep
 
         dLog "${GREEN}==> Installing GNU Tools...DONE"
 
@@ -83,7 +84,7 @@ __configBase(){
         # Install: Programming Languages
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing Languages..."
-        brew install ${brew_langs[*]}
+        /usr/bin/env brew install ${brew_langs[*]}
         dLog "${GREEN}==> Installing Languages...DONE"
 
 
@@ -91,7 +92,7 @@ __configBase(){
         # Install: CLI Tools
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing CLI Tools..."
-        brew install ${brew_tools[*]}
+        /usr/bin/env brew install ${brew_tools[*]}
         dLog "${GREEN}==> Installing CLI Tools...DONE"
 
 
@@ -99,30 +100,30 @@ __configBase(){
         # Install: Neovim
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing Neovim..."
-        brew tap neovim/homebrew-neovim
-        brew install --HEAD neovim
+        /usr/bin/env brew tap neovim/homebrew-neovim
+        /usr/bin/env brew install --HEAD neovim
         dLog "${GREEN}==> Installing Neovim...DONE"
 
         #-----------------------------------------------------------------------
         # Clean Up Homebrew
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Homebrew Cleanup..."
-        brew cleanup
+        /usr/bin/env brew cleanup
         dLog "${GREEN}==> Homebrew Cleanup...DONE"
 
         #-----------------------------------------------------------------------
         # Install: NPM Packages
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing NPM Packages..."
-        npm install --global ${npm_packages[*]}
+        /usr/bin/env npm install --global ${npm_packages[*]}
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
         # Install: GoLang Packages
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing GoLang Tools..."
-        go get golang.org/x/tools/cmd/vet
-        go get golang.org/x/tools/cmd/godoc
+        /usr/bin/env go get golang.org/x/tools/cmd/vet
+        /usr/bin/env go get golang.org/x/tools/cmd/godoc
         dLog "${GREEN}==> Installing GoLang Tools...DONE"
 
     else
@@ -130,29 +131,29 @@ __configBase(){
         # Update: Homebrew
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Homebrew Packages..."
-        brew update
-        brew upgrade
+        /usr/bin/env brew update
+        /usr/bin/env brew upgrade
         dLog "${GREEN}==> Updating Homebrew Packages...DONE"
 
         #-----------------------------------------------------------------------
         # Update: NPM
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating NPM Packages..."
-        npm update -g $(ls `npm root -g` | grep -v "npm")
+        /usr/bin/env npm update -g $(ls `npm root -g` | grep -v "npm")
         dLog "${GREEN}==> Updating NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
         # Update: Ruby Gems
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Ruby Gems..."
-        gem update
+        /usr/bin/env gem update
         dLog "${GREEN}==> Updating Ruby Gems...DONE"
 
         #-----------------------------------------------------------------------
         # Update: Python pip
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Python pip..."
-        pip install -U $(pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox')
+        /usr/bin/env pip install -U $(pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox')
         dLog "${GREEN}==> Updating Python pip...DONE"
     fi
 
