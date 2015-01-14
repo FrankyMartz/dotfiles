@@ -53,6 +53,7 @@ set guioptions-=R
 
 if has('mouse') | set mouse=a | endif
 
+set cursorline                  " Show me my position I'm blind
 set modelines=0                 " Prevent security exploit. Disable
 set showcmd                     " Show (partial) command at bottom of buffer
 set title                       " Set window title
@@ -159,6 +160,12 @@ map <c-j> <c-w>j
 map <c-k> <c-w>k
 map <c-l> <c-w>l
 
+" Buffer Horizontal Navigation
+nnoremap ˙ z20h
+nnoremap ¬ z20l
+"nnoremap <m-H> z20h
+"nnoremap <m-L> z20l
+
 " COPY / PASTE ... PLEASE
 vnoremap <leader>y "*y
 noremap <leader>p :silent! set paste<cr>"*p:set nopaste<cr>
@@ -235,12 +242,12 @@ augroup ft_css
     au BufNewFile,BufRead *.styl setlocal filetype=stylus
 
     au FileType scss,sass,less,css setlocal foldmethod=marker foldmarker={,}
-    au FileType css,scss,sass,less,stylus omnifunc=csscomplete#CompleteCSS
-    au FileType less,css setlocal isKeyword+=-
+    "au FileType css,scss,sass,less,stylus omnifunc=csscomplete#CompleteCSS
+    "au FileType less,css setlocal isKeyword+=-
     " Make {<cr> insert a pair of brackets in such a way that the cursor is
     " correctly positioned inside of them AND the following code doesn't get
     " unfolded.
-    au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>}
+    au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> }<left><cr><space><space><space><space>.<cr><esc>kA<bs>}
 augroup END
 " }}}
 
@@ -438,9 +445,9 @@ augroup END
 " Keep active buffer on larger window ratio
 " We have to have a winheight bigger than we want to set winminheight. But if we
 " set winheight to be huge before winminheight, the winminheight set will fail.
-set winwidth=84
-set winheight=10
-set winminheight=10
+"set winwidth=84
+set winheight=20
+set winminheight=20
 set winheight=999
 
 " }}}
@@ -557,6 +564,8 @@ let g:syntastic_javascript_checkers=['jsxhint']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol='✘'
 let g:syntastic_warning_symbol='▲'
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
 " }}}
 
 " YouCompleteMe {{{

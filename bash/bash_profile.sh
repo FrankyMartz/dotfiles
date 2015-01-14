@@ -12,7 +12,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin
 #===============================================================================
 export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
 export TERM='xterm-256color'
-
+stty -ixon -ixoff
 
 #===============================================================================
 # PROMPT LOOK
@@ -37,8 +37,6 @@ export IRCSERVER=http://chat.freenode.net
 # ALIASES
 #===============================================================================
 alias ll='ls -FalhG --color' # color-mode
-alias vim='mvim -v'
-alias vi='mvim -v'
 alias irc='screen -t 1 irssi'
 
 
@@ -58,9 +56,10 @@ fi
 export PYTHONPATH=~/.dotfiles/bin/python
 
 # GO-LANG ----------------------------------------------------------------------
-export GOROOT=/usr/local/opt/go/libexec/
-export GOPATH=$HOME/go
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH=$HOME/go:~/go_appengine/gopath
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:~/go_appengine
 
 # RBENV ------------------------------------------------------------------------
 ## Use Homebrew's directories rather than ~/.rbenv add to your profile
@@ -74,3 +73,5 @@ fi
 # PHP --------------------------------------------------------------------------
 export PATH=$PATH:~/.composer/vendor/bin
 
+# GO AppEngine -----------------------------------------------------------------
+#export PATH=$PATH:~/go_appengine
