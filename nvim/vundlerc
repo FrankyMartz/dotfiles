@@ -23,6 +23,9 @@ Plugin 'Gundo'
 Plugin 'Splice'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive' " Required by vim-airline
+Plugin 'rking/ag.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'jeetsukumaran/vim-buffergator'
 
 " Window
 Plugin 'bling/vim-airline'

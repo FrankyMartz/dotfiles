@@ -28,7 +28,7 @@
 
 syntax enable                   " Enable Syntax Highlighting
 set autoread                    " Automatically read externally changes to file
-set autowrite                   " Automatically write to file if modified
+set autowriteall                " Automatically write to file if modified
 set history=1000                " Remember more commands and search history
 set undolevels=1000             " Use many levels of undo
 set undoreload=10000            " Save whole buffer for undo when reloading it
@@ -446,8 +446,8 @@ augroup END
 " We have to have a winheight bigger than we want to set winminheight. But if we
 " set winheight to be huge before winminheight, the winminheight set will fail.
 "set winwidth=84
-set winheight=20
-set winminheight=20
+set winheight=10
+set winminheight=10
 set winheight=999
 
 " }}}
@@ -483,13 +483,14 @@ hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
 let g:airline_powerline_fonts=0
-let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
-let g:airline#extensions#tabline#buffer_min_count=2
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline#extensions#tabline#left_sep=' '
-let g:airline#extensions#tabline#buffer_nr_show=1
-let g:airline#extensions#tabline#buffer_nr_format='[%s]'
-let g:airline#extensions#tabline#buffer_idx_mode=1
+"let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
+"let g:airline#extensions#tabline#buffer_min_count=2
+"let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:airline#extensions#tabline#formatter='unique_tail_improved'
+"let g:airline#extensions#tabline#left_sep=' '
+"let g:airline#extensions#tabline#buffer_nr_show=1
+"let g:airline#extensions#tabline#buffer_nr_format='[%s]'
+"let g:airline#extensions#tabline#buffer_idx_mode=1
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -509,6 +510,51 @@ let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.branch = '⑂'
 let g:airline_symbols.paste = '↯'
 let g:airline_symbols.whitespace = 'Ξ'
+" }}}
+
+" CtrlP {{{
+" Setup some default ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
+
+" Use the nearest .git directory as the cwd
+" This makes a lot of sense if you are working on a project that is in version
+" control. It also supports works with .svn, .hg, .bzr.
+let g:ctrlp_working_path_mode = 'r'
+
+" Use a leader instead of the actual named binding
+"nmap <leader>p :CtrlP<cr>
+
+" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>
+" }}}
+
+" Buffergator {{{
+" Use the right side of the screen
+let g:buffergator_viewport_split_policy = 'R'
+
+" I want my own keymappings...
+let g:buffergator_suppress_keymaps = 1
+
+" Looper buffers
+"let g:buffergator_mru_cycle_loop = 1
+
+" Go to the previous buffer open
+nmap <leader>jj :BuffergatorMruCyclePrev<cr>
+
+" Go to the next buffer open
+nmap <leader>kk :BuffergatorMruCycleNext<cr>
+
+" View the entire list of buffers open
+nmap <leader>bl :BuffergatorOpen<cr>
+
+" Shared bindings from Solution #1 from earlier
+nmap <leader>T :enew<cr>
+nmap <leader>bq :bp <BAR> bd #<cr>
 " }}}
 
 " vKooler {{{
@@ -560,7 +606,8 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
-let g:syntastic_javascript_checkers=['jsxhint']
+"let g:syntastic_javascript_checkers=['jsxhint']
+let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol='✘'
 let g:syntastic_warning_symbol='▲'
@@ -607,6 +654,16 @@ let g:vim_json_syntax_conceal=0
 let g:flow#enable = 0
 " }}}
 
+" Splice {{{
+let g:splice_initial_layout_grid=1
+let g:splice_initial_scrollbind_grid=1
+let g:splice_initial_scrollbind_loupe=1
+let g:splice_initial_scrollbind_compare=1
+let g:splice_initial_diff_grid=1
+let g:splice_initial_diff_compare=1
+let g:splice_wrap='nowrap'
+" }}}
+
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -618,3 +675,18 @@ colorscheme base16-eighties
 set background=dark             " Set ColorScheme Flavor
 
 " }}}
+
+
+"-------------------------------------------------------------------------------
+" => Work Hacker Functions {{{
+"-------------------------------------------------------------------------------
+
+function! NcmsTag()
+    let randId = system('openssl rand -base64 24')
+    let randId = substitute(randId, '\n$', '', '')
+    return ' data-ncms-uuid="' . randId . '"'
+endfunction
+nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
+
+" }}}
+
