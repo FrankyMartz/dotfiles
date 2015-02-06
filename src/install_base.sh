@@ -22,6 +22,7 @@ __configBase(){
         git
         mercurial
         wget
+        the_silver_searcher
         rename
         ctags
         htop-osx

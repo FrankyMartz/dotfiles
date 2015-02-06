@@ -36,6 +36,7 @@ __configNVIM(){
 
         # Plugins --------------------------------------------------------------
         dLog "${GREEN}==> Installing Neovim Plugins..."
+        /usr/bin/env pip install neovim
         /usr/bin/env nvim +PluginInstall +qall
         dLog "${GREEN}==> Installing Neovim Plugins...DONE"
 
