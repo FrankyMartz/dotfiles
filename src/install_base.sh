@@ -19,6 +19,8 @@ __configBase(){
 
     local brew_tools=(
         rbenv
+        rbenv-bundler
+        nvm
         git
         mercurial
         wget
@@ -32,6 +34,7 @@ __configBase(){
     )
 
     local npm_packages=(
+        bower
         browser-sync
         browserify
         csslint

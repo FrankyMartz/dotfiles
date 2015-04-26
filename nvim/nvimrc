@@ -68,7 +68,6 @@ set ttimeout
 set ttimeoutlen=10
 
 set lazyredraw
-set ttyfast                     " Fast terminal connection
 set visualbell                  " NO bell please
 set noerrorbells                " Silence
 
@@ -161,8 +160,8 @@ map <c-k> <c-w>k
 map <c-l> <c-w>l
 
 " Buffer Horizontal Navigation
-nnoremap ˙ z20h
-nnoremap ¬ z20l
+nnoremap ˙ z30h
+nnoremap ¬ z30l
 "nnoremap <m-H> z20h
 "nnoremap <m-L> z20l
 
@@ -328,7 +327,8 @@ augroup END
 " Markdown {{{
 augroup ft_markdown
     au!
-    au BufNewFile,BufRead *.md *.markdown setlocal filetype=markdown
+    au BufNewFile,BufRead *.md setlocal filetype=markdown
+    au BufNewFile,BufRead *.markdown setlocal filetype=markdown
     au FileType markdown setlocal wrap linebreak nolist
 augroup END
 " }}}
@@ -464,7 +464,7 @@ source ~/.nvim/vundlerc
 "-------------------------------------------------------------------------------
 set guifont=Menlo:h11
 
-set synmaxcol=3000              " Don't highlight lines longer than
+set synmaxcol=300              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 
 hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
@@ -606,8 +606,8 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
+let g:syntastic_javascript_checkers=['jsxhint', "flow"]
 "let g:syntastic_javascript_checkers=['jsxhint']
-let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol='✘'
 let g:syntastic_warning_symbol='▲'
@@ -663,6 +663,25 @@ let g:splice_initial_diff_grid=1
 let g:splice_initial_diff_compare=1
 let g:splice_wrap='nowrap'
 " }}}
+
+" TernJS {{{
+"let g:tern_show_argument_hints='on_move'
+let g:tern_show_signature_in_pum=1
+noremap <leader>td :TernDef<cr>
+noremap <leader>tdp :TernDefPreview<cr>
+noremap <leader>tds :TernDefSplit<cr>
+noremap <leader>tdt :TernDefTab<cr>
+noremap <leader>tl :TernDoc<cr>
+noremap <leader>tt :TernType<cr>
+noremap <leader>t<space> :TernRefs<cr>
+noremap <leader>tr :TernRename<cr>
+" }}}
+
+" javascript-libraries-syntax {{{
+"autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
+"autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
+" }}}
+
 
 " }}}
 

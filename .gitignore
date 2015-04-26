@@ -9,3 +9,4 @@ bin/
 # Neovim
 nvim/bundle/
 nvim/tmp/
+nvim/spell/

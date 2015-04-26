@@ -38,6 +38,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'matchit.zip'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'godlygeek/tabular'
+Plugin 'terryma/vim-multiple-cursors'
 
 " Filetype
 Plugin 'editorconfig-vim'
@@ -64,7 +65,9 @@ Plugin 'elzr/vim-json'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'justinj/vim-react-snippets'
 Plugin 'facebook/vim-flow'
+Plugin 'matthewsimo/angular-vim-snippet'
 
 " >> Markdown
 Plugin 'gabrielelana/vim-markdown'
