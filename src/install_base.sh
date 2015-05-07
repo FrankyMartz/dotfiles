@@ -31,6 +31,7 @@ __configBase(){
         irssi
         cmake
         flow
+        shellcheck
     )
 
     local npm_packages=(
