@@ -137,7 +137,7 @@ __configBase(){
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Homebrew Packages..."
         /usr/bin/env brew update
-        /usr/bin/env brew upgrade
+        /usr/bin/env brew upgrade --all
         dLog "${GREEN}==> Updating Homebrew Packages...DONE"
 
         #-----------------------------------------------------------------------
