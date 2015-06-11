@@ -97,4 +97,4 @@ source "${HOME}/google-cloud-sdk/completion.bash.inc"
 #===============================================================================
 
 # NCMS -------------------------------------------------------------------------
-export GABO=~/Projects/nelsoncash-gabo
+export GABO=~/Projects/gweb-gabo/default

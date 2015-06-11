@@ -8,6 +8,7 @@
 [user]
     name = Franky Martinez
     email = FrankyMartz@gmail.com
+
 [core]
     pager = cat
     excludesfile = ~/.gitignore_global
@@ -24,8 +25,8 @@
     trustExitCode = true
 
 [mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
 
 [diff]
     tool = Kaleidoscope
@@ -34,10 +35,10 @@
     prompt = false
 
 [difftool "KaleidoscopeWithId"]
-	cmd = ksdiff --partial-changeset --UUID \"$KSID\" --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+    cmd = ksdiff --partial-changeset --UUID \"$KSID\" --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [difftool "Kaleidoscope"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [alias]
     st = status -sb
@@ -46,27 +47,27 @@
     bed = branch --edit-description
     aa = add --all :/
     ci = commit -v
-	ca = commit --amend -v
-	co = checkout
-	di = diff
-	dis = diff --stat
-	diw = diff --color-words
-	dic = diff --color-words=.
-	dc = diff --cached
-	dcs = diff --cached --stat
-	dcw = diff --cached --color-words
-	dcc = diff --cached --color-words=.
-	dh = diff HEAD~
-	dhs = diff HEAD~ --stat
-	dhw = diff HEAD~ --color-words
-	dhc = diff HEAD~ --color-words=.
-	grp = grep -C 1
+    ca = commit --amend -v
+    co = checkout
+    di = diff
+    dis = diff --stat
+    diw = diff --color-words
+    dic = diff --color-words=.
+    dc = diff --cached
+    dcs = diff --cached --stat
+    dcw = diff --cached --color-words
+    dcc = diff --cached --color-words=.
+    dh = diff HEAD~
+    dhs = diff HEAD~ --stat
+    dhw = diff HEAD~ --color-words
+    dhc = diff HEAD~ --color-words=.
+    grp = grep -C 1
     gr = log --graph --format=compact # graph
-	grl = log --graph --format=line # graph line
-	grd = log --graph --format=detail # graph detail
-	gra = log --graph --format=compact --all # graph all
-	gral = log --graph --format=line --all # graph all line
-	grad = log --graph --format=detail --all # graph all in detail
+    grl = log --graph --format=line # graph line
+    grd = log --graph --format=detail # graph detail
+    gra = log --graph --format=compact --all # graph all
+    gral = log --graph --format=line --all # graph all line
+    grad = log --graph --format=detail --all # graph all in detail
     ;gr = log --graph --full-history --all --pretty=format:'%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n'
     info = log --pretty=full --color -1 
     ls = ls-tree -r --name-only 
@@ -77,8 +78,8 @@
     branches = branch -a
     remotes = remote -v
     tar = ! "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
-	targz = ! "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
-	zip = ! "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
+    targz = ! "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
+    zip = ! "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
 
 [credential]
     helper = osxkeychain
@@ -92,11 +93,10 @@
     grep = auto
 
 [pretty]
-	line = "%C(auto)%h%d %s %C(yellow)by %C(blue)%an %C(green)%ar"
-	compact = "%C(auto)%h %s %C(green)%ar%n %C(auto)%d%n"
-	detail = "%C(auto)%h %s%n  %C(yellow)by %C(blue)%an %C(magenta)<%ae> [%G?] %C(green)%ar%n %C(auto)%d%n"
+    line = "%C(auto)%h%d %s %C(yellow)by %C(blue)%an %C(green)%ar"
+    compact = "%C(auto)%h %s %C(green)%ar%n %C(auto)%d%n"
+    detail = "%C(auto)%h %s%n  %C(yellow)by %C(blue)%an %C(magenta)<%ae> [%G?] %C(green)%ar%n %C(auto)%d%n"
     classic = "%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n"
-
 
 [push]
     default = simple
@@ -112,7 +112,11 @@
 ;[branch]
     ;autosetuprebase = always
 
-
 # Allow local customizations in the .gitconfig_local file
 [include]
     path = ~/.gitconfig_local
+
+[filter "lfs"]
+    clean = git lfs clean %f
+    smudge = git lfs smudge %f
+    required = true
