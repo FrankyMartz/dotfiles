@@ -453,9 +453,9 @@ set winheight=999
 " }}}
 
 "-------------------------------------------------------------------------------
-" => Vundle {{{
+" => Plug-Vim {{{
 "-------------------------------------------------------------------------------
-source ~/.nvim/vundlerc
+source ~/.nvim/vimplugrc
 
 " }}}
 
@@ -476,7 +476,7 @@ hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 " }}}
 
 "-------------------------------------------------------------------------------
-" => Vundle:Configuration {{{
+" => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
 
 " Airline {{{
@@ -555,13 +555,6 @@ nmap <leader>bl :BuffergatorOpen<cr>
 " Shared bindings from Solution #1 from earlier
 nmap <leader>T :enew<cr>
 nmap <leader>bq :bp <BAR> bd #<cr>
-" }}}
-
-" vKooler {{{
-let g:vcoolor_map = '<leader>hex'
-let g:vcool_ins_rgb_map = '<leader>rgb'
-let g:vcool_ins_hsl_map = '<leader>hsl'
-let g:vcool_ins_rgba_map = '<leader>rgba'
 " }}}
 
 " Surround {{{

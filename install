@@ -36,7 +36,7 @@ source ./src/utils.sh
 #===============================================================================
 cLog "==> Validating \"./bin\" Directory..."
 
-[[ -d $BIN/python ]] || mkdir -p $BIN/python
+[[ -d "$BIN/python" ]] || mkdir -p "$BIN/python"
 
 cLog "==> Validate \"./bin\" Directory...DONE" 1
 

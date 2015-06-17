@@ -1,0 +1,80 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim-Plug Configuration
+" Author Franky Martinez <frankymartz@gmail.com>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if empty(glob('~/.nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.nvim/bundle')
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" General
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Gundo', { 'on':  'GundoToggle' }
+Plug 'Splice'
+Plug 'tpope/vim-git'
+Plug 'rking/ag.vim'
+Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
+Plug 'jeetsukumaran/vim-buffergator', { 'on': 'BuffergatorOpen'}
+
+" Window
+Plug 'bling/vim-airline' | Plug 'tpope/vim-fugitive'
+Plug 'Tagbar'
+
+" Editing
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
+Plug 'matchit.zip'
+Plug 'scrooloose/nerdcommenter'
+Plug 'godlygeek/tabular'
+Plug 'terryma/vim-multiple-cursors'
+
+" Filetype
+Plug 'editorconfig-vim'
+Plug 'scrooloose/syntastic'
+Plug 'dbakker/vim-lint', { 'for': 'vim' }
+
+" >> Apache
+Plug 'apachelogs.vim', { 'for': 'log' }
+Plug 'apachestyle', { 'for': 'log' }
+
+" >> CSS
+Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+Plug 'wavded/vim-stylus', { 'for': 'styl' }
+
+" >> Go Lang
+Plug 'fatih/vim-go', { 'for': 'go' }
+
+" >> HTML
+Plug 'othree/html5.vim', { 'for': [ 'html', 'js' ] }
+
+" >> JavaScript
+Plug 'marijnh/tern_for_vim', { 'for': [ 'js', 'html' ], 'do': 'npm install' }
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'heavenshell/vim-jsdoc', { 'for': [ 'js', 'jsx', 'html' ] }
+Plug 'pangloss/vim-javascript', { 'for': [ 'js', 'html' ] }
+Plug 'mxw/vim-jsx', { 'for': [ 'js', 'jsx' ] }
+Plug 'justinj/vim-react-snippets', { 'for': [ 'js', 'jsx' ] }
+Plug 'facebook/vim-flow', { 'for': [ 'js', 'jsx', 'html' ] }
+
+" >> Markdown
+Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
+Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
+
+" >> PHP
+Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
+Plug 'joshtronic/php.vim', { 'for': 'php' }
+Plug 'tobyS/pdv', { 'for': 'php' }
+Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
+Plug 'xsbeats/vim-blade', { 'for': 'php' }
+
+" Color and Font
+Plug 'chriskempson/base16-vim'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#end()
