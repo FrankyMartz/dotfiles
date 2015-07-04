@@ -675,6 +675,12 @@ noremap <leader>tr :TernRename<cr>
 "autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
 " }}}
 
+" vim-gitgutter {{{
+nmap <Leader>hs <Plug>GitGutterStageHunk
+nmap <Leader>hr <Plug>GitGutterRevertHunk
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+" }}}
 
 " }}}
 

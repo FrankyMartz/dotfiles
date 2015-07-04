@@ -15,16 +15,18 @@ call plug#begin('~/.nvim/bundle')
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Gundo', { 'on':  'GundoToggle' }
+Plug 'simnalamburt/vim-mundo', { 'on':  'GundoToggle' }
+"Plug 'Gundo', { 'on':  'GundoToggle' }
 Plug 'Splice'
 Plug 'tpope/vim-git'
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
-Plug 'jeetsukumaran/vim-buffergator', { 'on': 'BuffergatorOpen'}
+Plug 'jeetsukumaran/vim-buffergator'
 
 " Window
 Plug 'bling/vim-airline' | Plug 'tpope/vim-fugitive'
 Plug 'Tagbar'
+Plug 'airblade/vim-gitgutter'
 
 " Editing
 Plug 'Raimondi/delimitMate'
@@ -45,7 +47,7 @@ Plug 'apachestyle', { 'for': 'log' }
 
 " >> CSS
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'wavded/vim-stylus', { 'for': 'styl' }
+Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 
 " >> Go Lang
 Plug 'fatih/vim-go', { 'for': 'go' }
