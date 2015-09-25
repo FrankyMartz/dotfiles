@@ -12,8 +12,13 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin
 # General
 #===============================================================================
 export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
+export MANPATH=$(brew --prefix coreutils)/libexec/gnuman:$MANPATH
 export TERM='xterm-256color'
 stty -ixon -ixoff
+
+#if [[ -x "$(brew --prefix)/bin/bash" ]]; then
+    #export BASH="$(brew --prefix)/bin/bash"
+#fi
 
 #===============================================================================
 # PROMPT LOOK
@@ -53,14 +58,25 @@ fi
 # LANGUAGES
 #===============================================================================
 
+# Google Cloud SDK -------------------------------------------------------------
+# The next line updates PATH for the Google Cloud SDK.
+source "${HOME}/google-cloud-sdk/path.bash.inc"
+# The next line enables bash completion for gcloud.
+source "${HOME}/google-cloud-sdk/completion.bash.inc"
+
 # PYTHON -----------------------------------------------------------------------
 export PYTHONPATH=~/.dotfiles/bin/python
+# Auto-Complete
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PYENV_ROOT=/usr/local/var/pyenv
 
 # GO-LANG ----------------------------------------------------------------------
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go:~/go_appengine/gopath
+#export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-export PATH=$PATH:~/go_appengine
+#export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$HOME/go_appengine
 
 # NVM --------------------------------------------------------------------------
 export NVM_DIR=~/.nvm
@@ -79,19 +95,15 @@ if which ruby >/dev/null && which gem >/dev/null; then
     PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 fi
 
-
 # PHP --------------------------------------------------------------------------
 export PATH=$PATH:~/.composer/vendor/bin
 
-# GO AppEngine -----------------------------------------------------------------
-#export PATH=$PATH:~/go_appengine
+# Docker -----------------------------------------------------------------------
+#export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_HOST=tcp://localhost:2376
+export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
 
-
-# Google Cloud SDK -------------------------------------------------------------
-# The next line updates PATH for the Google Cloud SDK.
-source "${HOME}/google-cloud-sdk/path.bash.inc"
-# The next line enables bash completion for gcloud.
-source "${HOME}/google-cloud-sdk/completion.bash.inc"
 
 #===============================================================================
 # PROJECT
