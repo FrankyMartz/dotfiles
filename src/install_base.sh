@@ -12,46 +12,55 @@ __configBase(){
     dLog "${BLUE}Base Configuration..."
 
     local brew_langs=(
-        python
-        node
         go
+        node
+        python
     )
 
     local brew_tools=(
-        rbenv
-        rbenv-bundler
-        nvm
-        git
-        mercurial
-        wget
-        the_silver_searcher
-        rename
+        cmake
         ctags
+        flow
+        fpp
+        git
         htop-osx
         irssi
-        cmake
-        flow
+        libsass
+        mercurial
+        nvm
+        pyenv
+        rbenv
+        rbenv-bundler
+        rename
         shellcheck
+        the_silver_searcher
+        watchman
+        wget
     )
 
     local npm_packages=(
+        babel
         bower
         browser-sync
         browserify
+        caniuse-cmd
         csslint
+        fb-watchman
         gulp
         js-yaml
+        jsctags
         jshint
         jsonlint
         jsxhint
-        jsctags
+        livedown
         node-inspector
+        node-sass
         react-tools
+        stylint
         stylus
-        trash
         svgo
+        trash
         webpack
-        bower
     )
 
     if [[ ! -x $(which brew) ]]; then
@@ -89,7 +98,7 @@ __configBase(){
         # Install: Programming Languages
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing Languages..."
-        /usr/bin/env brew install ${brew_langs[*]}
+        /usr/bin/env brew install "${brew_langs[@]}"
         dLog "${GREEN}==> Installing Languages...DONE"
 
 
@@ -97,7 +106,7 @@ __configBase(){
         # Install: CLI Tools
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing CLI Tools..."
-        /usr/bin/env brew install ${brew_tools[*]}
+        /usr/bin/env brew install "${brew_tools[@]}"
         dLog "${GREEN}==> Installing CLI Tools...DONE"
 
 
@@ -120,7 +129,7 @@ __configBase(){
         # Install: NPM Packages
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing NPM Packages..."
-        /usr/bin/env npm install --global ${npm_packages[*]}
+        /usr/bin/env npm install --global "${npm_packages[@]}"
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
@@ -144,7 +153,11 @@ __configBase(){
         # Update: NPM
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating NPM Packages..."
-        /usr/bin/env npm update -g $(ls `npm root -g` | grep -v "npm")
+        ls $(npm root -g) | grep -v "npm" | while IFS="" read -r package
+        do
+            /usr/bin/env npm update -g "$package"
+            dLog "${package} ${GREEN}[DONE]"
+        done
         dLog "${GREEN}==> Updating NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
@@ -158,7 +171,10 @@ __configBase(){
         # Update: Python pip
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating Python pip..."
-        /usr/bin/env pip install -U $(pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox')
+        /usr/bin/env pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox' | while IFS="" read -r package 
+        do
+            /usr/bin/env pip install -U "$package"
+        done
         dLog "${GREEN}==> Updating Python pip...DONE"
     fi
 
