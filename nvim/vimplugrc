@@ -7,12 +7,24 @@ if empty(glob('~/.nvim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
+
+function! BuildYCM(info)
+    " info is a dictionary with 3 fields
+    " - name:   name of plugin
+    " - status: 'installed', 'updated', or 'unchanged'
+    " - force:  set on PlugInstall! or PlugUpdate!
+    if a:info.status == 'updated' || a:info.force
+        !./install.sh
+    endif
+endfunction
+    
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.nvim/bundle')
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'simnalamburt/vim-mundo', { 'on':  'GundoToggle' }
@@ -22,6 +34,7 @@ Plug 'tpope/vim-git'
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
 Plug 'jeetsukumaran/vim-buffergator'
+Plug 'kshenoy/vim-signature'
 
 " Window
 Plug 'bling/vim-airline' | Plug 'tpope/vim-fugitive'
@@ -53,20 +66,31 @@ Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 Plug 'fatih/vim-go', { 'for': 'go' }
 
 " >> HTML
-Plug 'othree/html5.vim', { 'for': [ 'html', 'js' ] }
+Plug 'othree/html5.vim', { 'for': [ 'html', 'javascript' ] }
+Plug 'mustache/vim-mustache-handlebars', { 'for': 'mustache'}
 
 " >> JavaScript
-Plug 'marijnh/tern_for_vim', { 'for': [ 'js', 'html' ], 'do': 'npm install' }
+Plug 'marijnh/tern_for_vim', { 'for': [ 'javascript', 'html' ], 'do': 'npm install' }
 Plug 'elzr/vim-json', { 'for': 'json' }
-Plug 'heavenshell/vim-jsdoc', { 'for': [ 'js', 'jsx', 'html' ] }
-Plug 'pangloss/vim-javascript', { 'for': [ 'js', 'html' ] }
-Plug 'mxw/vim-jsx', { 'for': [ 'js', 'jsx' ] }
-Plug 'justinj/vim-react-snippets', { 'for': [ 'js', 'jsx' ] }
-Plug 'facebook/vim-flow', { 'for': [ 'js', 'jsx', 'html' ] }
+Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'html' ] }
+"Plug 'jelera/vim-javascript-syntax', { 'for': [ 'javascript', 'html' ] }
+"Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'html' ] }
+"Plug 'vim-scripts/JavaScript-Indent',  { 'for': 'javascript' }
+Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'html' ] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'html' ] }
+Plug 'mxw/vim-jsx', { 'for': [ 'javascript', 'jsx' ] }
+Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx' ] }
+Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'html' ] }
+
+" >> CoffeeScript
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
 " >> Markdown
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
 Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
+Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
 
 " >> PHP
 Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }

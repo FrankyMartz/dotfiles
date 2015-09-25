@@ -230,6 +230,15 @@ augroup ft_c
 augroup END
 " }}}
 
+" CoffeeScript {{{
+augroup ft_coffee
+    au!
+    au BufNewFile,BufRead *.coffee setlocal filetype=coffee
+    au BufNewFile,BufRead *.js.coffee setlocal filetype=coffee
+    au FileType coffee setlocal ts=2 sts=2 sw=2 expandtab
+augroup END
+" }}}
+
 " CSS {{{
 augroup ft_css
     au!
@@ -279,7 +288,7 @@ augroup END
 " GO-Lang {{{
 augroup ft_go
     au!
-    au BufRead,BufNewFile *.go set filetype=go
+    au BufRead,BufNewFile *.go setlocal filetype=go
 augroup END
 " }}}
 
@@ -298,6 +307,14 @@ augroup ft_blade
 augroup END
 " }}}
 
+" Mustache {{{
+augroup ft_mustache
+    au!
+    au FileType mustache setlocal ts=2 sts=2 sw=2 expandtab
+    au BufNewFile,BufRead *.mustache setlocal filetype=mustache
+augroup END
+" }}}
+
 " Jade {{{
 augroup ft_jade
     au!
@@ -309,7 +326,7 @@ augroup END
 augroup ft_javascript
     au!
     au FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-    au FileType javascript setlocal foldmethod=marker foldmarker={,}
+    "au FileType javascript setlocal foldmethod=marker foldmarker={,}
     au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
 " }}}
@@ -464,7 +481,7 @@ source ~/.nvim/vimplugrc
 "-------------------------------------------------------------------------------
 set guifont=Menlo:h11
 
-set synmaxcol=300              " Don't highlight lines longer than
+set synmaxcol=500              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 
 hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
@@ -515,7 +532,7 @@ let g:airline_symbols.whitespace = 'Ξ'
 " CtrlP {{{
 " Setup some default ignores
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site|node_modules|bower_components)$',
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
@@ -526,6 +543,7 @@ let g:ctrlp_working_path_mode = 'r'
 
 " Use a leader instead of the actual named binding
 "nmap <leader>p :CtrlP<cr>
+nmap <c-p> :CtrlP<cr>
 
 " Easy bindings for its various modes
 nmap <leader>bb :CtrlPBuffer<cr>
@@ -613,12 +631,18 @@ autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_autoclose_preview_window_after_completion=1
+" pyenv
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 " }}}
 
 " UltiSnips {{{
 let g:UltiSnipsExpandTrigger='<c-k>'
 let g:UltiSnipsJumpForwardTrigger='<c-k>'
 let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
+" }}}
+
+" jelera/vim-javascript-syntax {{{
+"au FileType javascript call JavaScriptFold()
 " }}}
 
 " pangloss/vim-javascript {{{
@@ -630,6 +654,15 @@ let g:javascript_conceal_return     = "⇚"
 let g:javascript_conceal_undefined  = "¿"
 let g:javascript_conceal_NaN        = "ℕ"
 let g:javascript_conceal_prototype  = "¶"
+" }}}
+
+" javascript-libraries-syntax {{{
+let g:used_javascript_libs = 'jquery,underscore,requirejs'
+autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
+autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
+autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
+autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
+
 " }}}
 
 " vim-jsdoc {{{
@@ -670,16 +703,23 @@ noremap <leader>t<space> :TernRefs<cr>
 noremap <leader>tr :TernRename<cr>
 " }}}
 
-" javascript-libraries-syntax {{{
-"autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
-"autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
-" }}}
-
 " vim-gitgutter {{{
 nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hr <Plug>GitGutterRevertHunk
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
+" }}}
+
+" vim-livedown {{{
+let g:livedown_autorun = 0  " Auto-Open Preview on markdown
+let g:livedown_open = 1     " Open Browser on Preview
+let g:livedown_port = 1337  " Browser Port
+nnoremap <silent><F14> :LivedownPreview<CR>
+" }}}
+
+" goyo {{{
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 " }}}
 
 " }}}
@@ -690,7 +730,9 @@ nmap [h <Plug>GitGutterPrevHunk
 " airline doesn't behave when set before Vundle:Config
 let base16colorspace=256        " Access colors present in 256 colorspace
 colorscheme base16-eighties
+"colorscheme base16-codeschool
 set background=dark             " Set ColorScheme Flavor
+"set background=light             " Set ColorScheme Flavor
 
 function! s:ToggleBackground()
     let fmShade = &background == "dark" ? "light" : "dark"
@@ -717,4 +759,3 @@ endfunction
 nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
 
 " }}}
-
