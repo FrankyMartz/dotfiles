@@ -6,11 +6,11 @@
 # Author:   Franky Martinez <frankymartz@gmail.com>
 # Version:  0.1.0
 ################################################################################
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin
 
 #===============================================================================
 # General
-#===============================================================================
+export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
 export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH
 export MANPATH=$(brew --prefix coreutils)/libexec/gnuman:$MANPATH
 export TERM='xterm-256color'
@@ -42,8 +42,11 @@ export IRCSERVER=http://chat.freenode.net
 #===============================================================================
 # ALIASES
 #===============================================================================
-alias ll='ls -FalhG --color' # color-mode
+alias ll='ls -FAlhG --color --group-directories-first' # color-mode
 alias irc='screen -t 1 irssi'
+
+alias vi='nvim'
+alias vim='nvim'
 
 
 #===============================================================================
@@ -99,10 +102,10 @@ fi
 export PATH=$PATH:~/.composer/vendor/bin
 
 # Docker -----------------------------------------------------------------------
-#export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_HOST=tcp://localhost:2376
-export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.23.2:2375
+#export DOCKER_HOST=tcp://localhost:2376
+#export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
+#export DOCKER_TLS_VERIFY=1
 
 
 #===============================================================================
@@ -111,3 +114,6 @@ export DOCKER_TLS_VERIFY=1
 
 # NCMS -------------------------------------------------------------------------
 export GABO=~/Projects/gweb-gabo/default
+
+# Trunk Club--------------------------------------------------------------------
+export DOCKER_HOST=tcp://192.168.23.2:2375
