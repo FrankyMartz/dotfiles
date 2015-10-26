@@ -21,7 +21,8 @@ __configNVIM(){
     # Symbolic Links
     #===========================================================================
     [[ -L ~/.nvim ]] || ln -fs "$NEOVIM" ~/.nvim
-    [[ -L ~/.nvimrc ]] || ln -fs "${NEOVIM}/nvimrc" ~/.nvimrc
+    mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+    ln -s "$NEOVIM" $XDG_CONFIG_HOME/nvim
 
     #===========================================================================
     # Neovim Plugins
