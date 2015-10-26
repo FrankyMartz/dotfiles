@@ -60,7 +60,7 @@ set title                       " Set window title
 set scrolloff=3                 " Number of lines to keep above/below cursor
 set ruler                       " Show line/column position number
 set number                      " Show line number in front of each line
-set cmdheight=2                 " Set command bar to 2 lines
+set cmdheight=1                 " Set command bar to 2 lines
 
 " Timeout on key codes but not mappings. Make terminal nvim work sanely
 set notimeout
@@ -617,8 +617,8 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
-let g:syntastic_javascript_checkers=['jsxhint', "flow"]
-"let g:syntastic_javascript_checkers=['jsxhint']
+"let g:syntastic_javascript_checkers=['jsxhint', 'flow']
+let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol='✘'
 let g:syntastic_warning_symbol='▲'

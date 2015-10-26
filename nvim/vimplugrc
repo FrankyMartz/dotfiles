@@ -54,6 +54,8 @@ Plug 'editorconfig-vim'
 Plug 'scrooloose/syntastic'
 Plug 'dbakker/vim-lint', { 'for': 'vim' }
 
+Plug 'tpope/vim-dotenv'
+
 " >> Apache
 Plug 'apachelogs.vim', { 'for': 'log' }
 Plug 'apachestyle', { 'for': 'log' }
@@ -70,17 +72,17 @@ Plug 'othree/html5.vim', { 'for': [ 'html', 'javascript' ] }
 Plug 'mustache/vim-mustache-handlebars', { 'for': 'mustache'}
 
 " >> JavaScript
-Plug 'marijnh/tern_for_vim', { 'for': [ 'javascript', 'html' ], 'do': 'npm install' }
+Plug 'marijnh/tern_for_vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html' ], 'do': 'npm install' }
 Plug 'elzr/vim-json', { 'for': 'json' }
-Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'html' ] }
+Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'es6', 'html' ] }
 "Plug 'jelera/vim-javascript-syntax', { 'for': [ 'javascript', 'html' ] }
 "Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'html' ] }
 "Plug 'vim-scripts/JavaScript-Indent',  { 'for': 'javascript' }
-Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'html' ] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'html' ] }
-Plug 'mxw/vim-jsx', { 'for': [ 'javascript', 'jsx' ] }
-Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx' ] }
-Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'html' ] }
+Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx', 'es6'] }
+Plug 'mxw/vim-jsx', { 'for': [ 'javascript', 'jsx', 'es6'] }
+Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html'] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html'] }
+Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'es6', 'html' ] }
 
 " >> CoffeeScript
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
@@ -91,6 +93,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
 Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
 Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
+Plug 'amiorin/vim-textile', { 'for': 'textile' }
 
 " >> PHP
 Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
