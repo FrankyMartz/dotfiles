@@ -26,7 +26,7 @@ call plug#begin('~/.nvim/bundle')
 " General
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'simnalamburt/vim-mundo', { 'on':  'GundoToggle' }
 "Plug 'Gundo', { 'on':  'GundoToggle' }
 Plug 'Splice'
@@ -75,9 +75,6 @@ Plug 'mustache/vim-mustache-handlebars', { 'for': 'mustache'}
 Plug 'marijnh/tern_for_vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html' ], 'do': 'npm install' }
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'es6', 'html' ] }
-"Plug 'jelera/vim-javascript-syntax', { 'for': [ 'javascript', 'html' ] }
-"Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'html' ] }
-"Plug 'vim-scripts/JavaScript-Indent',  { 'for': 'javascript' }
 Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx', 'es6'] }
 Plug 'mxw/vim-jsx', { 'for': [ 'javascript', 'jsx', 'es6'] }
 Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html'] }

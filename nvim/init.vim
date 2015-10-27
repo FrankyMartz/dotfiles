@@ -496,6 +496,10 @@ hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
 
+" Fugitive {{{
+nmap <leader>? :Gstatus<cr>
+" }}}
+
 " Airline {{{
 set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
@@ -613,6 +617,20 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
                         \ '.*\.pdf$', '.*\.mid$', '.*\.midi$']
 " }}}
 
+" NERDTree Git Plugin {{{
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "❍", 
+    \ "Staged"    : "●",
+    \ "Untracked" : "△",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "☐",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+" }}}
+
 " Syntastic {{{
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
@@ -641,28 +659,12 @@ let g:UltiSnipsJumpForwardTrigger='<c-k>'
 let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
 " }}}
 
-" jelera/vim-javascript-syntax {{{
-"au FileType javascript call JavaScriptFold()
-" }}}
-
-" pangloss/vim-javascript {{{
-let g:javascript_enable_domhtmlcss  =  1
-let g:javascript_conceal_function   = "ƒ"
-let g:javascript_conceal_null       = "ø"
-let g:javascript_conceal_this       = "@"
-let g:javascript_conceal_return     = "⇚"
-let g:javascript_conceal_undefined  = "¿"
-let g:javascript_conceal_NaN        = "ℕ"
-let g:javascript_conceal_prototype  = "¶"
-" }}}
-
 " javascript-libraries-syntax {{{
 let g:used_javascript_libs = 'jquery,underscore,requirejs'
 autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
 autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
 autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
-
 " }}}
 
 " vim-jsdoc {{{
