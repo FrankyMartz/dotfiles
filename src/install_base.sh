@@ -18,48 +18,57 @@ __configBase(){
     )
 
     local brew_tools=(
+        caddy
+        checkbashisms
         cmake
         ctags
+        dnsmasq
+        docker
+        docker-compose
+        docker-machine
         flow
-        fpp
+        fzf
         git
         htop-osx
         irssi
         libsass
         mercurial
-        nvm
+        neovim
+        node
+        node-build
+        nodenv
+        openssl
+        path-extractor
         pyenv
+        python
         rbenv
         rbenv-bundler
         rename
+        ruby-build
         shellcheck
         the_silver_searcher
+        tidy-html5
         watchman
         wget
+        yank
     )
 
     local npm_packages=(
-        babel
         bower
         browser-sync
         browserify
-        caniuse-cmd
         csslint
+        eslint
         fb-watchman
         gulp
         js-yaml
         jsctags
-        jshint
         jsonlint
-        jsxhint
         livedown
         node-inspector
         node-sass
-        react-tools
-        stylint
-        stylus
+        osx-trash
         svgo
-        trash
         webpack
     )
 
@@ -68,7 +77,7 @@ __configBase(){
         # Install: Homebrew
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing Homebrew..."
-        #/usr/bin/env ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         dLog "${GREEN}==> Installing Homebrew...DONE"
 
 
@@ -90,6 +99,7 @@ __configBase(){
         # Install more recent versions of some OS X tools
         /usr/bin/env brew tap homebrew/dupes
         /usr/bin/env brew install homebrew/dupes/grep
+        /usr/bin/env brew install homebrew/dupes/rsync
 
         dLog "${GREEN}==> Installing GNU Tools...DONE"
 
@@ -109,14 +119,13 @@ __configBase(){
         /usr/bin/env brew install "${brew_tools[@]}"
         dLog "${GREEN}==> Installing CLI Tools...DONE"
 
-
         #-----------------------------------------------------------------------
-        # Install: Neovim
+        # Install: FZF
         #-----------------------------------------------------------------------
-        dLog "${GREEN}==> Installing Neovim..."
-        /usr/bin/env brew tap neovim/homebrew-neovim
-        /usr/bin/env brew install --HEAD neovim
-        dLog "${GREEN}==> Installing Neovim...DONE"
+        dLog "${GREEN}==> Installing FZF..."
+        # shellcheck source=/dev/null
+        [[ -x ~/.fzf/install ]] || . ~/.fzf/install
+        dLog "${GREEN}==> Installing FZF...DONE"
 
         #-----------------------------------------------------------------------
         # Clean Up Homebrew
@@ -153,11 +162,7 @@ __configBase(){
         # Update: NPM
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating NPM Packages..."
-        ls $(npm root -g) | grep -v "npm" | while IFS="" read -r package
-        do
-            /usr/bin/env npm update -g "$package"
-            dLog "${package} ${GREEN}[DONE]"
-        done
+        /usr/bin/env npm update -g
         dLog "${GREEN}==> Updating NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
@@ -173,7 +178,7 @@ __configBase(){
         dLog "${GREEN}==> Updating Python pip..."
         /usr/bin/env pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | grep -v 'vbox' | while IFS="" read -r package 
         do
-            /usr/bin/env pip install -U "$package"
+            /usr/bin/env pip install -U "$package" || dLog "${package} ${RED}[FAIL]: $0"
         done
         dLog "${GREEN}==> Updating Python pip...DONE"
     fi

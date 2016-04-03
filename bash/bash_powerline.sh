@@ -10,8 +10,8 @@
 __powerline() {
 
     # Unicode symbols
-    readonly PS_SYMBOL_DARWIN=''
-    #readonly PS_SYMBOL_DARWIN='⚡︎'
+    #readonly PS_SYMBOL_DARWIN=''
+    readonly PS_SYMBOL_DARWIN='⚡︎'
     readonly PS_SYMBOL_LINUX='$'
     readonly PS_SYMBOL_OTHER='%'
     readonly GIT_BRANCH_SYMBOL='⑂ '
@@ -21,43 +21,43 @@ __powerline() {
 
     # Colors
     readonly FG_BLACK="\[$(tput setaf 0)\]"
-    readonly FG_RED="\[$(tput setaf 1)\]"
-    readonly FG_GREEN="\[$(tput setaf 2)\]"
-    readonly FG_YELLOW="\[$(tput setaf 3)\]"
-    readonly FG_BLUE="\[$(tput setaf 4)\]"
-    readonly FG_MAGENTA="\[$(tput setaf 5)\]"
-    readonly FG_CYAN="\[$(tput setaf 6)\]"
-    readonly FG_WHITE="\[$(tput setaf 7)\]"
-    readonly FG_BLACK_BRIGHT="\[$(tput setaf 8)\]"
-    readonly FG_RED_BRIGHT="\[$(tput setaf 9)\]"
-    readonly FG_GREEN_BRIGHT="\[$(tput setaf 10)\]"
-    readonly FG_YELLOW_BRIGHT="\[$(tput setaf 11)\]"
-    readonly FG_BLUE_BRIGHT="\[$(tput setaf 12)\]"
-    readonly FG_MAGENTA_BRIGHT="\[$(tput setaf 13)\]"
-    readonly FG_CYAN_BRIGHT="\[$(tput setaf 14)\]"
-    readonly FG_WHITE_BRIGHT="\[$(tput setaf 15)\]"
+    #readonly FG_RED="\[$(tput setaf 1)\]"
+    #readonly FG_GREEN="\[$(tput setaf 2)\]"
+    #readonly FG_YELLOW="\[$(tput setaf 3)\]"
+    #readonly FG_BLUE="\[$(tput setaf 4)\]"
+    #readonly FG_MAGENTA="\[$(tput setaf 5)\]"
+    #readonly FG_CYAN="\[$(tput setaf 6)\]"
+    #readonly FG_WHITE="\[$(tput setaf 7)\]"
+    #readonly FG_BLACK_BRIGHT="\[$(tput setaf 8)\]"
+    #readonly FG_RED_BRIGHT="\[$(tput setaf 9)\]"
+    #readonly FG_GREEN_BRIGHT="\[$(tput setaf 10)\]"
+    #readonly FG_YELLOW_BRIGHT="\[$(tput setaf 11)\]"
+    #readonly FG_BLUE_BRIGHT="\[$(tput setaf 12)\]"
+    #readonly FG_MAGENTA_BRIGHT="\[$(tput setaf 13)\]"
+    #readonly FG_CYAN_BRIGHT="\[$(tput setaf 14)\]"
+    #readonly FG_WHITE_BRIGHT="\[$(tput setaf 15)\]"
 
-    readonly BG_BLACK="\[$(tput setab 0)\]"
+    #readonly BG_BLACK="\[$(tput setab 0)\]"
     readonly BG_RED="\[$(tput setab 1)\]"
     readonly BG_GREEN="\[$(tput setab 2)\]"
-    readonly BG_YELLOW="\[$(tput setab 3)\]"
+    #readonly BG_YELLOW="\[$(tput setab 3)\]"
     readonly BG_BLUE="\[$(tput setab 4)\]"
     readonly BG_MAGENTA="\[$(tput setab 5)\]"
-    readonly BG_CYAN="\[$(tput setab 6)\]"
-    readonly BG_WHITE="\[$(tput setab 7)\]"
-    readonly BG_BLACK_BRIGHT="\[$(tput setab 8)\]"
-    readonly BG_RED_BRIGHT="\[$(tput setab 9)\]"
-    readonly BG_GREEN_BRIGHT="\[$(tput setab 10)\]"
-    readonly BG_YELLOW_BRIGHT="\[$(tput setab 11)\]"
-    readonly BG_BLUE_BRIGHT="\[$(tput setab 12)\]"
-    readonly BG_MAGENTA_BRIGHT="\[$(tput setab 13)\]"
-    readonly BG_CYAN_BRIGHT="\[$(tput setab 14)\]"
-    readonly BG_WHITE_BRIGHT="\[$(tput setab 15)\]"
+    #readonly BG_CYAN="\[$(tput setab 6)\]"
+    #readonly BG_WHITE="\[$(tput setab 7)\]"
+    #readonly BG_BLACK_BRIGHT="\[$(tput setab 8)\]"
+    #readonly BG_RED_BRIGHT="\[$(tput setab 9)\]"
+    #readonly BG_GREEN_BRIGHT="\[$(tput setab 10)\]"
+    #readonly BG_YELLOW_BRIGHT="\[$(tput setab 11)\]"
+    #readonly BG_BLUE_BRIGHT="\[$(tput setab 12)\]"
+    #readonly BG_MAGENTA_BRIGHT="\[$(tput setab 13)\]"
+    #readonly BG_CYAN_BRIGHT="\[$(tput setab 14)\]"
+    #readonly BG_WHITE_BRIGHT="\[$(tput setab 15)\]"
 
-    readonly DIM="\[$(tput dim)\]"
-    readonly REVERSE="\[$(tput rev)\]"
+    #readonly DIM="\[$(tput dim)\]"
+    #readonly REVERSE="\[$(tput rev)\]"
     readonly RESET="\[$(tput sgr0)\]"
-    readonly BOLD="\[$(tput bold)\]"
+    #readonly BOLD="\[$(tput bold)\]"
 
     # what OS?
     case "$(uname)" in
@@ -71,22 +71,47 @@ __powerline() {
             readonly PS_SYMBOL=$PS_SYMBOL_OTHER
     esac
 
-    __git_info() {
+    #__git_info() {
+        #[ -x "$(which git)" ] || return    # git not found
+
+        ## get current branch name or short SHA1 hash for detached head
+        #local branch="$(git symbolic-ref --short HEAD 2>/dev/null || git describe --tags --always 2>/dev/null)"
+        #[ -n "$branch" ] || return  # git branch not found
+
+        #local marks
+
+        ## branch is modified?
+        #[ -n "$(git status --porcelain)" ] && marks+=" $GIT_BRANCH_CHANGED_SYMBOL"
+
+        ## how many commits local branch is ahead/behind of remote?
+        #local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
+        #local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
+        #local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
+        #[ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
+        #[ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
+
+        ## print the git branch segment without a trailing newline
+        #printf " $GIT_BRANCH_SYMBOL$branch$marks "
+    #}
+
+
+    __git_info() { 
         [ -x "$(which git)" ] || return    # git not found
 
+        local git_eng="env LANG=C git"   # force git output in English to make our work easier
         # get current branch name or short SHA1 hash for detached head
-        local branch="$(git symbolic-ref --short HEAD 2>/dev/null || git describe --tags --always 2>/dev/null)"
+        local branch="$($git_eng symbolic-ref --short HEAD 2>/dev/null || $git_eng describe --tags --always 2>/dev/null)"
         [ -n "$branch" ] || return  # git branch not found
 
         local marks
 
         # branch is modified?
-        [ -n "$(git status --porcelain)" ] && marks+=" $GIT_BRANCH_CHANGED_SYMBOL"
+        [ -n "$($git_eng status --porcelain)" ] && marks+=" $GIT_BRANCH_CHANGED_SYMBOL"
 
         # how many commits local branch is ahead/behind of remote?
-        local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
-        local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
-        local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
+        local stat="$($git_eng status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
+        local aheadN="$(echo $stat | grep -o 'ahead [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
+        local behindN="$(echo $stat | grep -o 'behind [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
         [ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
         [ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
 

@@ -23,7 +23,7 @@
 " => Color Scheme
 "
 "===============================================================================
-" => General {{{
+"=> General {{{
 "-------------------------------------------------------------------------------
 
 syntax enable                   " Enable Syntax Highlighting
@@ -32,6 +32,7 @@ set autowriteall                " Automatically write to file if modified
 set history=1000                " Remember more commands and search history
 set undolevels=1000             " Use many levels of undo
 set undoreload=10000            " Save whole buffer for undo when reloading it
+set tabpagemax=50               " Maximum tab pages
 
 " Hide buffers instead of closing them. This means that the current buffer can
 " be put into background without being written; and that marks and undo history
@@ -71,8 +72,8 @@ set lazyredraw
 set visualbell                  " NO bell please
 set noerrorbells                " Silence
 
-set splitbelow
-set splitright
+set splitbelow                  " Horizontal split below current.
+set splitright                  " Vertical split to right of current.
 
 " Enable tab completion for files/buffers
 set wildmenu
@@ -91,9 +92,12 @@ set wildignore+=*.orig                              " Merge resolution files
 
 set backspace=indent,eol,start  " Allow backspace over everything in insert modeA
 
+set cpoptions+=d    " Use tags relative to CWD
+
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
+set omnifunc=csscomplete#CompleteCSS
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -114,6 +118,7 @@ set undodir=~/.nvim/tmp/undo//          " Undo files
 set backupdir=~/.nvim/tmp/backup//      " Backup files
 set viewdir=~/.nvim/tmp/view//          " View files
 set directory=~/.nvim/tmp/swap//        " Swap files
+set tags=./tags;
 
 " Create directories if they do not exist
 if !isdirectory(expand(&undodir))
@@ -128,6 +133,8 @@ endif
 if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), 'p')
 endif
+
+let tempDir='~/.nvim/tmp//'
 
 " }}}
 
@@ -166,8 +173,20 @@ nnoremap ¬ z30l
 "nnoremap <m-L> z20l
 
 " COPY / PASTE ... PLEASE
-vnoremap <leader>y "*y
-noremap <leader>p :silent! set paste<cr>"*p:set nopaste<cr>
+"vnoremap <leader>y "*y
+"noremap <leader>p :silent! set paste<cr>"*p:set nopaste<cr>
+
+function! ClipboardYank()
+  call system('pbcopy', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('pbpaste')
+endfunction
+
+vnoremap <silent> <leader>y y:call ClipboardYank()<cr>
+vnoremap <silent> <leader>d d:call ClipboardYank()<cr>
+nnoremap <silent> <leader>p :call ClipboardPaste()<cr>p<cr>
+vnoremap <silent> P "0p<cr>
 
 " Sudo to write (handle permission-denied error)
 cnoremap w!! w !sudo tee % >/dev/null
@@ -185,7 +204,7 @@ nmap <leader>c :set cursorline!<cr>
 inoremap jj <esc>
 " -> move cursor to beginning
 inoremap II <esc>I
-" -> move cursore to eol
+" -> move cursor to eol
 inoremap AA <esc>A
 " -> make newline above and place cursor there
 inoremap OO <esc>O
@@ -202,6 +221,11 @@ nnoremap <leader><space> :noh<cr>
 " Strip all trailing whitespace in current buffer
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
+" Terminal Commands
+if exists(':tnoremap')  " Neovim
+    tnoremap <Leader>e <C-\><C-n>
+endif
+
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -217,11 +241,20 @@ set showmatch               " Highlight closing ), >, }, ], etc...
 nnoremap / /\v
 vnoremap / /\v
 
+set rtp+=/usr/local/opt/fzf
 " }}}
 
 "-------------------------------------------------------------------------------
 " => FileType {{{
 "-------------------------------------------------------------------------------
+
+" Blade {{{
+augroup ft_blade
+    au!
+    au FileType blade setlocal ts=2 sts=2 sw=2 expandtab
+    au BufNewFile,BufRead *.blade setlocal filetype=blade
+augroup END
+" }}}
 
 " C {{{
 augroup ft_c
@@ -292,26 +325,19 @@ augroup ft_go
 augroup END
 " }}}
 
+" Handlebars {{{
+augroup ft_handlebars
+    au!
+    au BufNewFile,BufRead *.handlebars setlocal filetype=handlebars
+    au BufNewFile,BufRead *.hbs setlocal filetype=handlebars
+    au FileType handlebars setlocal ts=2 sts=2 sw=2 expandtab
+augroup END
+" }}}
+
 " HTML {{{
 augroup ft_html
     au!
     au FileType html setlocal ts=2 sts=2 sw=2 expandtab
-augroup END
-" }}}
-
-" Blade {{{
-augroup ft_blade
-    au!
-    au FileType blade setlocal ts=2 sts=2 sw=2 expandtab
-    au BufNewFile,BufRead *.blade setlocal filetype=blade
-augroup END
-" }}}
-
-" Mustache {{{
-augroup ft_mustache
-    au!
-    au FileType mustache setlocal ts=2 sts=2 sw=2 expandtab
-    au BufNewFile,BufRead *.mustache setlocal filetype=mustache
 augroup END
 " }}}
 
@@ -326,6 +352,9 @@ augroup END
 augroup ft_javascript
     au!
     au FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+    au BufNewFile,BufRead *.js setlocal filetype=javascript
+    au BufNewFile,BufRead *.jsx setlocal filetype=javascript
+    au BufNewFile,BufRead *.es6 setlocal filetype=javascript
     "au FileType javascript setlocal foldmethod=marker foldmarker={,}
     au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
@@ -341,12 +370,30 @@ augroup ft_json
 augroup END
 " }}}
 
+" JSX {{{
+augroup ft_jsx
+    au!
+    au BufNewFile,BufRead *.jsx setlocal filetype=javascript.jsx
+    au BufNewFile,BufRead *.es6 setlocal filetype=javascript.jsx
+    au FileType json setlocal ts=2 sts=2 sw=2 expandtab
+    au FileType json setlocal foldmethod=marker foldmarker={,}
+augroup END
+" }}}
+
 " Markdown {{{
 augroup ft_markdown
     au!
     au BufNewFile,BufRead *.md setlocal filetype=markdown
     au BufNewFile,BufRead *.markdown setlocal filetype=markdown
     au FileType markdown setlocal wrap linebreak nolist
+augroup END
+" }}}
+
+" Mustache {{{
+augroup ft_mustache
+    au!
+    au FileType mustache setlocal ts=2 sts=2 sw=2 expandtab
+    au BufNewFile,BufRead *.mustache setlocal filetype=mustache
 augroup END
 " }}}
 
@@ -467,6 +514,9 @@ set winheight=10
 set winminheight=10
 set winheight=999
 
+set diffopt+=vertical
+set diffopt+=iwhite
+
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -479,9 +529,11 @@ source ~/.nvim/vimplugrc
 "-------------------------------------------------------------------------------
 " => Color and Font {{{
 "-------------------------------------------------------------------------------
-set guifont=Menlo:h11
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"set guifont=Menlo:h11
+set guifont=hack:h11
 
-set synmaxcol=500              " Don't highlight lines longer than
+"set synmaxcol=500              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 
 hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
@@ -496,14 +548,15 @@ hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
 
-" Fugitive {{{
-nmap <leader>? :Gstatus<cr>
-" }}}
-
 " Airline {{{
 set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
-let g:airline_powerline_fonts=0
+let g:airline_powerline_fonts=1
+let g:airline#extensions#promptline#snapshot_file = "~/.dotfiles/bin/.shell_prompt.sh"
+let g:airline#extensions#promptline#enabled = 1
+let g:airline#extensions#windowswap#enabled = 1
+let g:airline#extensions#windowswap#indicator_text = 'WS'
+
 "let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
 "let g:airline#extensions#tabline#buffer_min_count=2
 "let g:airline#extensions#tabline#fnamemod = ':t'
@@ -512,47 +565,25 @@ let g:airline_powerline_fonts=0
 "let g:airline#extensions#tabline#buffer_nr_show=1
 "let g:airline#extensions#tabline#buffer_nr_format='[%s]'
 "let g:airline#extensions#tabline#buffer_idx_mode=1
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-if !exists('g:airline_symbols')
-      let g:airline_symbols = {}
-endif
+"nmap <leader>1 <Plug>AirlineSelectTab1
+"nmap <leader>2 <Plug>AirlineSelectTab2
+"nmap <leader>3 <Plug>AirlineSelectTab3
+"nmap <leader>4 <Plug>AirlineSelectTab4
+"nmap <leader>5 <Plug>AirlineSelectTab5
+"nmap <leader>6 <Plug>AirlineSelectTab6
+"nmap <leader>7 <Plug>AirlineSelectTab7
+"nmap <leader>8 <Plug>AirlineSelectTab8
+"nmap <leader>9 <Plug>AirlineSelectTab9
+"if !exists('g:airline_symbols')
+      "let g:airline_symbols = {}
+"endif
 " unicode symbols
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.branch = '⑂'
-let g:airline_symbols.paste = '↯'
-let g:airline_symbols.whitespace = 'Ξ'
-" }}}
-
-" CtrlP {{{
-" Setup some default ignores
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site|node_modules|bower_components)$',
-  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-\}
-
-" Use the nearest .git directory as the cwd
-" This makes a lot of sense if you are working on a project that is in version
-" control. It also supports works with .svn, .hg, .bzr.
-let g:ctrlp_working_path_mode = 'r'
-
-" Use a leader instead of the actual named binding
-"nmap <leader>p :CtrlP<cr>
-nmap <c-p> :CtrlP<cr>
-
-" Easy bindings for its various modes
-nmap <leader>bb :CtrlPBuffer<cr>
-nmap <leader>bm :CtrlPMixed<cr>
-nmap <leader>bs :CtrlPMRU<cr>
+"let g:airline_left_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.branch = '⑂'
+"let g:airline_symbols.paste = '↯'
+"let g:airline_symbols.whitespace = 'Ξ'
 " }}}
 
 " Buffergator {{{
@@ -579,35 +610,78 @@ nmap <leader>T :enew<cr>
 nmap <leader>bq :bp <BAR> bd #<cr>
 " }}}
 
-" Surround {{{
-let g:surround_{char2nr('-')} = '<% \r %>'
-let g:surround_{char2nr('=')} = '<%= \r %>'
-let g:surround_{char2nr('8')} = '/* \r */'
-let g:surround_{char2nr('s')} = ' \r '
-let g:surround_{char2nr('^')} = '/^\r$/'
-let g:surround_indent = 1
-" }}}
+" CtrlP {{{
+" Setup some default ignores
+"let g:ctrlp_custom_ignore = {
+  "\ 'dir':  '\v[\/](\.(git|hg|svn)|\_site|node_modules|bower_components)$',
+  "\ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+"\}
 
-" Gundo {{{
-nnoremap <F7> :GundoToggle<CR>
+" Use the nearest .git directory as the cwd
+" This makes a lot of sense if you are working on a project that is in version
+" control. It also supports works with .svn, .hg, .bzr.
+"let g:ctrlp_working_path_mode = 'r'
+
+" Use a leader instead of the actual named binding
+"nmap <leader>p :CtrlP<cr>
+"nmap <c-p> :CtrlP<cr>
+
+" Easy bindings for its various modes
+"nmap <leader>bb :CtrlPBuffer<cr>
+"nmap <leader>bm :CtrlPMixed<cr>
+"nmap <leader>bs :CtrlPMRU<cr>
 " }}}
 
 " DelimitMate {{{
 let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 " }}}
 
-" Tagbar {{{
-nmap <F9> :TagbarToggle<CR>
+" Fugitive {{{
+nmap <leader>? :Gstatus<cr>
+" }}}
+
+" FZF {{{
+nmap <c-t> :FZF<cr>
+if has('nvim')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+" }}}
+
+" Goyo {{{
+function! s:goyo_enter()
+    set noshowmode
+    set scrolloff=999
+endfunction
+
+function! s:goyo_leave()
+    set showmode
+    set scrolloff=5
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+" }}}
+
+" Gundo {{{
+nnoremap <F7> :GundoToggle<CR>
+" }}}
+
+" javascript-libraries-syntax {{{
+let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularuirouter,jasmine,chai,react,flux,handlebars'
+"autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
+"autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
+"autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
+"autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
 " }}}
 
 " NERDTree {{{
 augroup nerdtree
     " Quit when NERDTree is only open buffer
-    au bufenter * if (winnr("$") == 1 && exists('b:NERDTreeType') && b:NERDTreeType == 'primary') | q | endif
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 nmap <F8> :NERDTreeToggle<CR>
 let NERDTreeChDirMode=2
-let NERDTreeBookmarksFile=expand("~/.nvim/tmp/NERDTreeBookmarks")
+let NERDTreeBookmarksFile=expand(tempDir).'/NERDTreeBookmarks'
 let NERDTreeMouseMode=2
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
@@ -619,7 +693,7 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
 
 " NERDTree Git Plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "❍", 
+    \ "Modified"  : "❍",
     \ "Staged"    : "●",
     \ "Untracked" : "△",
     \ "Renamed"   : "➜",
@@ -636,50 +710,40 @@ let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 "let g:syntastic_javascript_checkers=['jsxhint', 'flow']
+"let g:syntastic_html_tidy_exec = 'tidy5'
 let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_sass_checkers=["sass","sass_lint"]
+let g:syntastic_scss_checkers=["sass","sass_lint"]
+"let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol='✘'
 let g:syntastic_warning_symbol='▲'
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
+let g:syntastic_sh_shellcheck_args="-x"
 " }}}
 
-" YouCompleteMe {{{
-autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_autoclose_preview_window_after_completion=1
-" pyenv
-let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-" }}}
+" NeoMake {{{
+let g:neomake_open_list=2
+let g:neomake_serialize=1
+let g:neomake_verbose=0
 
-" UltiSnips {{{
-let g:UltiSnipsExpandTrigger='<c-k>'
-let g:UltiSnipsJumpForwardTrigger='<c-k>'
-let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
-" }}}
+" Makers
+let g:neomake_html_tidy_maker = {
+    \ 'args': ['-e', '-q'],
+    \ 'errorformat': '%A%f:%l:%c: Warning: %m',
+    \ }
 
-" javascript-libraries-syntax {{{
-let g:used_javascript_libs = 'jquery,underscore,requirejs'
-autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
-autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
-autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
-" }}}
+let g:neomake_sasslint_maker = {
+    \ 'exe': 'sass-lint',
+    \ 'errorformat': '%f:%l [%t] %m'
+    \ }
 
-" vim-jsdoc {{{
-let g:jsdoc_default_mapping=0
-let g:jsdoc_allow_input_prompt=1
-nmap <leader>l :JsDoc<CR>
-" }}}
+" Configure Default Checkers
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_scss_enabled_makers = ['sasslint']
 
-" vim-json {{{
-let g:vim_json_syntax_conceal=0
-" }}}
-
-" vim-flow {{{
-" Use Syntastic instead. (vim-flow) includes autocompletion so keep around.
-let g:flow#enable = 0
+autocmd! BufWritePost * :silent! Neomake
 " }}}
 
 " Splice {{{
@@ -690,6 +754,84 @@ let g:splice_initial_scrollbind_compare=1
 let g:splice_initial_diff_grid=1
 let g:splice_initial_diff_compare=1
 let g:splice_wrap='nowrap'
+" }}}
+
+" Surround {{{
+let g:surround_{char2nr('-')} = '<% \r %>'
+let g:surround_{char2nr('=')} = '<%= \r %>'
+let g:surround_{char2nr('8')} = '/* \r */'
+let g:surround_{char2nr('s')} = ' \r '
+let g:surround_{char2nr('^')} = '/^\r$/'
+let g:surround_indent = 1
+" }}}
+
+" Tagbar {{{
+let defdir="~/.nvim/deffile/"
+nmap <F9> :TagbarToggle<CR>
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
+
+let g:tagbar_type_css = {
+\  'ctagstype' : 'css',
+\  'kinds' : [
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'm:medias'
+\  ],
+\ 'deffile' : expand(defdir) . '/css.cnf'
+\}
+
+let g:tagbar_type_less = {
+\  'ctagstype' : 'less',
+\  'kinds' : [
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'm:medias'
+\  ],
+\ 'deffile' : expand(defdir) . '/less.cnf'
+\}
+
+let g:tagbar_type_scss = {
+\  'ctagstype' : 'scss',
+\  'kinds' : [
+\    'm:mixins',
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'd:medias'
+\  ],
+\ 'deffile' : expand(defdir) . '/scss.cnf'
+\}
 " }}}
 
 " TernJS {{{
@@ -705,11 +847,42 @@ noremap <leader>t<space> :TernRefs<cr>
 noremap <leader>tr :TernRename<cr>
 " }}}
 
+" UltiSnips {{{
+let g:UltiSnipsExpandTrigger='<c-k>'
+let g:UltiSnipsJumpForwardTrigger='<c-k>'
+let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
+" }}}
+
+" vim-easytags {{{
+let g:easytags_async = 1
+let g:easytags_file = expand(tempDir).'/.tags'
+let g:easytags_dynamic_files = 1
+" }}}
+
+" vim-flow {{{
+" Use Syntastic instead. (vim-flow) includes autocompletion so keep around.
+let g:flow#enable = 0
+" }}}
+
 " vim-gitgutter {{{
 nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hr <Plug>GitGutterRevertHunk
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
+" }}}
+
+" vim-jsdoc {{{
+let g:jsdoc_default_mapping=0
+let g:jsdoc_allow_input_prompt=1
+nmap <leader>l :JsDoc<CR>
+" }}}
+
+" vim-json {{{
+let g:vim_json_syntax_conceal=0
+" }}}
+
+" vim-jsx {{{
+let g:jsx_ext_required = 0
 " }}}
 
 " vim-livedown {{{
@@ -719,9 +892,36 @@ let g:livedown_port = 1337  " Browser Port
 nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
-" goyo {{{
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+" YouCompleteMe {{{
+autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_add_preview_to_completeopt=1
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_complete_in_comments=0
+let g:ycm_collect_identifiers_from_tags_files=1
+" pyenv
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+" }}}
+
+" vim-ctrlspace {{{
+if executable("ag")
+    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
+" }}}
+
+" promptline {{{
+let g:promptline_theme = 'airline'
+let g:promptline_powerline_symbols = 0
+let g:promptline_preset = {
+    \'a' : [ promptline#slices#cwd() ],
+    \'b' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ],
+    \'c' : [ '\$' ],
+    \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
+    \'y' : [ promptline#slices#python_virtualenv() ],
+    \'warn' : [ promptline#slices#last_exit_code() ]}
 " }}}
 
 " }}}
@@ -729,22 +929,32 @@ autocmd! User GoyoLeave Limelight!
 "-------------------------------------------------------------------------------
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
+"colorscheme gruvbox
 " airline doesn't behave when set before Vundle:Config
-let base16colorspace=256        " Access colors present in 256 colorspace
-colorscheme base16-eighties
-"colorscheme base16-codeschool
-set background=dark             " Set ColorScheme Flavor
-"set background=light             " Set ColorScheme Flavor
+"let base16colorspace=256        " Access colors present in 256 colorspace
+let s:fmColorSchemeDark='base16-eighties'
+"let s:fmColorSchemeLight='base16-flat'
+let s:fmColorSchemeLight='base16-eighties'
+
+" Set ColorScheme Flavor
+if $ITERM_PROFILE == 'Daylight'
+    execute 'colorscheme '.s:fmColorSchemeLight
+    set background=light
+else
+    execute 'colorscheme '.s:fmColorSchemeDark
+    set background=dark
+endif
+
 
 function! s:ToggleBackground()
-    let fmShade = &background == "dark" ? "light" : "dark"
-    let fmColorScheme = &background == "dark" ? "base16-default" : "base16-eighties"
-    execute "set background=".fmShade
-    execute "colorscheme ".fmColorScheme
+    let fmShade = &background == 'dark' ? 'light' : 'dark'
+    let fmColorScheme = &background == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
+    execute 'set background='.fmShade
+    execute 'colorscheme '.fmColorScheme
 endfunction
 
 command! ToggleBg call s:ToggleBackground()
-nnoremap <silent><F13> :ToggleBg<CR>
+nnoremap <silent><F12> :ToggleBg<CR> 
 
 " }}}
 

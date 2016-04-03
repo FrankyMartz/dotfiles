@@ -10,7 +10,7 @@
 __configBASH(){
     dLog "${BLUE}Bash Shell Configuration..."
 
-    local bash="${pwd}/bash"
+    local bash="${PWD}/bash"
     #===========================================================================
     # Symbolic Links
     #===========================================================================
@@ -29,7 +29,7 @@ __configBASH(){
         dLog "${BLUE}Updating Base16-Shell..."
         cd "${BASE16SHELL}"
         /usr/bin/env git pull origin
-        cd "$pwd"
+        cd "$PWD"
         dLog "${BLUE}Updating Base16-Shell...DONE"
     fi
 

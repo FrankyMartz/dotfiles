@@ -8,6 +8,7 @@ bin/
 
 # Neovim
 nvim/autoload/plug.vim
+nvim/autoload/plug.vim.old
 nvim/bundle/
 nvim/tmp/
 nvim/spell/
