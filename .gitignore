@@ -11,3 +11,4 @@ nvim/autoload/plug.vim
 nvim/bundle/
 nvim/tmp/
 nvim/spell/
+nvim/.netrwhist
