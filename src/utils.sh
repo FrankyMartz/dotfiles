@@ -9,13 +9,16 @@
 #-------------------------------------------------------------------------------
 # Colors
 #-------------------------------------------------------------------------------
+# shellcheck disable=SC2034
 BLACK=$(tput setaf 0)
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 BLUE=$(tput setaf 4)
 MAGENTA=$(tput setaf 5)
+# shellcheck disable=SC2034
 CYAN=$(tput setaf 6)
+# shellcheck disable=SC2034
 WHITE=$(tput setaf 7)
 NORMAL=$(tput sgr0)
 
@@ -52,13 +55,13 @@ pLog(){
     [[ -z $1 || -z $2 || -z $3 ]] && exit  # on empty param...
 
     local percent=$3
-    local completed=$(( $percent / 2 ))
-    local remaining=$(( 50 - $completed ))
+    local completed=$(( percent / 2 ))
+    local remaining=$(( 50 - completed ))
 
     echo -ne "\r${GREEN}${2} ${YELLOW}["
-    printf "%0.s=" `seq $completed`
+    printf "%0.s=$(seq $completed)"
     echo -n ">"
-    [[ $remaining != 0 ]] && printf "%0.s." `seq $remaining`
+    [[ $remaining != 0 ]] && printf "%0.s.$(seq $remaining)" 
     echo -n "] ${GREEN}${percent}% ${BLUE}($1)${NORMAL}"
     if [[ ${3} -eq 100 ]]; then
         echo -ne "\n"

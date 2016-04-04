@@ -10,10 +10,10 @@
 __configGit(){
     dLog "${BLUE}Git Configuration..."
 
-    local GIT="${PWD}/git"
+    local _GIT="${_PWD}/git"
 
-    [[ -L ~/.gitconfig ]] || ln -bfs $GIT/gitconfig ~/.gitconfig
-    [[ -L ~/.gitignore_global ]] || ln -bfs $GIT/gitignore_global ~/.gitignore_global
+    [[ -L ~/.gitconfig ]] || ln -bfs "${_GIT}/gitconfig" "${HOME}/.gitconfig"
+    [[ -L ~/.gitignore_global ]] || ln -bfs "${_GIT}/gitignore_global" "${HOME}/.gitignore_global"
 
     dLog "${BLUE}Git Configuration...DONE"
 }

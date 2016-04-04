@@ -16,18 +16,18 @@ fi
 
 __configNVIM(){
     dLog "${BLUE}Configuring Neovim..."
-    local NEOVIM="${PWD}/nvim"
+    local _NEOVIM="${_PWD}/nvim"
     #===========================================================================
     # Symbolic Links
     #===========================================================================
-    [[ -L ~/.nvim ]] || ln -fs "$NEOVIM" ~/.nvim
+    [[ -L ~/.nvim ]] || ln -fs "$_NEOVIM" ~/.nvim
     mkdir -p "${XDG_CONFIG_HOME:=$HOME/.config}"
-    ln -s "$NEOVIM" "${XDG_CONFIG_HOME}/nvim"
+    ln -s "$_NEOVIM" "${XDG_CONFIG_HOME}/nvim"
 
     #===========================================================================
     # Neovim Plugins
     #===========================================================================
-    local BUNDLE="${NEOVIM}/bundle"
+    local BUNDLE="${_NEOVIM}/bundle"
     if [[ ! -d "${BUNDLE}" ]]; then
         # Plugins --------------------------------------------------------------
         dLog "${GREEN}==> Installing Neovim Plugins..."
