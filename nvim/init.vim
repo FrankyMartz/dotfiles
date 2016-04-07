@@ -531,7 +531,7 @@ source ~/.nvim/vimplugrc
 "-------------------------------------------------------------------------------
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 "set guifont=Menlo:h11
-set guifont=hack:h11
+"set guifont=hack:h11
 
 "set synmaxcol=500              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
@@ -557,8 +557,8 @@ let g:airline#extensions#promptline#enabled = 1
 let g:airline#extensions#windowswap#enabled = 1
 let g:airline#extensions#windowswap#indicator_text = 'WS'
 
-"let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
-"let g:airline#extensions#tabline#buffer_min_count=2
+let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
+let g:airline#extensions#tabline#buffer_min_count=2
 "let g:airline#extensions#tabline#fnamemod = ':t'
 "let g:airline#extensions#tabline#formatter='unique_tail_improved'
 "let g:airline#extensions#tabline#left_sep=' '
@@ -699,7 +699,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Renamed"   : "➜",
     \ "Unmerged"  : "=",
     \ "Deleted"   : "✖",
-    \ "Dirty"     : "☐",
+    \ "Dirty"     : "☐ ",
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }

@@ -112,5 +112,8 @@ Plug 'xsbeats/vim-blade', { 'for': 'php' }
 " Color and Font
 Plug 'chriskempson/base16-vim'
 
+" Devicons MUST be loaded last
+Plug 'ryanoasis/vim-devicons'
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#end()
