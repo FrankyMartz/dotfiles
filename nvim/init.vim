@@ -152,6 +152,7 @@ set wrapmargin=0
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+set conceallevel=1              " Enable Code Conceal
 
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 
@@ -672,6 +673,22 @@ let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularuirout
 "autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
 "autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 "autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
+
+" }}}
+
+" vim-javascript {{{
+let g:javascript_enable_domhtmlcss = 1
+let g:javascript_fold = 1
+let g:javascript_conceal_function = "ƒ"
+let g:javascript_conceal_null = "ø"
+let g:javascript_conceal_this = "@"
+let g:javascript_conceal_return = "⇚"
+let g:javascript_conceal_undefined = "¿"
+let g:javascript_conceal_NaN = "ℕ"
+let g:javascript_conceal_prototype = "¶"
+let g:javascript_conceal_static = "•"
+let g:javascript_conceal_super = "Ω"
+let g:javascript_conceal_arrow_function = "⇒"
 " }}}
 
 " NERDTree {{{
@@ -957,7 +974,6 @@ command! ToggleBg call s:ToggleBackground()
 nnoremap <silent><F12> :ToggleBg<CR> 
 
 " }}}
-
 
 "-------------------------------------------------------------------------------
 " => Work Hacker Functions {{{
