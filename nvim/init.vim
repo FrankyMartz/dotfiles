@@ -112,7 +112,7 @@ autocmd FocusLost * :silent! wall
 
 set undofile
 set backup                              " Enable Backups
-set noswapfile                          " It's 2014 NeoVim
+"set noswapfile                          " It's 2014 NeoVim
 set backupskip=/tmp/*,/private/tmp/*
 set undodir=~/.nvim/tmp/undo//          " Undo files
 set backupdir=~/.nvim/tmp/backup//      " Backup files
@@ -152,7 +152,7 @@ set wrapmargin=0
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-set conceallevel=1              " Enable Code Conceal
+" set conceallevel=1              " Enable Code Conceal
 
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 
@@ -352,7 +352,7 @@ augroup END
 " JavaScript {{{
 augroup ft_javascript
     au!
-    au FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+    au FileType javascript setlocal ts=2 sts=2 sw=2 cole=1 expandtab
     au BufNewFile,BufRead *.js setlocal filetype=javascript
     au BufNewFile,BufRead *.jsx setlocal filetype=javascript
     au BufNewFile,BufRead *.es6 setlocal filetype=javascript
@@ -676,19 +676,27 @@ let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularuirout
 
 " }}}
 
-" vim-javascript {{{
-let g:javascript_enable_domhtmlcss = 1
-let g:javascript_fold = 1
-let g:javascript_conceal_function = "ƒ"
-let g:javascript_conceal_null = "ø"
-let g:javascript_conceal_this = "@"
-let g:javascript_conceal_return = "⇚"
-let g:javascript_conceal_undefined = "¿"
-let g:javascript_conceal_NaN = "ℕ"
-let g:javascript_conceal_prototype = "¶"
-let g:javascript_conceal_static = "•"
-let g:javascript_conceal_super = "Ω"
-let g:javascript_conceal_arrow_function = "⇒"
+" NeoMake {{{
+"let g:neomake_open_list=2
+"let g:neomake_serialize=1
+"let g:neomake_verbose=0
+
+" Makers
+"let g:neomake_html_tidy_maker = {
+    "\ 'args': ['-e', '-q'],
+    "\ 'errorformat': '%A%f:%l:%c: Warning: %m',
+    "\ }
+
+"let g:neomake_sasslint_maker = {
+    "\ 'exe': 'sass-lint',
+    "\ 'errorformat': '%f:%l [%t] %m'
+    "\ }
+
+" Configure Default Checkers
+"let g:neomake_javascript_enabled_makers = ['eslint']
+"let g:neomake_scss_enabled_makers = ['sasslint']
+
+"autocmd! BufWritePost * :silent! Neomake
 " }}}
 
 " NERDTree {{{
@@ -708,6 +716,11 @@ let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
                         \ '.*\.pdf$', '.*\.mid$', '.*\.midi$']
 " }}}
 
+" NERDTree Commentor {{{
+let NERDMenuMode=0
+let NERDSpaceDelims=1
+" }}}
+
 " NERDTree Git Plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "❍",
@@ -722,45 +735,16 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 " }}}
 
-" Syntastic {{{
-let g:syntastic_auto_jump=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
-"let g:syntastic_javascript_checkers=['jsxhint', 'flow']
-"let g:syntastic_html_tidy_exec = 'tidy5'
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_sass_checkers=["sass","sass_lint"]
-let g:syntastic_scss_checkers=["sass","sass_lint"]
-"let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
-let g:syntastic_check_on_wq=0
-let g:syntastic_error_symbol='✘'
-let g:syntastic_warning_symbol='▲'
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
-let g:syntastic_sh_shellcheck_args="-x"
-" }}}
-
-" NeoMake {{{
-let g:neomake_open_list=2
-let g:neomake_serialize=1
-let g:neomake_verbose=0
-
-" Makers
-let g:neomake_html_tidy_maker = {
-    \ 'args': ['-e', '-q'],
-    \ 'errorformat': '%A%f:%l:%c: Warning: %m',
-    \ }
-
-let g:neomake_sasslint_maker = {
-    \ 'exe': 'sass-lint',
-    \ 'errorformat': '%f:%l [%t] %m'
-    \ }
-
-" Configure Default Checkers
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_scss_enabled_makers = ['sasslint']
-
-autocmd! BufWritePost * :silent! Neomake
+" promptline {{{
+let g:promptline_theme = 'airline'
+let g:promptline_powerline_symbols = 0
+let g:promptline_preset = {
+    \'a' : [ promptline#slices#cwd() ],
+    \'b' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ],
+    \'c' : [ '\$' ],
+    \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
+    \'y' : [ promptline#slices#python_virtualenv() ],
+    \'warn' : [ promptline#slices#last_exit_code() ]}
 " }}}
 
 " Splice {{{
@@ -780,6 +764,24 @@ let g:surround_{char2nr('8')} = '/* \r */'
 let g:surround_{char2nr('s')} = ' \r '
 let g:surround_{char2nr('^')} = '/^\r$/'
 let g:surround_indent = 1
+" }}}
+
+" Syntastic {{{
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
+"let g:syntastic_javascript_checkers=['jsxhint', 'flow']
+"let g:syntastic_html_tidy_exec = 'tidy5'
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_sass_checkers=["sass","sass_lint"]
+let g:syntastic_scss_checkers=["sass","sass_lint"]
+"let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
+let g:syntastic_check_on_wq=0
+let g:syntastic_error_symbol='✘'
+let g:syntastic_warning_symbol='▲'
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
+let g:syntastic_sh_shellcheck_args="-x"
 " }}}
 
 " Tagbar {{{
@@ -888,6 +890,21 @@ nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 " }}}
 
+" vim-javascript {{{
+let g:javascript_enable_domhtmlcss = 1
+let g:javascript_fold = 1
+let g:javascript_conceal_function = "ƒ"
+let g:javascript_conceal_null = "ø"
+let g:javascript_conceal_this = "@"
+let g:javascript_conceal_return = "⇚"
+let g:javascript_conceal_undefined = "¿"
+let g:javascript_conceal_NaN = "ℕ"
+let g:javascript_conceal_prototype = "¶"
+let g:javascript_conceal_static = "•"
+let g:javascript_conceal_super = "Ω"
+let g:javascript_conceal_arrow_function = "⇒"
+" }}}
+
 " vim-jsdoc {{{
 let g:jsdoc_default_mapping=0
 let g:jsdoc_allow_input_prompt=1
@@ -909,6 +926,13 @@ let g:livedown_port = 1337  " Browser Port
 nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
+" vim-ctrlspace {{{
+if executable("ag")
+    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
+" }}}
+
 " YouCompleteMe {{{
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -920,25 +944,6 @@ let g:ycm_complete_in_comments=0
 let g:ycm_collect_identifiers_from_tags_files=1
 " pyenv
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-" }}}
-
-" vim-ctrlspace {{{
-if executable("ag")
-    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-endif
-let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
-" }}}
-
-" promptline {{{
-let g:promptline_theme = 'airline'
-let g:promptline_powerline_symbols = 0
-let g:promptline_preset = {
-    \'a' : [ promptline#slices#cwd() ],
-    \'b' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ],
-    \'c' : [ '\$' ],
-    \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
-    \'y' : [ promptline#slices#python_virtualenv() ],
-    \'warn' : [ promptline#slices#last_exit_code() ]}
 " }}}
 
 " }}}
