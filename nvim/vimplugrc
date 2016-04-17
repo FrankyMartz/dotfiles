@@ -28,7 +28,7 @@ call plug#begin('~/.nvim/bundle')
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
-Plug 'simnalamburt/vim-mundo', { 'on':  'GundoToggle' }
+Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
 "Plug 'Gundo', { 'on':  'GundoToggle' }
 Plug 'Splice'
 Plug 'tpope/vim-git'
