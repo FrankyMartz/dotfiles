@@ -22,6 +22,7 @@ __configBase(){
         checkbashisms
         cmake
         ctags
+        diff-so-fancy
         dnsmasq
         docker
         docker-compose
