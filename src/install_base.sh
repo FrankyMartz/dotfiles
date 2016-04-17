@@ -27,7 +27,6 @@ __configBase(){
         docker
         docker-compose
         docker-machine
-        flow
         fzf
         git
         htop-osx
@@ -49,7 +48,6 @@ __configBase(){
         shellcheck
         the_silver_searcher
         tidy-html5
-        watchman
         wget
         yank
     )
@@ -60,7 +58,6 @@ __configBase(){
         browserify
         csslint
         eslint
-        fb-watchman
         gulp
         js-yaml
         jsctags
