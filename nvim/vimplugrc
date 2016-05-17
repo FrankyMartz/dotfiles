@@ -1,6 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Plug Configuration
 " Author Franky Martinez <frankymartz@gmail.com>
+"
+" vim:set et sw=2 ts=2 tw=80:
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if empty(glob('~/.nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
@@ -39,10 +41,12 @@ Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
 
 " Window
-Plug 'vim-airline/vim-airline' | Plug 'tpope/vim-fugitive' | Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive' | Plug 'gregsexton/gitv'
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 "Plug 'bling/vim-airline' | Plug 'tpope/vim-fugitive'
 Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
 Plug 'wesQ3/vim-windowswap'
@@ -55,6 +59,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jszakmeister/vim-togglecursor'
+Plug 'tpope/vim-unimpaired'
 
 " Filetype
 Plug 'editorconfig-vim'
@@ -100,7 +105,7 @@ Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
 Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
 Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
 Plug 'amiorin/vim-textile', { 'for': 'textile' }
-Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+Plug 'digitaltoad/vim-pug', { 'for': ['jade', 'pug'] }
 
 " >> PHP
 Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }

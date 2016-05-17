@@ -743,14 +743,14 @@ let NERDSpaceDelims=1
 
 " NERDTree Git Plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "❍",
-    \ "Staged"    : "●",
+    \ "Modified"  : "",
+    \ "Staged"    : "",
     \ "Untracked" : "△",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "=",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "☐ ",
-    \ "Clean"     : "✔︎",
+    \ "Renamed"   : "", 
+    \ "Unmerged"  : "",
+    \ "Deleted"   : "",
+    \ "Dirty"     : " ",
+    \ "Clean"     : "",
     \ "Unknown"   : "?"
     \ }
 " }}}
@@ -797,8 +797,10 @@ let g:syntastic_sass_checkers=["sass","sass_lint"]
 let g:syntastic_scss_checkers=["sass","sass_lint"]
 "let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
 let g:syntastic_check_on_wq=0
-let g:syntastic_error_symbol='✘'
-let g:syntastic_warning_symbol='▲'
+let g:syntastic_error_symbol=''
+let g:syntastic_warning_symbol='' 
+" let g:syntastic_error_symbol='✘'
+" let g:syntastic_warning_symbol='▲'
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
 let g:syntastic_sh_shellcheck_args="-x"
@@ -892,6 +894,13 @@ let g:UltiSnipsJumpForwardTrigger='<c-k>'
 let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
 " }}}
 
+" vim-ctrlspace {{{
+if executable("ag")
+    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
+" }}}
+
 " vim-easytags {{{
 let g:easytags_async = 1
 let g:easytags_file = expand(tempDir).'/.tags'
@@ -904,10 +913,10 @@ let g:flow#enable = 0
 " }}}
 
 " vim-gitgutter {{{
-nmap <Leader>hs <Plug>GitGutterStageHunk
-nmap <Leader>hr <Plug>GitGutterRevertHunk
-nmap ]h <Plug>GitGutterNextHunk
-nmap [h <Plug>GitGutterPrevHunk
+" nmap <Leader>hs <Plug>GitGutterStageHunk
+" nmap <Leader>hr <Plug>GitGutterRevertHunk
+" nmap ]h <Plug>GitGutterNextHunk
+" nmap [h <Plug>GitGutterPrevHunk
 " }}}
 
 " vim-javascript {{{
@@ -946,11 +955,20 @@ let g:livedown_port = 1337  " Browser Port
 nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
-" vim-ctrlspace {{{
-if executable("ag")
-    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-endif
-let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
+" vim-signify {{{
+let g:signify_update_on_bufenter = 1
+" let g:signify_update_on_focusgained = 1
+let g:signify_vcs_list = ['git', 'hg']
+" let g:signify_sign_add               = ''
+" let g:signify_sign_delete            = ''
+" let g:signify_sign_delete_first_line = '‾'
+" let g:signify_sign_change            = ''
+" let g:signify_sign_changedelete      = ''
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '-'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+let g:signify_sign_changedelete      = '*'
 " }}}
 
 " YouCompleteMe {{{
