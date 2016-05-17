@@ -22,7 +22,7 @@ __configNVIM(){
     #===========================================================================
     [[ -L ~/.nvim ]] || ln -fs "$_NEOVIM" ~/.nvim
     mkdir -p "${XDG_CONFIG_HOME:=$HOME/.config}"
-    ln -s "$_NEOVIM" "${XDG_CONFIG_HOME}/nvim"
+    [[ -L "${XDG_CONFIG_HOME}/nvim" ]] || ln -s "$_NEOVIM" "${XDG_CONFIG_HOME}/nvim"
 
     #===========================================================================
     # Neovim Plugins

@@ -69,8 +69,8 @@
     gral = log --graph --format=line --all # graph all line
     grad = log --graph --format=detail --all # graph all in detail
     ;gr = log --graph --full-history --all --pretty=format:'%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n'
-    info = log --pretty=full --color -1 
-    ls = ls-tree -r --name-only 
+    info = log --pretty=full --color -1
+    ls = ls-tree -r --name-only
     credit = shortlog -sn
     update-submodules = submodule update --init --recursive
     upgrade-submodules = submodule update --init --remote

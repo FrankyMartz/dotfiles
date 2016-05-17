@@ -29,6 +29,7 @@ __configBase(){
         docker-machine
         fzf
         git
+        git-lfs
         htop-osx
         irssi
         libsass
