@@ -41,6 +41,7 @@ __configBase(){
         openssl
         path-extractor
         pyenv
+        pyenv-virtualenvwrapper
         python
         rbenv
         rbenv-bundler

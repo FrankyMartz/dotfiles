@@ -106,9 +106,15 @@ bind '"CC": "| pe | fzf | pbcopy && clear &&  pbpaste || xargs echo"'
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 # Auto-Complete
 if which pyenv > /dev/null; then
+    export PYENV_ROOT="/usr/local/var/pyenv";
+    export PYTHON_CONFIGURE_OPTS="--enable-shared"
     eval "$(pyenv init -)";
 fi
-export PYENV_ROOT="/usr/local/var/pyenv";
+# Setup Python Virtual Environment
+if which pyenv-virtualenv-init > /dev/null; then
+    eval "$(pyenv virtualenv-init -)";
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+fi
 
 # GO-LANG ----------------------------------------------------------------------
 export GOROOT="/usr/local/opt/go/libexec";
