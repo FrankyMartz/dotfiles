@@ -31,11 +31,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-"Plug 'Gundo', { 'on':  'GundoToggle' }
-Plug 'Splice'
 Plug 'tpope/vim-git'
 Plug 'rking/ag.vim'
-"Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
@@ -43,9 +40,7 @@ Plug 'easymotion/vim-easymotion'
 " Window
 Plug 'tpope/vim-fugitive' | Plug 'gregsexton/gitv'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-"Plug 'bling/vim-airline' | Plug 'tpope/vim-fugitive'
 Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-" Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
@@ -58,13 +53,11 @@ Plug 'matchit.zip'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'jszakmeister/vim-togglecursor'
 Plug 'tpope/vim-unimpaired'
 
 " Filetype
 Plug 'editorconfig-vim'
 Plug 'scrooloose/syntastic'
-"Plug 'benekastah/neomake'
 Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser',
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile']}
 
@@ -94,6 +87,7 @@ Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'jsx', 'es6' ] } | Plug
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'jsx', 'es6'] }
 Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'es6' ] }
 Plug 'jason0x43/vim-js-indent', { 'for': [ 'javascript', 'jsx', 'es6'] }
+Plug 'angelozerr/tern-lint', { 'for': [ 'javascript', 'jsx', 'es6'] }
 
 " >> CoffeeScript
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
@@ -102,6 +96,7 @@ Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 Plug 'junegunn/goyo.vim', { 'for': [ 'markdown', 'md' ] }
 Plug 'junegunn/limelight.vim', { 'for': [ 'markdown', 'md' ] }
 Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
+Plug 'ajorgensen/vim-markdown-toc', { 'for': [ 'markdown', 'md' ] }
 Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
 Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
 Plug 'amiorin/vim-textile', { 'for': 'textile' }
@@ -113,6 +108,13 @@ Plug 'joshtronic/php.vim', { 'for': 'php' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 Plug 'xsbeats/vim-blade', { 'for': 'php' }
+Plug 'evidens/vim-twig', { 'for': ['twig', 'php', 'html'] }
+
+" >> Dockerfile
+Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile', 'Rockerfile'] }
+
+" >> Python
+Plug 'jmcantrell/vim-virtualenv'
 
 " Color and Font
 Plug 'chriskempson/base16-vim'

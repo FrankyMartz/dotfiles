@@ -62,6 +62,8 @@ set ruler                       " Show line/column position number
 set number                      " Show line number in front of each line
 set cmdheight=1                 " Set command bar to 2 lines
 
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " pipe in insert-mode, block in normal-mode
+
 " Timeout on key codes but not mappings. Make terminal nvim work sanely
 set notimeout
 set ttimeout
@@ -97,6 +99,7 @@ set cpoptions+=d    " Use tags relative to CWD
 "set clipboard+=unnamedplus
 
 set omnifunc=csscomplete#CompleteCSS
+let g:python_host_prog = '/usr/local/bin/python'
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -548,6 +551,7 @@ source ~/.nvim/vimplugrc
 " => Color and Font {{{
 "-------------------------------------------------------------------------------
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors               " Set True Colors in Terminal
 "set guifont=Menlo:h11
 "set guifont=hack:h11
 
@@ -792,6 +796,7 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 "let g:syntastic_javascript_checkers=['jsxhint', 'flow']
 "let g:syntastic_html_tidy_exec = 'tidy5'
+" let g:syntastic_javascript_checkers=['eslint', 'tern_lint']
 let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_sass_checkers=["sass","sass_lint"]
 let g:syntastic_scss_checkers=["sass","sass_lint"]
@@ -979,7 +984,6 @@ let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_complete_in_comments=0
-let g:ycm_collect_identifiers_from_tags_files=1
 " pyenv
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 " }}}
