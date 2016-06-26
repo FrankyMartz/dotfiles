@@ -8,6 +8,7 @@
 [user]
     name = Franky Martinez
     email = FrankyMartz@gmail.com
+    signingkey = 93F15FF4
 
 [core]
     pager = cat
@@ -15,10 +16,13 @@
     editor = nvim
 
 [merge]
-    tool = splice
+	tool = fugitive
 
 [mergetool]
     keepBackup = false
+
+[mergetool "fugitive"]
+	cmd = "nvim -f -c \"Gdiff\" $MERGED"
 
 [mergetool "splice"]
     cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
@@ -114,6 +118,7 @@
 
 [push]
     default = simple
+	followTags = true
 
 [grep]
     lineNumber = true
@@ -142,3 +147,5 @@
     diff = diff-so-fancy | less --tabs=4 -RFX
     show = diff-so-fancy | less --tabs=4 -RFX
 
+[commit]
+	gpgsign = true
