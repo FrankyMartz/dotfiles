@@ -14,19 +14,47 @@ stty -ixon -ixoff
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin";
 
 #===============================================================================
+# Foundation
+#===============================================================================
+export BASH="/usr/local/bin/bash";
+
+if which brew > /dev/null; then
+    # BASH ---------------------------------------------------------------------
+    if [ -x "$(brew --prefix)/bin/bash" ]; then
+        BASH="$(brew --prefix)/bin/bash";
+    fi
+
+    # BASH Completion ----------------------------------------------------------
+    # shellcheck source=/dev/null
+    [[ -f "$(brew --prefix)/etc/bash_completion" ]] && . "$(brew --prefix)/etc/bash_completion";
+
+    # GNU --------------------------------------------------------------------------
+    PATH="$(brew --prefix coreutils)/libexec/gnubin:${PATH}";
+    export MANPATH;
+    MANPATH="$(brew --prefix coreutils)/libexec/gnuman:${MANPATH}";
+fi
+export SHELL="${BASH}";
+
+
+#===============================================================================
 # PROMPT LOOK
 #===============================================================================
 # Base16-Shell -----------------------------------------------------------------
-#BASE16_SHELL="$HOME/.dotfiles/bin/base16-shell/base16-eighties.dark.sh"
-#[[ -s "$BASE16_SHELL" ]] && . "$BASE16_SHELL"
+# BASE16_SHELL="$HOME/.dotfiles/bin/base16-shell/scripts/base16-eighties.sh"
+# shellcheck source=/dev/null
+# [[ -s "$BASE16_SHELL" ]] && . "$BASE16_SHELL"
+BASE16_SHELL="${HOME}/.dotfiles/bin/base16-shell/"
+[ -n "$PS1" ] && [ -s "${BASE16_SHELL}/profile_helper.sh" ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # BASH_POWERLINE ---------------------------------------------------------------
 # shellcheck source=/dev/null
 [[ -f "${HOME}/.dotfiles/bin/.shell_prompt.sh" ]] && . "${HOME}/.dotfiles/bin/.shell_prompt.sh";
 
+
 #===============================================================================
 # General
 #===============================================================================
+
 export BASH="/usr/local/bin/bash";
 
 if which brew > /dev/null; then
@@ -62,6 +90,9 @@ fi
 # iTerm Integration ------------------------------------------------------------
 # shellcheck source=/dev/null
 [[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && . "${HOME}/.iterm2_shell_integration.bash";
+
+# GNUpg ------------------------------------------------------------------------
+PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
 
 #===============================================================================
 # IRC
