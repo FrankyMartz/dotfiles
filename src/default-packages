@@ -1,0 +1,11 @@
+bower
+csslint
+eslint
+gulp
+js-yaml
+jsctags
+jsonlint
+livedown
+markdownlint-cli
+trash-cli
+svgo

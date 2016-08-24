@@ -30,6 +30,8 @@ __configBase(){
         fzf
         git
         git-lfs
+        glide
+        gpg
         htop-osx
         irssi
         libsass
@@ -38,6 +40,7 @@ __configBase(){
         node
         node-build
         nodenv
+        nodenv/nodenv/nodenv-default-packages
         openssl
         path-extractor
         pyenv
@@ -54,23 +57,8 @@ __configBase(){
         yank
     )
 
-    local npm_packages=(
-        bower
-        browser-sync
-        browserify
-        csslint
-        eslint
-        gulp
-        js-yaml
-        jsctags
-        jsonlint
-        livedown
-        node-inspector
-        node-sass
-        osx-trash
-        svgo
-        webpack
-    )
+    declare -a npm_packages;
+    mapfile -t npm_packages < "${_PWD}/default-packages"
 
     if [[ ! -x $(which brew) ]]; then
         #-----------------------------------------------------------------------
@@ -133,6 +121,15 @@ __configBase(){
         dLog "${GREEN}==> Homebrew Cleanup..."
         /usr/bin/env brew cleanup
         dLog "${GREEN}==> Homebrew Cleanup...DONE"
+
+        #-----------------------------------------------------------------------
+        # Install: Nodenv
+        #-----------------------------------------------------------------------
+        dLog "${GREEN}==> Nodenv (default-packages)..."
+        local NODENV_DEFAULT;
+        NODENV_DEFAULT="$(/usr/bin/env nodenv root)/default-packages";
+        [[ -L "${NODENV_DEFAULT}" ]] || ln -fs "${_PWD}/default-packages" "${NODENV_DEFAULT}"
+        dLog "${GREEN}==> Nodenv (default-packages)...DONE"
 
         #-----------------------------------------------------------------------
         # Install: NPM Packages
