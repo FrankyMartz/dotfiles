@@ -577,7 +577,7 @@ set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
 let g:airline_powerline_fonts=1
 let g:airline#extensions#promptline#snapshot_file = "~/.dotfiles/bin/.shell_prompt.sh"
-let g:airline#extensions#promptline#enabled = 1
+let g:airline#extensions#promptline#enabled = 0
 let g:airline#extensions#windowswap#enabled = 1
 let g:airline#extensions#windowswap#indicator_text = 'WS'
 
@@ -692,7 +692,7 @@ nnoremap <F7> :MundoToggle<CR>
 " }}}
 
 " javascript-libraries-syntax {{{
-let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularuirouter,jasmine,chai,react,flux,handlebars'
+let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularui,angularuirouter,react,flux,requirejs,jasmine,chai,handlebars'
 "autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
 "autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
 "autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
@@ -749,19 +749,19 @@ let NERDSpaceDelims=1
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "",
     \ "Staged"    : "",
-    \ "Untracked" : "△",
-    \ "Renamed"   : "", 
+    \ "Untracked" : "", 
+    \ "Renamed"   : "",
     \ "Unmerged"  : "",
     \ "Deleted"   : "",
     \ "Dirty"     : " ",
     \ "Clean"     : "",
-    \ "Unknown"   : "?"
+    \ "Unknown"   : "" 
     \ }
 " }}}
 
-" promptline {{{
-let g:promptline_theme = 'airline'
-let g:promptline_powerline_symbols = 0
+" PromptLine {{{
+" let g:promptline_theme = 'airline_insert'
+let g:promptline_powerline_symbols = 1
 let g:promptline_preset = {
     \'a' : [ promptline#slices#cwd() ],
     \'b' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ],
@@ -791,7 +791,7 @@ let g:surround_indent = 1
 " }}}
 
 " Syntastic {{{
-let g:syntastic_auto_jump=1
+let g:syntastic_auto_jump=0
 let g:syntastic_auto_loc_list=1
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 "let g:syntastic_javascript_checkers=['jsxhint', 'flow']
@@ -800,10 +800,12 @@ let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_sass_checkers=["sass","sass_lint"]
 let g:syntastic_scss_checkers=["sass","sass_lint"]
+let g:syntastic_scss_sass_quiet_messages = {
+    \ "regex": 'File to import not found or unreadable', }
 "let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
 let g:syntastic_check_on_wq=0
 let g:syntastic_error_symbol=''
-let g:syntastic_warning_symbol='' 
+let g:syntastic_warning_symbol=''
 " let g:syntastic_error_symbol='✘'
 " let g:syntastic_warning_symbol='▲'
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
@@ -894,9 +896,9 @@ noremap <leader>tr :TernRename<cr>
 " }}}
 
 " UltiSnips {{{
-let g:UltiSnipsExpandTrigger='<c-k>'
-let g:UltiSnipsJumpForwardTrigger='<c-k>'
-let g:UltiSnipsJumpBackwardTrigger='<s-c-j>'
+let g:UltiSnipsExpandTrigger='<c-K>'
+let g:UltiSnipsJumpForwardTrigger='<c-K>'
+let g:UltiSnipsJumpBackwardTrigger='<c-J>'
 " }}}
 
 " vim-ctrlspace {{{
@@ -925,7 +927,9 @@ let g:flow#enable = 0
 " }}}
 
 " vim-javascript {{{
-let g:javascript_enable_domhtmlcss = 1
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
 let g:javascript_fold = 1
 let g:javascript_conceal_function = "ƒ"
 let g:javascript_conceal_null = "ø"
@@ -961,8 +965,12 @@ nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
 " vim-signify {{{
+" autocmd User Fugitive SignifyRefresh
 let g:signify_update_on_bufenter = 1
-" let g:signify_update_on_focusgained = 1
+let g:signify_update_on_focusgained = 1
+" let g:signify_line_highlight = 1
+" let g:signify_cursorhold_normal = 1
+" let g:signify_cursorhold_insert = 1
 let g:signify_vcs_list = ['git', 'hg']
 " let g:signify_sign_add               = ''
 " let g:signify_sign_delete            = ''
@@ -979,6 +987,7 @@ let g:signify_sign_changedelete      = '*'
 " YouCompleteMe {{{
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_cache_omnifunc = 1                            " Potential Cause Lag
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -998,29 +1007,38 @@ let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 "colorscheme gruvbox
 " airline doesn't behave when set before Vundle:Config
 "let base16colorspace=256        " Access colors present in 256 colorspace
-let s:fmColorSchemeDark='base16-eighties'
+" let s:fmColorSchemeDark='base16-eighties'
+" let s:fmColorSchemeDark='base16-materia'
 "let s:fmColorSchemeLight='base16-flat'
-let s:fmColorSchemeLight='base16-eighties'
+" let s:fmColorSchemeLight='base16-eighties'
 
-" Set ColorScheme Flavor
-if $ITERM_PROFILE == 'Daylight'
-    execute 'colorscheme '.s:fmColorSchemeLight
-    set background=light
+" " Set ColorScheme Flavor
+" if $ITERM_PROFILE == 'Daylight'
+    " execute 'colorscheme '.s:fmColorSchemeLight
+    " set background=light
+" else
+    " execute 'colorscheme '.s:fmColorSchemeDark
+    " set background=dark
+" endif
+
+
+" function! s:ToggleBackground()
+    " let fmShade = &background == 'dark' ? 'light' : 'dark'
+    " let fmColorScheme = &background == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
+    " execute 'set background='.fmShade
+    " execute 'colorscheme '.fmColorScheme
+" endfunction
+
+" command! ToggleBg call s:ToggleBackground()
+" nnoremap <silent><F12> :ToggleBg<CR> 
+"
+set background=dark
+let base16colorspace=256
+if filereadable(expand("~/.vimrc_background"))
+    source ~/.vimrc_background  
 else
-    execute 'colorscheme '.s:fmColorSchemeDark
-    set background=dark
+    colorscheme base16-materia
 endif
-
-
-function! s:ToggleBackground()
-    let fmShade = &background == 'dark' ? 'light' : 'dark'
-    let fmColorScheme = &background == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
-    execute 'set background='.fmShade
-    execute 'colorscheme '.fmColorScheme
-endfunction
-
-command! ToggleBg call s:ToggleBackground()
-nnoremap <silent><F12> :ToggleBg<CR> 
 
 "-------------------------------------------------------------------------------
 " }}}
