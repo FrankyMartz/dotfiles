@@ -17,45 +17,8 @@ __configBase(){
         python
     )
 
-    local brew_tools=(
-        caddy
-        checkbashisms
-        cmake
-        ctags
-        diff-so-fancy
-        dnsmasq
-        docker
-        docker-compose
-        docker-machine
-        fzf
-        git
-        git-lfs
-        glide
-        gpg
-        htop-osx
-        irssi
-        libsass
-        mercurial
-        neovim
-        node
-        node-build
-        nodenv
-        nodenv/nodenv/nodenv-default-packages
-        openssl
-        path-extractor
-        pyenv
-        pyenv-virtualenvwrapper
-        python
-        rbenv
-        rbenv-bundler
-        rename
-        ruby-build
-        shellcheck
-        the_silver_searcher
-        tidy-html5
-        wget
-        yank
-    )
+    declare -a brew_tools;
+    mapfile -t brew_tools < "${_PWD}/brew-packages"
 
     declare -a npm_packages;
     mapfile -t npm_packages < "${_PWD}/default-packages"
