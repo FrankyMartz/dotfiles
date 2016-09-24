@@ -32,6 +32,10 @@ if which brew > /dev/null; then
     PATH="$(brew --prefix coreutils)/libexec/gnubin:${PATH}";
     export MANPATH;
     MANPATH="$(brew --prefix coreutils)/libexec/gnuman:${MANPATH}";
+
+    # Docker -----------------------------------------------------------------------
+    [[ -s "$(brew --prefix dvm)/dvm.sh" ]] && source "$(brew --prefix dvm)/dvm.sh"
+    [[ -s "$(brew --prefix dvm)/bash_completion" ]] && source "$(brew --prefix dvm)/bash_completion"
 fi
 export SHELL="${BASH}";
 
