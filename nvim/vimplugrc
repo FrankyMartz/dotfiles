@@ -38,7 +38,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
 
 " Window
-Plug 'tpope/vim-fugitive' | Plug 'gregsexton/gitv'
+Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
 Plug 'mhinz/vim-signify'
@@ -60,65 +60,39 @@ Plug 'editorconfig-vim'
 Plug 'scrooloose/syntastic'
 Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser',
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile']}
+Plug 'sheerun/vim-polyglot'
 
 " >> Apache
 Plug 'apachelogs.vim', { 'for': 'log' }
 Plug 'apachestyle', { 'for': 'log' }
 
 " >> CSS
-Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'wavded/vim-stylus', { 'for': 'stylus' }
+Plug 'ap/vim-css-color'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'cakebaker/scss-syntax.vim'
 Plug 'gcorne/vim-sass-lint'
-
-" >> Go Lang
-Plug 'fatih/vim-go', { 'for': 'go' }
-
-" >> HTML
-Plug 'othree/html5.vim', { 'for': [ 'html', 'javascript' ] }
-Plug 'mustache/vim-mustache-handlebars', { 'for': ['mustache', 'handlebars']}
 
 " >> JavaScript
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': [ 'javascript', 'jsx', 'es6' ] }
-Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'es6' ] }
 Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx', 'es6'] }
-Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'jsx', 'es6' ] }
-" Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'jsx', 'es6' ] } | Plug 'mxw/vim-jsx', { 'for': [ 'javascript', 'jsx', 'es6'] }
-"Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'jsx', 'es6', 'html'] }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'jsx', 'es6'] }
 Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'es6' ] }
-Plug 'jason0x43/vim-js-indent', { 'for': [ 'javascript', 'jsx', 'es6'] }
 Plug 'angelozerr/tern-lint', { 'for': [ 'javascript', 'jsx', 'es6'] }
-
-" >> CoffeeScript
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': [ 'markdown', 'md' ] }
 Plug 'junegunn/limelight.vim', { 'for': [ 'markdown', 'md' ] }
-Plug 'gabrielelana/vim-markdown', { 'for': [ 'markdown', 'md' ] }
 Plug 'ajorgensen/vim-markdown-toc', { 'for': [ 'markdown', 'md' ] }
-Plug 'tpope/vim-liquid', { 'for': [ 'markdown', 'md' ] }
 Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
-Plug 'amiorin/vim-textile', { 'for': 'textile' }
-Plug 'digitaltoad/vim-pug', { 'for': ['jade', 'pug'] }
 
 " >> PHP
 Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
-Plug 'joshtronic/php.vim', { 'for': 'php' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
-Plug 'xsbeats/vim-blade', { 'for': 'php' }
-Plug 'evidens/vim-twig', { 'for': ['twig', 'php', 'html'] }
-
-" >> Dockerfile
-Plug 'ekalinin/Dockerfile.vim', { 'for': ['Dockerfile', 'Rockerfile'] }
 
 " >> Python
 Plug 'jmcantrell/vim-virtualenv'
-
-" >> Elixir
-Plug 'elixir-lang/vim-elixir', { 'for': ['elixir', 'eelixir', 'exs', 'eex', 'ex'] }
 
 " Color and Font
 Plug 'chriskempson/base16-vim'
