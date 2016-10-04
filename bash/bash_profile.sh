@@ -7,6 +7,7 @@
 # Version:  0.1.0
 ################################################################################
 stty -ixon -ixoff
+set -o vi
 
 #===============================================================================
 # PATH Default
@@ -16,12 +17,12 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/l
 #===============================================================================
 # Foundation
 #===============================================================================
-export BASH="/usr/local/bin/bash";
 
-if which brew > /dev/null; then
+if [[ -x "$(command -v brew)" ]]; then
     # BASH ---------------------------------------------------------------------
-    if [ -x "$(brew --prefix)/bin/bash" ]; then
-        BASH="$(brew --prefix)/bin/bash";
+    if [[ -x "$(brew --prefix)/bin/bash" ]]; then
+        SHELL="$(brew --prefix)/bin/bash";
+        export SHELL;
     fi
 
     # BASH Completion ----------------------------------------------------------
@@ -30,14 +31,15 @@ if which brew > /dev/null; then
 
     # GNU --------------------------------------------------------------------------
     PATH="$(brew --prefix coreutils)/libexec/gnubin:${PATH}";
-    export MANPATH;
     MANPATH="$(brew --prefix coreutils)/libexec/gnuman:${MANPATH}";
+    export MANPATH;
 
     # Docker -----------------------------------------------------------------------
+    # shellcheck source=/dev/null
     [[ -s "$(brew --prefix dvm)/dvm.sh" ]] && source "$(brew --prefix dvm)/dvm.sh"
+    # shellcheck source=/dev/null
     [[ -s "$(brew --prefix dvm)/bash_completion" ]] && source "$(brew --prefix dvm)/bash_completion"
 fi
-export SHELL="${BASH}";
 
 
 #===============================================================================
@@ -45,38 +47,16 @@ export SHELL="${BASH}";
 #===============================================================================
 # Base16-Shell -----------------------------------------------------------------
 # BASE16_SHELL="$HOME/.dotfiles/bin/base16-shell/scripts/base16-eighties.sh"
-# shellcheck source=/dev/null
+## shellcheck source=/dev/null
 # [[ -s "$BASE16_SHELL" ]] && . "$BASE16_SHELL"
-BASE16_SHELL="${HOME}/.dotfiles/bin/base16-shell/"
-[ -n "$PS1" ] && [ -s "${BASE16_SHELL}/profile_helper.sh" ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+# Set Colors In Profile
+# BASE16_SHELL="${HOME}/.dotfiles/bin/base16-shell/"
+# [ -n "$PS1" ] && [ -s "${BASE16_SHELL}/profile_helper.sh" ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # BASH_POWERLINE ---------------------------------------------------------------
 # shellcheck source=/dev/null
-[[ -f "${HOME}/.dotfiles/bin/.shell_prompt.sh" ]] && . "${HOME}/.dotfiles/bin/.shell_prompt.sh";
+[[ -f "${HOME}/.dotfiles/bin/.shell_prompt.sh" ]] && source "${HOME}/.dotfiles/bin/.shell_prompt.sh";
 
-
-#===============================================================================
-# General
-#===============================================================================
-
-export BASH="/usr/local/bin/bash";
-
-if which brew > /dev/null; then
-    # BASH ---------------------------------------------------------------------
-    if [ -x "$(brew --prefix)/bin/bash" ]; then
-        BASH="$(brew --prefix)/bin/bash";
-    fi
-
-    # BASH Completion ----------------------------------------------------------
-    # shellcheck source=/dev/null
-    [[ -f "$(brew --prefix)/etc/bash_completion" ]] && . "$(brew --prefix)/etc/bash_completion";
-
-    # GNU --------------------------------------------------------------------------
-    PATH="$(brew --prefix coreutils)/libexec/gnubin:${PATH}";
-    export MANPATH;
-    MANPATH="$(brew --prefix coreutils)/libexec/gnuman:${MANPATH}";
-fi
-export SHELL="${BASH}";
 
 # NEOVIM -----------------------------------------------------------------------
 #export TERM='xterm-256color'
@@ -84,19 +64,20 @@ export NVIM_TUI_ENABLE_TRUE_COLOR=1;
 export EDITOR="nvim";
 
 # FZF --------------------------------------------------------------------------
-if [ -f "${HOME}/.fzf.bash" ]; then
+if [[ -f "${HOME}/.fzf.bash" ]]; then
     # shellcheck source=/dev/null
-    . "${HOME}/.fzf.bash";
+    source "${HOME}/.fzf.bash";
     export FZF_DEFAULT_COMMAND='ag -g ""';
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}";
 fi
 
 # iTerm Integration ------------------------------------------------------------
 # shellcheck source=/dev/null
-[[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && . "${HOME}/.iterm2_shell_integration.bash";
+[[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash";
 
 # GNUpg ------------------------------------------------------------------------
 PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
+
 
 #===============================================================================
 # IRC
@@ -132,21 +113,22 @@ bind '"CC": "| pe | fzf | pbcopy && clear &&  pbpaste || xargs echo"'
 # Google Cloud SDK -------------------------------------------------------------
 # Update PATH for the Google Cloud SDK.
 # shellcheck source=/dev/null
-[[ -x "${HOME}/google-cloud-sdk/path.bash.inc" ]] && . "${HOME}/google-cloud-sdk/path.bash.inc"
+[[ -x "${HOME}/google-cloud-sdk/path.bash.inc" ]] && source "${HOME}/google-cloud-sdk/path.bash.inc"
 # Enable gcloud Shell Command Completion
 # shellcheck source=/dev/null
-[[ -x "${HOME}/google-cloud-sdk/completion.bash.inc" ]] && . "${HOME}/google-cloud-sdk/completion.bash.inc"
+[[ -x "${HOME}/google-cloud-sdk/completion.bash.inc" ]] && source "${HOME}/google-cloud-sdk/completion.bash.inc"
 
 # PYTHON -----------------------------------------------------------------------
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 # Auto-Complete
-if which pyenv > /dev/null; then
+if [[ -x "$(command -v pyenv)" ]]; then
     export PYENV_ROOT="/usr/local/var/pyenv";
     export PYTHON_CONFIGURE_OPTS="--enable-shared"
     eval "$(pyenv init -)";
 fi
+
 # Setup Python Virtual Environment
-if which pyenv-virtualenv-init > /dev/null; then
+if [[ -x "$(command -v pyenv-virtualenv-init)" ]]; then
     eval "$(pyenv virtualenv-init -)";
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 fi
@@ -163,11 +145,9 @@ export RBENV_ROOT="/usr/local/var/rbenv"
 export PATH="$RBENV_ROOT/bin:$PATH"
 
 ## Enable shims and autocompletion add to your profile
-if which rbenv > /dev/null; then
-	eval "$(rbenv init -)";
-fi
+[[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";
 
-if which ruby >/dev/null && which gem >/dev/null; then
+if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
     PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:${PATH}";
 fi
 
@@ -176,16 +156,13 @@ fi
 
 # Nodeenv ----------------------------------------------------------------------
 export NODENV_ROOT="/usr/local/var/nodenv"
-if which nodenv > /dev/null; then
-    eval "$(nodenv init -)"
-fi
+[[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 
 #===============================================================================
 # PROJECT
 #===============================================================================
+
 # NCMS -------------------------------------------------------------------------
 export GABO="${HOME}/Projects/Google/gweb-gabo/default";
 
-# Trunk Club--------------------------------------------------------------------
-#export DOCKER_HOST="tcp://192.168.23.2:2375";
 
