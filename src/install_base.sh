@@ -47,10 +47,23 @@ __configBase(){
         /usr/bin/env brew install bash
         /usr/bin/env brew install bash-completion
 
+
+        /usr/bin/env brew install gnu-sed --with-default-names
+        /usr/bin/env brew install gnu-tar --with-default-names
+        /usr/bin/env brew install gnu-which --with-default-names
+
         # Install more recent versions of some OS X tools
         /usr/bin/env brew tap homebrew/dupes
-        /usr/bin/env brew install homebrew/dupes/grep
+        /usr/bin/env brew install homebrew/dupes/diffutils --with-default-names
+        /usr/bin/env brew install homebrew/dupes/file-formula
+        /usr/bin/env brew install homebrew/dupes/gzip --with-default-names
+        /usr/bin/env brew install homebrew/dupes/grep --with-default-names
+        /usr/bin/env brew install homebrew/dupes/make --with-default-names
+        /usr/bin/env brew install homebrew/dupes/less
+        /usr/bin/env brew install homebrew/dupes/openssh
         /usr/bin/env brew install homebrew/dupes/rsync
+        /usr/bin/env brew install homebrew/dupes/screen
+        /usr/bin/env brew install homebrew/dupes/unzip
 
         dLog "${GREEN}==> Installing GNU Tools...DONE"
 
