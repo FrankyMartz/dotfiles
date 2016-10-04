@@ -764,10 +764,11 @@ let g:NERDTreeIndicatorMapCustom = {
 let g:promptline_powerline_symbols = 1
 let g:promptline_preset = {
     \'a' : [ promptline#slices#cwd() ],
-    \'b' : [ promptline#slices#vcs_branch(), promptline#slices#git_status() ],
-    \'c' : [ '\$' ],
+    \'b' : [ promptline#slices#vcs_branch({ 'hg': 1, 'svn': 1, 'fossil': 1 }), promptline#slices#git_status() ],
+    \'c' : [ '' ],
     \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
     \'y' : [ promptline#slices#python_virtualenv() ],
+    \'z' : [ promptline#slices#jobs() ],
     \'warn' : [ promptline#slices#last_exit_code() ]}
 " }}}
 
@@ -987,14 +988,18 @@ let g:signify_sign_changedelete      = '*'
 " YouCompleteMe {{{
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_cache_omnifunc = 1                            " Potential Cause Lag
+let g:ycm_cache_omnifunc=1                            " Potential Cause Lag
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_complete_in_comments=0
+let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings=1
+let g:ycm_collect_identifiers_from_comments_and_strings=1
+let g:ycm_use_ultisnips_completer = 1
 " pyenv
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+let g:ycm_python_binary_path = '/usr/local/bin/python'
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1034,11 +1039,13 @@ let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 "
 set background=dark
 let base16colorspace=256
-if filereadable(expand("~/.vimrc_background"))
-    source ~/.vimrc_background  
-else
-    colorscheme base16-materia
-endif
+colorscheme base16-materia
+
+" if filereadable(expand("~/.vimrc_background"))
+    " source ~/.vimrc_background  
+" else
+    " colorscheme base16-materia
+" endif
 
 "-------------------------------------------------------------------------------
 " }}}
