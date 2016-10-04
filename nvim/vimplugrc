@@ -31,7 +31,6 @@ Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-Plug 'tpope/vim-git'
 Plug 'rking/ag.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kshenoy/vim-signature'
@@ -40,7 +39,8 @@ Plug 'easymotion/vim-easymotion'
 " Window
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
+" Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
+Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'c0r73x/neotags.nvim'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
@@ -69,7 +69,6 @@ Plug 'apachestyle', { 'for': 'log' }
 " >> CSS
 Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'gcorne/vim-sass-lint'
 
 " >> JavaScript
