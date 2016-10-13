@@ -2,6 +2,7 @@ bower
 csslint
 eslint
 gulp
+htmlhint
 js-yaml
 jsctags
 jsonlint
