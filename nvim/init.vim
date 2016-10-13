@@ -558,11 +558,15 @@ set termguicolors               " Set True Colors in Terminal
 "set synmaxcol=500              " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 
-hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
-hi DiffChange term=reverse cterm=bold ctermbg=gray ctermfg=black
-hi DiffText term=reverse cterm=bold ctermbg=blue ctermfg=black
-hi DiffDelete term=reverse cterm=bold ctermbg=darkred ctermfg=black
-hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
+" highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+" highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+" highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+
+" hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
+" hi DiffChange term=reverse cterm=bold ctermbg=gray ctermfg=black
+" hi DiffText term=reverse cterm=bold ctermbg=blue ctermfg=black
+" hi DiffDelete term=reverse cterm=bold ctermbg=darkred ctermfg=black
+" hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -900,6 +904,12 @@ noremap <leader>tr :TernRename<cr>
 let g:UltiSnipsExpandTrigger='<c-K>'
 let g:UltiSnipsJumpForwardTrigger='<c-K>'
 let g:UltiSnipsJumpBackwardTrigger='<c-J>'
+" }}}
+
+" vim-diff-enhanced {{{
+if &diff
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+endif
 " }}}
 
 " vim-ctrlspace {{{
