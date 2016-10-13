@@ -11,15 +11,20 @@
     signingkey = 93F15FF4
 
 [core]
-    pager = cat
+	pager = less
+    ; pager = cat
     excludesfile = ~/.gitignore_global
     editor = nvim
 
 [merge]
-	tool = fugitive
+    tool = vimdiff
 
 [mergetool]
+    prompt = true
     keepBackup = false
+
+[mergetool "vimdiff"]
+    cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
 
 [mergetool "fugitive"]
 	cmd = "nvim -f -c \"Gdiff\" $MERGED"
@@ -28,21 +33,11 @@
     cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
     trustExitCode = true
 
-[mergetool "Kaleidoscope"]
-    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-    trustExitCode = true
-
 [diff]
-    tool = Kaleidoscope
+    tool = vimdiff
 
 [difftool]
     prompt = false
-
-[difftool "KaleidoscopeWithId"]
-    cmd = ksdiff --partial-changeset --UUID \"$KSID\" --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-
-[difftool "Kaleidoscope"]
-    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [alias]
     st = status -sb
