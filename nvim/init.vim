@@ -99,7 +99,9 @@ set cpoptions+=d    " Use tags relative to CWD
 "set clipboard+=unnamedplus
 
 set omnifunc=csscomplete#CompleteCSS
+
 let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -638,28 +640,6 @@ nmap <leader>T :enew<cr>
 nmap <leader>bq :bp <BAR> bd #<cr>
 " }}}
 
-" CtrlP {{{
-" Setup some default ignores
-"let g:ctrlp_custom_ignore = {
-  "\ 'dir':  '\v[\/](\.(git|hg|svn)|\_site|node_modules|bower_components)$',
-  "\ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-"\}
-
-" Use the nearest .git directory as the cwd
-" This makes a lot of sense if you are working on a project that is in version
-" control. It also supports works with .svn, .hg, .bzr.
-"let g:ctrlp_working_path_mode = 'r'
-
-" Use a leader instead of the actual named binding
-"nmap <leader>p :CtrlP<cr>
-"nmap <c-p> :CtrlP<cr>
-
-" Easy bindings for its various modes
-"nmap <leader>bb :CtrlPBuffer<cr>
-"nmap <leader>bm :CtrlPMixed<cr>
-"nmap <leader>bs :CtrlPMRU<cr>
-" }}}
-
 " DelimitMate {{{
 let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 " }}}
@@ -702,29 +682,6 @@ let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularui,ang
 "autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 "autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
 
-" }}}
-
-" NeoMake {{{
-"let g:neomake_open_list=2
-"let g:neomake_serialize=1
-"let g:neomake_verbose=0
-
-" Makers
-"let g:neomake_html_tidy_maker = {
-    "\ 'args': ['-e', '-q'],
-    "\ 'errorformat': '%A%f:%l:%c: Warning: %m',
-    "\ }
-
-"let g:neomake_sasslint_maker = {
-    "\ 'exe': 'sass-lint',
-    "\ 'errorformat': '%f:%l [%t] %m'
-    "\ }
-
-" Configure Default Checkers
-"let g:neomake_javascript_enabled_makers = ['eslint']
-"let g:neomake_scss_enabled_makers = ['sasslint']
-
-"autocmd! BufWritePost * :silent! Neomake
 " }}}
 
 " NERDTree {{{
@@ -774,16 +731,6 @@ let g:promptline_preset = {
     \'y' : [ promptline#slices#python_virtualenv() ],
     \'z' : [ promptline#slices#jobs() ],
     \'warn' : [ promptline#slices#last_exit_code() ]}
-" }}}
-
-" Splice {{{
-let g:splice_initial_layout_grid=1
-let g:splice_initial_scrollbind_grid=1
-let g:splice_initial_scrollbind_loupe=1
-let g:splice_initial_scrollbind_compare=1
-let g:splice_initial_diff_grid=1
-let g:splice_initial_diff_compare=1
-let g:splice_wrap='nowrap'
 " }}}
 
 " Surround {{{
@@ -919,22 +866,9 @@ endif
 let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
 " }}}
 
-" vim-easytags {{{
-let g:easytags_async = 1
-let g:easytags_file = expand(tempDir).'/.tags'
-let g:easytags_dynamic_files = 1
-" }}}
-
 " vim-flow {{{
 " Use Syntastic instead. (vim-flow) includes autocompletion so keep around.
 let g:flow#enable = 0
-" }}}
-
-" vim-gitgutter {{{
-" nmap <Leader>hs <Plug>GitGutterStageHunk
-" nmap <Leader>hr <Plug>GitGutterRevertHunk
-" nmap ]h <Plug>GitGutterNextHunk
-" nmap [h <Plug>GitGutterPrevHunk
 " }}}
 
 " vim-javascript {{{
@@ -962,10 +896,6 @@ nmap <leader>l :JsDoc<CR>
 
 " vim-json {{{
 let g:vim_json_syntax_conceal=0
-" }}}
-
-" vim-jsx {{{
-let g:jsx_ext_required = 0
 " }}}
 
 " vim-livedown {{{
