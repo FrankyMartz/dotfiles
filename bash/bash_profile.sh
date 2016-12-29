@@ -13,6 +13,7 @@ set -o vi
 # PATH Default
 #===============================================================================
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin";
+export XDG_CONFIG_HOME="${HOME}/.config";
 
 #===============================================================================
 # Foundation
@@ -41,6 +42,21 @@ if [[ -x "$(command -v brew)" ]]; then
     [[ -s "$(brew --prefix dvm)/bash_completion" ]] && source "$(brew --prefix dvm)/bash_completion"
 fi
 
+# In order for gpg to find gpg-agent, gpg-agent must be running, and there must
+# be an env variable pointing GPG to the gpg-agent socket. Start gpg-agent or
+# set up the GPG_AGENT_INFO variable if it's already running.
+if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+    source ~/.gnupg/.gpg-agent-info
+    export GPG_AGENT_INFO
+else
+    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+fi
+
+# YarnPkg ----------------------------------------------------------------------
+
+if [[ -x "$(command -v yarn)" ]]; then
+    PATH="${PATH}:$(yarn global bin):${HOME}/.yarn-config/global/node_modules/.bin"
+fi
 
 #===============================================================================
 # PROMPT LOOK
@@ -59,15 +75,16 @@ fi
 
 
 # NEOVIM -----------------------------------------------------------------------
-#export TERM='xterm-256color'
-export NVIM_TUI_ENABLE_TRUE_COLOR=1;
+# export TERM='xterm-256color'
+# export NVIM_TUI_ENABLE_TRUE_COLOR=1;
 export EDITOR="nvim";
 
 # FZF --------------------------------------------------------------------------
 if [[ -f "${HOME}/.fzf.bash" ]]; then
     # shellcheck source=/dev/null
     source "${HOME}/.fzf.bash";
-    export FZF_DEFAULT_COMMAND='ag -g ""';
+    # export FZF_DEFAULT_COMMAND='ag -g ""';
+    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""';
     export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}";
 fi
 
@@ -90,6 +107,7 @@ export IRCSERVER="http://chat.freenode.net";
 #===============================================================================
 # ALIASES
 #===============================================================================
+alias less='less --RAW-CONTROL-CHARS'
 alias ll='ls -FAlhG --color --group-directories-first'; # color-mode
 alias irc='screen -t 1 irssi';
 
@@ -113,10 +131,10 @@ alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git
 # Google Cloud SDK -------------------------------------------------------------
 # Update PATH for the Google Cloud SDK.
 # shellcheck source=/dev/null
-[[ -x "${HOME}/google-cloud-sdk/path.bash.inc" ]] && source "${HOME}/google-cloud-sdk/path.bash.inc"
+# [[ -x "${HOME}/google-cloud-sdk/path.bash.inc" ]] && source "${HOME}/google-cloud-sdk/path.bash.inc"
 # Enable gcloud Shell Command Completion
 # shellcheck source=/dev/null
-[[ -x "${HOME}/google-cloud-sdk/completion.bash.inc" ]] && source "${HOME}/google-cloud-sdk/completion.bash.inc"
+# [[ -x "${HOME}/google-cloud-sdk/completion.bash.inc" ]] && source "${HOME}/google-cloud-sdk/completion.bash.inc"
 
 # PYTHON -----------------------------------------------------------------------
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
@@ -135,9 +153,9 @@ fi
 
 # GO-LANG ----------------------------------------------------------------------
 export GOROOT="/usr/local/opt/go/libexec";
-export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
+# export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
 PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
-PATH="${PATH}:${HOME}/go_appengine";
+# PATH="${PATH}:${HOME}/go_appengine";
 
 # RBENV ------------------------------------------------------------------------
 ## Use Homebrew's directories rather than ~/.rbenv add to your profile
@@ -163,6 +181,6 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 #===============================================================================
 
 # NCMS -------------------------------------------------------------------------
-export GABO="${HOME}/Projects/Google/gweb-gabo/default";
+#export GABO="${HOME}/Projects/Google/gweb-gabo/default";
 
 

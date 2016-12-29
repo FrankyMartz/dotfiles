@@ -25,7 +25,6 @@ __configBASH(){
         dLog "${BLUE}Installing Base16-Shell..."
         /usr/bin/env git clone "https://github.com/chriskempson/base16-shell.git" "$BASE16SHELL"
         dLog "${BLUE}Installing Base16-Shell...DONE"
-        /usr/bin/env git clone "https://github.com/ryanoasis/nerd-fonts.git"
     else
         dLog "${BLUE}Updating Base16-Shell..."
         echo "${BASE16SHELL}"
@@ -37,7 +36,7 @@ __configBASH(){
     local NERDFONTS="${_BIN}/nerd-fonts"
     if [[ ! -d $NERDFONTS ]]; then
         dLog "${BLUE}Installing Nerd-Fonts..."
-        /usr/bin/env git clone "https://github.com/ryanoasis/nerd-fonts.git" "$NERDFONTS"
+        /usr/bin/env git clone "https://github.com/ryanoasis/nerd-fonts.git" "${NERDFONTS}"
         dLog "${BLUE}Installing Nerd-Fonts...DONE"
     else
         dLog "${BLUE}Updating Nerd-Fonts..."

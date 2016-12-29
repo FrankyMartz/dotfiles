@@ -108,10 +108,11 @@ __configBase(){
         dLog "${GREEN}==> Nodenv (default-packages)...DONE"
 
         #-----------------------------------------------------------------------
-        # Install: NPM Packages
+        # Install: NPM Packages / YarnPKG
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing NPM Packages..."
-        /usr/bin/env npm install --global "${npm_packages[@]}"
+        /usr/bin/env npm install --global yarn
+        /usr/bin/env yarn global add "${npm_packages[@]}"
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
         #-----------------------------------------------------------------------

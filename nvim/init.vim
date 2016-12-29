@@ -37,6 +37,7 @@ set tabpagemax=50               " Maximum tab pages
 " be put into background without being written; and that marks and undo history
 " are preserved.
 set hidden
+set nocompatible
 
 set switchbuf=useopen           " Jump to specified buffer when jumping buffers
 
@@ -543,7 +544,7 @@ set diffopt+=iwhite
 "-------------------------------------------------------------------------------
 " => Plug-Vim {{{
 "-------------------------------------------------------------------------------
-source ~/.nvim/vimplugrc
+source ~/.config/nvim/vimplugrc
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -552,8 +553,12 @@ source ~/.nvim/vimplugrc
 "-------------------------------------------------------------------------------
 " => Color and Font {{{
 "-------------------------------------------------------------------------------
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set termguicolors               " Set True Colors in Terminal
+"
+if has('termguicolors')
+    set termguicolors               " Set True Colors in Terminal
+else
+    let base16colorspace=256        " Access colors present in 256 colorspace
+endif
 "set guifont=Menlo:h11
 "set guifont=hack:h11
 
@@ -730,7 +735,7 @@ let g:NERDTreeIndicatorMapCustom = {
 " }}}
 
 " PromptLine {{{
-" let g:promptline_theme = 'airline_insert'
+" let g:promptline_theme  'airline_insert'
 let g:promptline_powerline_symbols = 1
 let g:promptline_preset = {
     \'a' : [ promptline#slices#cwd() ],
@@ -814,7 +819,7 @@ let g:tagbar_type_css = {
 \    't:tags',
 \    'm:medias'
 \  ],
-\ 'deffile' : expand(defdir) . '/css.cnf'
+\ 'deffile' : expand(defdir) . 'css.cnf'
 \}
 
 let g:tagbar_type_less = {
@@ -826,7 +831,7 @@ let g:tagbar_type_less = {
 \    't:tags',
 \    'm:medias'
 \  ],
-\ 'deffile' : expand(defdir) . '/less.cnf'
+\ 'deffile' : expand(defdir) . 'less.cnf'
 \}
 
 let g:tagbar_type_scss = {
@@ -839,7 +844,7 @@ let g:tagbar_type_scss = {
 \    't:tags',
 \    'd:medias'
 \  ],
-\ 'deffile' : expand(defdir) . '/scss.cnf'
+\ 'deffile' : expand(defdir) . 'scss.cnf'
 \}
 " }}}
 
@@ -869,8 +874,15 @@ endif
 " }}}
 
 " vim-ctrlspace {{{
+let g:CtrlSpaceDefaultMappingKey = '<C-Space>'
+" [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
+nmap <c-space> <nul>
 if executable("ag")
     let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+if has("gui_running")
+    " Settings for MacVim and Inconsolata font
+    let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢" }
 endif
 let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
 " }}}
@@ -937,19 +949,30 @@ let g:signify_sign_changedelete      = '*'
 " YouCompleteMe {{{
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_cache_omnifunc=1                            " Potential Cause Lag
+" let g:ycm_cache_omnifunc=1                            " Potential Cause Lag
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_add_preview_to_completeopt=1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_min_num_of_chars_for_completion=1
 let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings=1
-let g:ycm_collect_identifiers_from_comments_and_strings=1
-let g:ycm_use_ultisnips_completer = 1
+let g:ycm_use_ultisnips_completer=1
+let g:ycm_open_loclist_on_ycm_diags=0
 " pyenv
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 let g:ycm_python_binary_path = '/usr/local/bin/python'
 " }}}
+
+" awk {{{
+if executable('ag')
+  " let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+" let g:ackhighlight = 1
+let g:ack_use_dispatch = 1
+"  }}}
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -960,14 +983,16 @@ let g:ycm_python_binary_path = '/usr/local/bin/python'
 "-------------------------------------------------------------------------------
 "colorscheme gruvbox
 " airline doesn't behave when set before Vundle:Config
-"let base16colorspace=256        " Access colors present in 256 colorspace
-" let s:fmColorSchemeDark='base16-eighties'
 " let s:fmColorSchemeDark='base16-materia'
 "let s:fmColorSchemeLight='base16-flat'
-" let s:fmColorSchemeLight='base16-eighties'
+let s:fmColorSchemeDark='base16-eighties'
+let s:fmColorSchemeLight='base16-eighties'
+colorscheme base16-eighties
+
+" set background=dark
 
 " " Set ColorScheme Flavor
-" if $ITERM_PROFILE == 'Daylight'
+" if $ITERM_PROFILE == 'Light'
     " execute 'colorscheme '.s:fmColorSchemeLight
     " set background=light
 " else
@@ -976,19 +1001,17 @@ let g:ycm_python_binary_path = '/usr/local/bin/python'
 " endif
 
 
-" function! s:ToggleBackground()
-    " let fmShade = &background == 'dark' ? 'light' : 'dark'
-    " let fmColorScheme = &background == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
-    " execute 'set background='.fmShade
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+function! s:ToggleBackground()
+    let fmShade = &background == 'dark' ? 'light' : 'dark'
+    let fmColorScheme = &background == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
+    execute 'set background='.fmShade
     " execute 'colorscheme '.fmColorScheme
-" endfunction
+endfunction
 
-" command! ToggleBg call s:ToggleBackground()
-" nnoremap <silent><F12> :ToggleBg<CR> 
+command! ToggleBg call s:ToggleBackground()
+nnoremap <leader>bg :ToggleBg<CR> 
 "
-set background=dark
-let base16colorspace=256
-colorscheme base16-materia
 
 " if filereadable(expand("~/.vimrc_background"))
     " source ~/.vimrc_background  

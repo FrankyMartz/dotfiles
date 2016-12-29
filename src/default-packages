@@ -1,7 +1,5 @@
-bower
 csslint
 eslint
-gulp
 htmlhint
 js-yaml
 jsctags
@@ -10,4 +8,3 @@ livedown
 markdownlint-cli
 trash-cli
 svgo
-yarn

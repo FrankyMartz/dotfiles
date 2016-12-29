@@ -8,7 +8,7 @@
 [user]
     name = Franky Martinez
     email = FrankyMartz@gmail.com
-    signingkey = 93F15FF4
+	signingkey = 39B540EF0647F23F
 
 [core]
 	pager = less
@@ -48,6 +48,7 @@
     ci = commit -v
     ca = commit --amend -v
     co = checkout
+    cp = cherry-pick
     di = diff
     dis = diff --stat
     diw = diff --color-words
@@ -77,6 +78,12 @@
     tags = tag -l
     branches = branch -a
     remotes = remote -v
+    cleanup = !git remote prune origin && git gc
+    ; today = !sh -c \"git log --all --author='${git config --get user.name}' --after=yesterday --pretty=format:'%h - %ad: %s'\"
+    ; week = !sh -c \”git log --all --author='${git config --get user.name}' --after='7 days ago' --pretty=format:'%h - %ad: %s'\”
+    ; yesterday = !sh -c \”git log --all --author='${git config --get user.name}' --after='two days ago' --before=yesterday --pretty=format:'%h - %ad: %s'\”
+    ; team = !sh -c \”git log --all --format='%an' . | sort | uniq -c | sort -nr\”
+    pop-commit = reset --soft HEAD~1
     tar = ! "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
     targz = ! "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
     zip = ! "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
@@ -143,5 +150,8 @@
     diff = diff-so-fancy | less --tabs=4 -RFX
     show = diff-so-fancy | less --tabs=4 -RFX
 
-[commit]
-	gpgsign = true
+; [commit]
+	; gpgsign = true
+
+; [gpg]
+	; program = gpg1

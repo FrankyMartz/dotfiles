@@ -27,11 +27,13 @@ call plug#begin('~/.nvim/bundle')
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General
+Plug 'tpope/vim-dispatch'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-Plug 'rking/ag.vim'
+" Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
@@ -60,9 +62,11 @@ Plug 'tpope/vim-unimpaired'
 " Filetype
 Plug 'editorconfig-vim'
 Plug 'scrooloose/syntastic'
-Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser',
-Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile']}
+Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
+
+" >> VIML
+Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser', { 'for': ['vim', 'viml'] }
 
 " >> Apache
 Plug 'apachelogs.vim', { 'for': 'log' }
@@ -70,22 +74,22 @@ Plug 'apachestyle', { 'for': 'log' }
 
 " >> CSS
 Plug 'ap/vim-css-color'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gcorne/vim-sass-lint'
+Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
+Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
 " >> JavaScript
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': [ 'javascript', 'jsx', 'es6' ] }
-Plug 'heavenshell/vim-jsdoc', { 'for': [ 'javascript', 'jsx', 'es6' ] }
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'jsx', 'es6'] }
+Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'jsx', 'es6'] }
 Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx', 'es6'] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': [ 'javascript', 'jsx', 'es6'] }
-Plug 'facebook/vim-flow', { 'for': [ 'javascript', 'jsx', 'es6' ] }
-Plug 'angelozerr/tern-lint', { 'for': [ 'javascript', 'jsx', 'es6'] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'jsx', 'es6'] }
+Plug 'facebook/vim-flow', { 'for': ['javascript', 'jsx', 'es6'] }
+Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'jsx', 'es6'] }
 
 " >> Markdown
-Plug 'junegunn/goyo.vim', { 'for': [ 'markdown', 'md' ] }
-Plug 'junegunn/limelight.vim', { 'for': [ 'markdown', 'md' ] }
-Plug 'ajorgensen/vim-markdown-toc', { 'for': [ 'markdown', 'md' ] }
-Plug 'shime/vim-livedown', { 'for': [ 'markdown', 'md' ] }
+Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
+Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'md'] }
+Plug 'ajorgensen/vim-markdown-toc', { 'for': ['markdown', 'md'] }
+Plug 'shime/vim-livedown', { 'for': ['markdown', 'md'] }
 
 " >> PHP
 Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
