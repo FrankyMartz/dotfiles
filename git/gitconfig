@@ -8,13 +8,14 @@
 [user]
     name = Franky Martinez
     email = FrankyMartz@gmail.com
-	signingkey = 39B540EF0647F23F
+	; signingkey = A32BDCE6FF5DD64C
 
 [core]
 	pager = less
     ; pager = cat
     excludesfile = ~/.gitignore_global
     editor = nvim
+    ignorecase = false
 
 [merge]
     tool = vimdiff
@@ -50,14 +51,17 @@
     co = checkout
     cp = cherry-pick
     di = diff
+    dig = diff -G
     dis = diff --stat
     diw = diff --color-words
     dic = diff --color-words=.
     dc = diff --cached
+    dcg = diff --cached -G
     dcs = diff --cached --stat
     dcw = diff --cached --color-words
     dcc = diff --cached --color-words=.
     dh = diff HEAD~
+    dhg = diff HEAD~ -G
     dhs = diff HEAD~ --stat
     dhw = diff HEAD~ --color-words
     dhc = diff HEAD~ --color-words=.
@@ -70,7 +74,7 @@
     grad = log --graph --format=detail --all # graph all in detail
     grm = log --merges --format=line
     ;gr = log --graph --full-history --all --pretty=format:'%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n'
-    info = log --pretty=full --color -1
+    dlog = log --pretty=full --color
     ls = ls-tree -r --name-only
     credit = shortlog -sn
     update-submodules = submodule update --init --recursive
@@ -79,6 +83,7 @@
     branches = branch -a
     remotes = remote -v
     cleanup = !git remote prune origin && git gc
+    ; today = log --all --author="$(git config --get user.name)" --after=yesterday --pretty=format:"%h - %ad: %s"
     ; today = !sh -c \"git log --all --author='${git config --get user.name}' --after=yesterday --pretty=format:'%h - %ad: %s'\"
     ; week = !sh -c \”git log --all --author='${git config --get user.name}' --after='7 days ago' --pretty=format:'%h - %ad: %s'\”
     ; yesterday = !sh -c \”git log --all --author='${git config --get user.name}' --after='two days ago' --before=yesterday --pretty=format:'%h - %ad: %s'\”
@@ -93,7 +98,7 @@
 
 [color]
     branch = auto
-    diff = auto
+    ; diff = auto
     interactive = auto
     status = auto
     ui = auto
@@ -151,7 +156,7 @@
     show = diff-so-fancy | less --tabs=4 -RFX
 
 ; [commit]
-	; gpgsign = true
+    ; gpgsign = true
 
 ; [gpg]
-	; program = gpg1
+	; program = gpg2
