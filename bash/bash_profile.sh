@@ -177,10 +177,13 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 
 #===============================================================================
-# PROJECT
+# DOTENV LOAD
 #===============================================================================
 
-# NCMS -------------------------------------------------------------------------
-#export GABO="${HOME}/Projects/Google/gweb-gabo/default";
-
+if [[ -e "$HOME/.dotfiles/.env" ]]; then
+    # shellcheck disable=SC2163
+    while read -r line ; do
+        export "$line";
+    done < "$HOME/.dotfiles/.env"
+fi
 
