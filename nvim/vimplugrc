@@ -2,7 +2,7 @@
 " Vim-Plug Configuration
 " Author Franky Martinez <frankymartz@gmail.com>
 "
-" vim:set et sw=2 ts=2 tw=80:
+" vim:set ft=vim et sw=2 ts=2 tw=80:
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if empty(glob('~/.nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
@@ -17,7 +17,7 @@ function! BuildYCM(info)
     " - status: 'installed', 'updated', or 'unchanged'
     " - force:  set on PlugInstall! or PlugUpdate!
     if a:info.status == 'updated' || a:info.force
-        !./install.py --gocode-completer --tern-completer
+        !./install.py --clang-completer --gocode-completer --tern-completer
     endif
 endfunction
 " }}}
@@ -28,7 +28,7 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
@@ -38,13 +38,24 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
 Plug 'chrisbra/vim-diff-enhanced'
+Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
+
+" Deoplete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neoinclude.vim'
+Plug 'mhartington/nvim-typescript'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'zchee/deoplete-jedi'
+Plug 'tweekmonster/deoplete-clang2'
 
 " Window
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-" Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-" Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'c0r73x/neotags.nvim'
-Plug 'Tagbar' | Plug 'xolox/vim-misc' | Plug 'ludovicchabant/vim-gutentags'
+" Plug 'xolox/vim-easytags'
+Plug 'ludovicchabant/vim-gutentags'
+" Plug 'c0r73x/neotags.nvim'
+Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
@@ -53,15 +64,20 @@ Plug 'wesQ3/vim-windowswap'
 " Editing
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
-Plug 'matchit.zip'
+Plug 'vim-scripts/matchit.zip'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-characterize'
+" Plug 'cyansprite/Extract'
+Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 
 " Filetype
-Plug 'editorconfig-vim'
-Plug 'scrooloose/syntastic'
+Plug 'editorconfig/editorconfig-vim'
+" Plug 'scrooloose/syntastic'
+Plug 'neomake/neomake'
+Plug 'benjie/neomake-local-eslint.vim'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
 
@@ -69,8 +85,11 @@ Plug 'sheerun/vim-polyglot'
 Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser', { 'for': ['vim', 'viml'] }
 
 " >> Apache
-Plug 'apachelogs.vim', { 'for': 'log' }
-Plug 'apachestyle', { 'for': 'log' }
+Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
+Plug 'vim-scripts/apachestyle', { 'for': 'log' }
+
+" >> HTML
+Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
 
 " >> CSS
 Plug 'ap/vim-css-color'
@@ -78,12 +97,15 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
 " >> JavaScript
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'jsx', 'es6'] }
-Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'jsx', 'es6'] }
-Plug 'justinj/vim-react-snippets', { 'for': [ 'javascript', 'jsx', 'es6'] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'jsx', 'es6'] }
-Plug 'facebook/vim-flow', { 'for': ['javascript', 'jsx', 'es6'] }
-Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'jsx', 'es6'] }
+" Plug 'hushicai/tagbar-javascript.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
+Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'facebook/vim-flow', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+" Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+" Plug 'neoclide/vim-jsx-improve', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
@@ -92,7 +114,7 @@ Plug 'ajorgensen/vim-markdown-toc', { 'for': ['markdown', 'md'] }
 Plug 'shime/vim-livedown', { 'for': ['markdown', 'md'] }
 
 " >> PHP
-Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
+" Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 
@@ -101,6 +123,8 @@ Plug 'jmcantrell/vim-virtualenv'
 
 " Color and Font
 Plug 'chriskempson/base16-vim'
+Plug 'lifepillar/vim-solarized8'
+" Plug 'mhartington/oceanic-next'
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'
