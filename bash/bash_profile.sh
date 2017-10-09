@@ -19,6 +19,10 @@ export XDG_CONFIG_HOME="${HOME}/.config";
 # Foundation
 #===============================================================================
 
+if [[ -d "${HOME}/.iterm2" ]]; then
+    PATH="${PATH}:${HOME}/.iterm2";
+fi
+
 if [[ -x "$(command -v brew)" ]]; then
     # BASH ---------------------------------------------------------------------
     if [[ -x "$(brew --prefix)/bin/bash" ]]; then
@@ -38,25 +42,25 @@ if [[ -x "$(command -v brew)" ]]; then
     # Docker -----------------------------------------------------------------------
     # shellcheck source=/dev/null
     [[ -s "$(brew --prefix dvm)/dvm.sh" ]] && source "$(brew --prefix dvm)/dvm.sh"
-    # shellcheck source=/dev/null
-    [[ -s "$(brew --prefix dvm)/bash_completion" ]] && source "$(brew --prefix dvm)/bash_completion"
 fi
 
 # In order for gpg to find gpg-agent, gpg-agent must be running, and there must
 # be an env variable pointing GPG to the gpg-agent socket. Start gpg-agent or
 # set up the GPG_AGENT_INFO variable if it's already running.
-if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
-    source ~/.gnupg/.gpg-agent-info
-    export GPG_AGENT_INFO
-else
-    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
-fi
+# if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+   # shellcheck source=/dev/null
+    # source ~/.gnupg/.gpg-agent-info
+    # export GPG_AGENT_INFO
+# else
+    # eval "$(gpg-agent --daemon ~/.gnupg/.gpg-agent-info)"
+# fi
 
 # YarnPkg ----------------------------------------------------------------------
 
 if [[ -x "$(command -v yarn)" ]]; then
-    PATH="${PATH}:$(yarn global bin):${HOME}/.yarn-config/global/node_modules/.bin"
+    PATH="${PATH}:${HOME}/.config/yarn/global/node_modules/.bin:$(yarn global bin)"
 fi
+
 
 #===============================================================================
 # PROMPT LOOK
@@ -71,7 +75,7 @@ fi
 
 # BASH_POWERLINE ---------------------------------------------------------------
 # shellcheck source=/dev/null
-[[ -f "${HOME}/.dotfiles/bin/.shell_prompt.sh" ]] && source "${HOME}/.dotfiles/bin/.shell_prompt.sh";
+[[ -f "${HOME}/.dotfiles/bin/shell_prompt.sh" ]] && source "${HOME}/.dotfiles/bin/shell_prompt.sh";
 
 
 # NEOVIM -----------------------------------------------------------------------
@@ -110,12 +114,11 @@ export IRCSERVER="http://chat.freenode.net";
 alias less='less --RAW-CONTROL-CHARS'
 alias ll='ls -FAlhG --color --group-directories-first'; # color-mode
 alias irc='screen -t 1 irssi';
-
-alias vi='nvim';
-alias vim='nvim';
+alias chrome-cors='open -a Google\ Chrome --args --disable-web-security --user-data-dir';
 
 alias pe='path-extractor';
 alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git st';
+alias pass-keygen="openssl rand -base64"
 
 
 #===============================================================================
@@ -137,6 +140,7 @@ alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git
 # [[ -x "${HOME}/google-cloud-sdk/completion.bash.inc" ]] && source "${HOME}/google-cloud-sdk/completion.bash.inc"
 
 # PYTHON -----------------------------------------------------------------------
+PATH="/usr/local/opt/python/libexec/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 # Auto-Complete
 if [[ -x "$(command -v pyenv)" ]]; then
@@ -160,7 +164,7 @@ PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 # RBENV ------------------------------------------------------------------------
 ## Use Homebrew's directories rather than ~/.rbenv add to your profile
 export RBENV_ROOT="/usr/local/var/rbenv"
-export PATH="$RBENV_ROOT/bin:$PATH"
+export PATH="${RBENV_ROOT}/bin:${PATH}"
 
 ## Enable shims and autocompletion add to your profile
 [[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";
@@ -175,6 +179,8 @@ fi
 # Nodeenv ----------------------------------------------------------------------
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
+# Include NPM Package Develop Directory
+export PATH=~/npm/bin:$PATH
 
 #===============================================================================
 # DOTENV LOAD
