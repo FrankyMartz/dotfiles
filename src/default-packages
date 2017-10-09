@@ -6,5 +6,6 @@ jsctags
 jsonlint
 livedown
 markdownlint-cli
+tstags
 trash-cli
 svgo

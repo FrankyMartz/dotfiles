@@ -111,8 +111,8 @@ __configBase(){
         # Install: NPM Packages / YarnPKG
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing NPM Packages..."
-        /usr/bin/env npm install --global yarn
-        /usr/bin/env yarn global add "${npm_packages[@]}"
+        /bin/env npm install --global yarn
+        /usr/bin/env yarn global add "${pm_packages[@]}"
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
