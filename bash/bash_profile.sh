@@ -19,6 +19,9 @@ export XDG_CONFIG_HOME="${HOME}/.config";
 # Foundation
 #===============================================================================
 
+# shellcheck source=/dev/null
+[[ -x "${HOME}/.profile" ]] && source "${HOME}/.profile"
+
 if [[ -d "${HOME}/.iterm2" ]]; then
     PATH="${PATH}:${HOME}/.iterm2";
 fi
@@ -115,6 +118,8 @@ alias less='less --RAW-CONTROL-CHARS'
 alias ll='ls -FAlhG --color --group-directories-first'; # color-mode
 alias irc='screen -t 1 irssi';
 alias chrome-cors='open -a Google\ Chrome --args --disable-web-security --user-data-dir';
+alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+alias chrome-canary='/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary'
 
 alias pe='path-extractor';
 alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git st';
@@ -157,6 +162,7 @@ fi
 
 # GO-LANG ----------------------------------------------------------------------
 export GOROOT="/usr/local/opt/go/libexec";
+export GOPATH="${HOME}/go";
 # export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
 PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 # PATH="${PATH}:${HOME}/go_appengine";
@@ -180,7 +186,7 @@ fi
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 # Include NPM Package Develop Directory
-export PATH=~/npm/bin:$PATH
+export PATH=$PATH:~/npm/bin
 
 #===============================================================================
 # DOTENV LOAD
@@ -193,3 +199,4 @@ if [[ -e "$HOME/.dotfiles/.env" ]]; then
     done < "$HOME/.dotfiles/.env"
 fi
 
+eval "$(direnv hook bash)"
