@@ -12,9 +12,14 @@ __configBase(){
     dLog "${BLUE}Base Configuration..."
 
     local brew_langs=(
-        go
-        node
-        python
+        'go'
+        'less'
+        'lua'
+        'mono'
+        'node'
+        'python'
+        'python3'
+        'ruby'
     )
 
     declare -a brew_tools;
@@ -111,8 +116,7 @@ __configBase(){
         # Install: NPM Packages / YarnPKG
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Installing NPM Packages..."
-        /bin/env npm install --global yarn
-        /usr/bin/env yarn global add "${pm_packages[@]}"
+        /bin/env npm install --global "${npm_packages[@]}"
         dLog "${GREEN}==> Installing NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
@@ -136,7 +140,7 @@ __configBase(){
         # Update: NPM
         #-----------------------------------------------------------------------
         dLog "${GREEN}==> Updating NPM Packages..."
-        /usr/bin/env npm update -g
+        /usr/bin/env npm update --global 
         dLog "${GREEN}==> Updating NPM Packages...DONE"
 
         #-----------------------------------------------------------------------
