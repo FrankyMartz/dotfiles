@@ -17,7 +17,7 @@ function! BuildYCM(info)
     " - status: 'installed', 'updated', or 'unchanged'
     " - force:  set on PlugInstall! or PlugUpdate!
     if a:info.status == 'updated' || a:info.force
-        !./install.py --clang-completer --gocode-completer --tern-completer
+        !/usr/bin/env python3 ./install.py --all
     endif
 endfunction
 " }}}
@@ -28,31 +28,20 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-" Plug 'rking/ag.vim'
 Plug 'mileszs/ack.vim'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
-
-" Deoplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neoinclude.vim'
-Plug 'mhartington/nvim-typescript'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'zchee/deoplete-jedi'
-Plug 'tweekmonster/deoplete-clang2'
+Plug 'direnv/direnv.vim'
 
 " Window
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-" Plug 'xolox/vim-easytags'
 Plug 'ludovicchabant/vim-gutentags'
 " Plug 'c0r73x/neotags.nvim'
 Plug 'majutsushi/tagbar'
@@ -75,9 +64,8 @@ Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
+Plug 'w0rp/ale'
 " Plug 'scrooloose/syntastic'
-Plug 'neomake/neomake'
-Plug 'benjie/neomake-local-eslint.vim'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
 
@@ -96,14 +84,19 @@ Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
+" JavaScript / TypeScript
+Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
+
 " >> JavaScript
+" Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+" Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'hushicai/tagbar-javascript.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'facebook/vim-flow', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+" Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+" Plug 'facebook/vim-flow', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'neoclide/vim-jsx-improve', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 
@@ -121,10 +114,18 @@ Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 " >> Python
 Plug 'jmcantrell/vim-virtualenv'
 
+" >> GoLang
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
+Plug 'sebdah/vim-delve', { 'for': 'go' }
+
+" >> TypeScript
+Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
+
 " Color and Font
-Plug 'chriskempson/base16-vim'
+" Plug 'chriskempson/base16-vim'
 Plug 'lifepillar/vim-solarized8'
-" Plug 'mhartington/oceanic-next'
+Plug 'mhartington/oceanic-next'
+" Plug 'morhetz/gruvbox'
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'

@@ -26,7 +26,7 @@
 "=> General {{{
 "-------------------------------------------------------------------------------
 " syntax enable                   " Enable Syntax Highlighting
-syntax on                       " Enable Syntax Highlighting – Allow VIM override
+syntax on                       " Enable Syntax Highlighting–Allow VIM override
 set autoread                    " Automatically read externally changes to file
 set autowriteall                " Automatically write to file if modified
 set history=1000                " Remember more commands and search history
@@ -56,6 +56,7 @@ set guioptions-=R
 if has('mouse') | set mouse=a | endif
 
 set cursorline                  " Show me my position I'm blind
+set nocursorbind                " Prevent scroll bind (2 windows w/ same buffer)
 set modelines=0                 " Prevent security exploit. Disable
 set showcmd                     " Show (partial) command at bottom of buffer
 set title                       " Set window title
@@ -182,8 +183,20 @@ map <c-l> <c-w>l
 " Buffer Horizontal Navigation
 nnoremap ˙ z30h
 nnoremap ¬ z30l
-"nnoremap <m-H> z20h
-"nnoremap <m-L> z20l
+" nnoremap <m-H> z20h
+" nnoremap <m-L> z20l
+
+" Switch (previous,next) Buffer
+nmap <leader>kk :bnext<CR>
+nmap <leader>jj :bprevious<CR>
+nmap <leader>hh :tabprevious<CR>
+nmap <leader>ll :tabnext<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+" nmap <leader>bq :bp <BAR> bd #<CR>
+" Show all open buffers and their status
+" nmap <leader>bl :ls<CR>
 
 " COPY / PASTE ... PLEASE
 "vnoremap <leader>y "*y
@@ -227,6 +240,10 @@ inoremap CC <esc>cc
 " Split Buffers
 nnoremap <c-s> <c-w>s
 nnoremap <c-v> <c-w>v
+
+" Resize Window
+nnoremap <silent> + :exe "vertical resize +" . (winwidth(0) * 1/8)<CR>
+nnoremap <silent> - :exe "vertical resize -" . (winwidth(0) * 1/8)<CR>
 
 " Clear Search Results
 nnoremap <leader><space> :noh<cr>
@@ -457,6 +474,16 @@ augroup ft_ruby
 augroup END
 " }}}
 
+" TypeScript {{{
+augroup ft_typescript
+    au!
+    au FileType typescript setlocal ts=2 sts=2 sw=2 cocu="" expandtab
+    au BufRead,BufNewFile *.ts setlocal filetype=typescript
+    au BufRead,BufNewFile *.tsx setlocal filetype=typescript
+    au FileType typescript setlocal foldmethod=syntax
+augroup END
+" }}}
+
 " SQL {{{
 augroup ft_sql
     au!
@@ -533,6 +560,9 @@ set winheight=999
 set diffopt+=vertical
 set diffopt+=iwhite
 
+" Disable Line Numbers in Terminal
+au TermOpen * setlocal nonumber norelativenumber
+
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
@@ -581,39 +611,56 @@ au FileType qf setlocal nonumber colorcolumn=
 "-------------------------------------------------------------------------------
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
+
+" Ack {{{
+if executable('rg')
+  let g:ackprg = 'rg --color=never --column'
+elseif executable('ag')
+    " let g:ackprg = 'ag --vimgrep'
+    let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+
+" let g:ackhighlight = 1
+let g:ack_use_dispatch = 1
+command Todo Ack! 'TODO\|FIXME'
+"  }}}
+
 " Airline {{{
 set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
-
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
 let g:airline_detect_spell=1
 let g:airline_inactive_collapse=1
 let g:airline_skip_empty_sections = 1
-let g:airline_highlighting_cache = 0
+let g:airline_highlighting_cache = 1
 let g:airline_powerline_fonts=1
+let g:airline_exclude_preview=1
 let g:airline_section_y = airline#section#create_right(['ffenc','gutentags#statusline()'])
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'b': 140,
+    \ 'x': 140,
+    \ 'y': 140,
+    \ }
+" Ale
+let g:airline#extensions#ale#enabled = 1
+" base16
+let g:airline_base16_improved_contrast = 1
+let g:airline#themes#base16#constant = 1
+" Git
+let g:airline#extensions#branch#format = 1
 " Promptline
 let g:airline#extensions#promptline#snapshot_file = '~/.dotfiles/bin/.shell_prompt.sh'
 let g:airline#extensions#promptline#enabled = 0
 let g:airline#extensions#windowswap#enabled = 1
 " Windowswap
 let g:airline#extensions#windowswap#indicator_text = 'WS'
-" base16
-let g:airline_base16_improved_contrast = 1
-let g:airline#themes#base16#constant = 1
 " vim-ctrlspace
 let g:airline#extensions#ctrlspace#enabled = 1
 let g:CtrlSpaceStatuslineFunction = 'airline#extensions#ctrlspace#statusline()'
 " YouCompleteMe
-" let g:airline#extensions#ycm#enabled = 1
-" let g:airline#extensions#ycm#error_symbol = 'E:'
-" let g:airline#extensions#ycm#warning_symbol = 'W:'
-" neomake
-let g:airline#extensions#neomake#enabled = 1
-let airline#extensions#neomake#error_symbol = 'E:'
-let airline#extensions#neomake#warning_symbol = 'W:'
+let g:airline#extensions#ycm#enabled = 1
 " Hunks -  vim-signify
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#hunks#non_zero_only = 0
@@ -631,101 +678,40 @@ let airline#extensions#c_like_langs = ['c', 'cpp', 'cuda', 'go', 'javascript', '
 " tabline
 let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
 let g:airline#extensions#tabline#buffer_min_count=2
-" let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter='unique_tail_improved'
+let g:airline#extensions#tabline#switch_buffers_and_tabs=1
+let g:airline#extensions#tabline#exclude_preview = 1
 let g:airline#extensions#tabline#left_sep=''
-" let g:airline#extensions#tabline#buffer_nr_show=1
-" let g:airline#extensions#tabline#buffer_nr_format='[%s]'
-"let g:airline#extensions#tabline#buffer_idx_mode=1
-"nmap <leader>1 <Plug>AirlineSelectTab1
-"nmap <leader>2 <Plug>AirlineSelectTab2
-"nmap <leader>3 <Plug>AirlineSelectTab3
-"nmap <leader>4 <Plug>AirlineSelectTab4
-"nmap <leader>5 <Plug>AirlineSelectTab5
-"nmap <leader>6 <Plug>AirlineSelectTab6
-"nmap <leader>7 <Plug>AirlineSelectTab7
-"nmap <leader>8 <Plug>AirlineSelectTab8
-"nmap <leader>9 <Plug>AirlineSelectTab9
-"if !exists('g:airline_symbols')
-      "let g:airline_symbols = {}
-"endif
-" unicode symbols
-"let g:airline_left_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_symbols.linenr = '␤'
-"let g:airline_symbols.branch = '⑂'
-"let g:airline_symbols.paste = '↯'
-"let g:airline_symbols.whitespace = 'Ξ'
+let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
 " }}}
 
-" Ack {{{
-if executable('rg')
-  let g:ackprg = 'rg --color=never --column'
-elseif executable('ag')
-    " let g:ackprg = 'ag --vimgrep'
-    let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-
-" let g:ackhighlight = 1
-let g:ack_use_dispatch = 1
-command Todo Ack! 'TODO\|FIXME'
+" Ale {{{
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = ''
+let g:ale_change_sign_column_color = 1
+" let g:ale_completion_enabled = 1
+let g:ale_open_list = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'go': ['gometalinter', 'gofmt'],
+\}
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+let g:ale_javascript_eslint_options = '--no-color'
+let g:ale_go_gometalinter_options = '--fast'
+nmap <leader>ek <Plug>(ale_previous_wrap)
+nmap <leader>ej <Plug>(ale_next_wrap)
+au BufWinLeave * silent! lclose
 "  }}}
-
-" Buffergator {{{
-" Use the right side of the screen
-let g:buffergator_viewport_split_policy = 'R'
-
-" I want my own keymappings...
-let g:buffergator_suppress_keymaps = 1
-
-" Looper buffers
-"let g:buffergator_mru_cycle_loop = 1
-
-" Go to the previous buffer open
-nmap <leader>jj :BuffergatorMruCyclePrev<cr>
-
-" Go to the next buffer open
-nmap <leader>kk :BuffergatorMruCycleNext<cr>
-
-" View the entire list of buffers open
-nmap <leader>bl :BuffergatorOpen<cr>
-
-" Shared bindings from Solution #1 from earlier
-nmap <leader>T :enew<cr>
-nmap <leader>bq :bp <BAR> bd #<cr>
-" }}}
 
 " DelimitMate {{{
 let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 " }}}
 
-" Deoplete {{{
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#file#enable_buffer_path = 1
-let g:deoplete#enable_refresh_always = 1
-let g:deoplete#auto_complete_start_length = 1
-" use tab to forward cycle
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" use tab to backward cycle
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
-" }}}
-
-" Deoplete-TernJS {{{
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
-let g:deoplete#sources#ternjs#types = 1
-let g:deoplete#sources#ternjs#depths = 1
-let g:deoplete#sources#ternjs#docs = 1
-let g:deoplete#sources#ternjs#include_keywords = 1
-let g:deoplete#sources#ternjs#filetypes = [
-            \ 'jsx',
-            \ 'javascript',
-            \ 'javascript.jsx',
-            \ 'vue',
-            \ 'es6'
-            \ ]
-
+" EditorConfig {{{
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " }}}
 
 " Fugitive {{{
@@ -760,66 +746,34 @@ nnoremap <F7> :MundoToggle<CR>
 " }}}
 
 " indentLine {{{
-let g:indentLine_enabled = 0
+let g:indentLine_enabled = 1
 let g:indentLine_conceallevel = 1
-let g:indentLine_concealcursor=''
+let g:indentLine_concealcursor='¦'
 let g:indentLine_setColors=0
-nnoremap <leader>ig :IndentLinesToggle<CR> 
+nnoremap <leader>ig :IndentLinesToggle<CR>
+" let g:indentLine_bgcolor_term = 202
 " }}}
 
 " javascript-libraries-syntax {{{
-let g:used_javascript_libs = 'jquery,underscore,backbone,angularjs,angularui,angularuirouter,react,flux,jasmine,chai,handlebars,d3'
-"autocmd BufReadPre *.jsx let b:javascript_lib_use_react=1
-"autocmd BufReadPre *.jsx let b:javascript_lib_use_flux=1
-"autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-"autocmd BufReadPre *[sS]pec.js let b:javascript_lib_use_angularjs = 1
-" }}}
-
-" Neomake {{{
-" autocmd! BufWritePost * Neomake
-call neomake#configure#automake('w')
-" let g:neomake_verbose=3
-let g:neomake_javascript_enabled_makers = ['eslint']
-" Going to have to manually configure for (.eslintrc)
-let g:neomake_javascript_eslint_maker = {
-        \ 'args': ['--no-color', '-f', 'compact', '-c', 'package.json'],
-        \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-        \   '%W%f: line %l\, col %c\, Warning - %m,%-G,%-G%*\d problems%#'
-        \ }
-let g:neomake_open_list=2
-let g:neomake_highlight_lines=1
-let g:neomake_tempfile_enabled = 0
-" }}}
-
-" NeoSnippet {{{
-" let g:neosnippet#enable_snipmate_compatibility = 1
-" " Tell Neosnippet about the other snippets
-" " let g:neosnippet#snippets_directory='~/.nvim/bundle/vim-snippets/snippets'
-" let g:neosnippet#snippets_directory=['~/.nvim/bundle/vim-snippets/snippets',
-            " \ '~/.nvim/bundle/neosnippet-snippets/neosnippets' ]
-            " " \ '~/.nvim/bundle/vim-react-snippets/UltiSnips',
-            " " \ '~/.nvim/bundle/vim-laravel4-snippets/UltiSnips']
-" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k>     <Plug>(neosnippet_expand_target)
-" }}}
-
-" Neotags {{{
-" let g:neotags_enabled=1
-" " Use RipGrep
-" let g:neotags_appendpath = 0
-" let g:neotags_recursive = 0
-" let g:neotags_ctags_bin = 'rg --files '. getcwd() .' | ctags'
-" let g:neotags_ctags_args = [
-            " \ '-L -',
-            " \ '--fields=+l',
-            " \ '--c-kinds=+p',
-            " \ '--c++-kinds=+p',
-            " \ '--sort=no',
-            " \ '--extra=+q'
-            " \ ]
-" " Syntax Highlighting Speed Improvemnet
-" set regexpengine=1
+let g:used_javascript_libs = join([
+            \ 'angularjs',
+            \ 'angularui',
+            \ 'angularuirouter',
+            \ 'backbone',
+            \ 'chai',
+            \ 'd3',
+            \ 'flux',
+            \ 'handlebars',
+            \ 'jasmine',
+            \ 'jquery',
+            \ 'prelude',
+            \ 'ramda',
+            \ 'react',
+            \ 'requirejs',
+            \ 'sugar',
+            \ 'underscore',
+            \ 'vue'
+            \ ], ',') 
 " }}}
 
 " NERDTree {{{
@@ -849,14 +803,14 @@ let NERDSpaceDelims=1
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "",
     \ "Staged"    : "",
-    \ "Untracked" : "", 
+    \ "Untracked" : "",
     \ "Renamed"   : "",
     \ "Unmerged"  : "",
     \ "Deleted"   : "",
     \ "Dirty"     : " ",
     \ "Clean"     : "",
     \ 'Ignored'   : ' ',
-    \ "Unknown"   : "" 
+    \ "Unknown"   : ""
     \ }
 " }}}
 
@@ -880,30 +834,6 @@ let g:surround_{char2nr('8')} = '/* \r */'
 let g:surround_{char2nr('s')} = ' \r '
 let g:surround_{char2nr('^')} = '/^\r$/'
 let g:surround_indent = 1
-" }}}
-
-" Syntastic {{{
-" let g:syntastic_auto_jump=0
-" let g:syntastic_auto_loc_list=1
-" let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
-" "let g:syntastic_javascript_checkers=['jsxhint', 'flow']
-" "let g:syntastic_html_tidy_exec = 'tidy5'
-" let g:syntastic_javascript_checkers=['eslint', 'tern_lint']
-" " javascript/jscs javascript/jshint
-" " let g:syntastic_javascript_checkers=['eslint']
-" let g:syntastic_sass_checkers=["sass","sass_lint"]
-" let g:syntastic_scss_checkers=["sass","sass_lint"]
-" let g:syntastic_scss_sass_quiet_messages = {
-    " \ 'regex': 'File to import not found or unreadable', }
-" "let g:syntastic_html_checkers=['tidy', 'validator', 'w3']
-" let g:syntastic_check_on_wq=0
-" let g:syntastic_error_symbol=''
-" let g:syntastic_warning_symbol=''
-" " let g:syntastic_error_symbol='✘'
-" " let g:syntastic_warning_symbol='▲'
-" let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-" let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute ' ,'trimming empty <", 'unescaped &' , 'lacks \"action', 'is not recognized!', 'discarding unexpected']
-" let g:syntastic_sh_shellcheck_args="-x"
 " }}}
 
 " Tagbar {{{
@@ -974,40 +904,28 @@ let g:tagbar_type_scss = {
 \ 'deffile' : expand(defdir) . 'scss.cnf'
 \}
 
-let g:tagbar_type_typescript = {                                                  
-  \ 'ctagsbin' : 'tstags',                                                        
-  \ 'ctagsargs' : '-f-',                                                           
-  \ 'kinds': [                                                                     
-    \ 'e:enums:0:1',                                                               
-    \ 'f:function:0:1',                                                            
-    \ 't:typealias:0:1',                                                           
-    \ 'M:Module:0:1',                                                              
-    \ 'I:import:0:1',                                                              
-    \ 'i:interface:0:1',                                                           
-    \ 'C:class:0:1',                                                               
-    \ 'm:method:0:1',                                                              
-    \ 'p:property:0:1',                                                            
-    \ 'v:variable:0:1',                                                            
-    \ 'c:const:0:1',                                                              
-  \ ],                                                                            
-  \ 'sort' : 0                                                                    
-\ }                                                                               
-" }}}
-
-" TernJS {{{
-"let g:tern_show_argument_hints='on_move'
-let g:tern_show_signature_in_pum=1
-noremap <leader>td :TernDef<cr>
-noremap <leader>tdp :TernDefPreview<cr>
-noremap <leader>tds :TernDefSplit<cr>
-noremap <leader>tdt :TernDefTab<cr>
-noremap <leader>tl :TernDoc<cr>
-noremap <leader>tt :TernType<cr>
-noremap <leader>t<space> :TernRefs<cr>
-noremap <leader>tr :TernRename<cr>
+let g:tagbar_type_typescript = {
+  \ 'ctagsbin' : 'tstags',
+  \ 'ctagsargs' : '-f-',
+  \ 'kinds': [
+    \ 'e:enums:0:1',
+    \ 'f:function:0:1',
+    \ 't:typealias:0:1',
+    \ 'M:Module:0:1',
+    \ 'I:import:0:1',
+    \ 'i:interface:0:1',
+    \ 'C:class:0:1',
+    \ 'm:method:0:1',
+    \ 'p:property:0:1',
+    \ 'v:variable:0:1',
+    \ 'c:const:0:1',
+  \ ],
+  \ 'sort' : 0
+\ }
 " }}}
 
 " UltiSnips {{{
+let g:UltiSnipsUsePythonVersion=3
 let g:UltiSnipsExpandTrigger='<c-K>'
 let g:UltiSnipsJumpForwardTrigger='<c-K>'
 let g:UltiSnipsJumpBackwardTrigger='<c-J>'
@@ -1018,6 +936,20 @@ let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = '' "   
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*service.*\.ts$'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
+" }}}
+
+" vim-delve {{{
+let g:delve_backend = "native"
+let s:aDelveCachePath='~/.nvim/tmp/vim-delve//'
+if !isdirectory(expand(s:aDelveCachePath))
+    call mkdir(expand(s:aDelveCachePath), 'p')
+endif
+let g:delve_cache_path = expand(s:aDelveCachePath)
 " }}}
 
 " vim-diff-enhanced {{{
@@ -1027,21 +959,25 @@ endif
 " }}}
 
 " vim-ctrlspace {{{
-let g:CtrlSpaceDefaultMappingKey = '<C-Space>'
+let s:aCtrlSpaceCacheDir='~/.nvim/tmp/ctrlspace//'
+if !isdirectory(expand(s:aCtrlSpaceCacheDir))
+    call mkdir(expand(s:aCtrlSpaceCacheDir), 'p')
+endif
+let g:CtrlSpaceCacheDir = expand(s:aCtrlSpaceCacheDir)
+" let g:CtrlSpaceSearchTiming = 0
 " [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
 nmap <c-space> <nul>
-if executable("ag")
-    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-endif
-if has("gui_running")
-    " Settings for MacVim and Inconsolata font
-    let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢" }
+let g:CtrlSpaceUseMouseAndArrowsInTerm = 1
+let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
+let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
+let g:CtrlSpaceSaveWorkspaceOnExit = 1
+
+if executable('rg')
+    let g:CtrlSpaceGlobCommand = 'rg -l --hidden --nocolor -g ""'
+elseif executable('ag')
+    let g:CtrlSpaceGlobCommand = 'ag -l --hidden --nocolor -g ""'
 endif
 let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
-" }}}
-
-" vim-easymotion {{{
-
 " }}}
 
 " vim-flow {{{
@@ -1049,8 +985,51 @@ let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
 let g:flow#enable = 0
 " }}}
 
+" vim-go {{{
+" Setting
+let g:go_test_show_name = 1
+let g:go_autodetect_gopath = 1
+let g:go_fmt_command = "goimports"
+let g:go_term_mode = "split"
+let g:go_textobj_include_function_doc = 1
+" Syntax Highlight
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_variable_assignments = 1
+let g:go_highlight_variable_declarations = 1
+
+let g:go_highlight_space_tab_error = 1
+let g:go_highlight_chan_whitespace_error = 1
+let g:go_highlight_array_whitespace_error = 1
+" Shortcuts
+if isdirectory(expand("$GOPATH/src/github.com/golang/lint/misc/vim"))
+    set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+endif
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+" }}}
+
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
+let g:gutentags_ctags_executable_javascript = 'jsctags'
+let g:gutentags_ctags_executable_typescript = 'tstags'
 " }}}
 
 " vim-javascript {{{
@@ -1070,10 +1049,18 @@ let g:javascript_conceal_super                = "Ω"
 let g:javascript_conceal_arrow_function       = "⇒"
 " }}}
 
+" vim-js-pretty-template {{{
+" Register tag name associated the filetype
+" call jspretmpl#register_tag('gql', 'graphql')
+autocmd FileType javascript JsPreTmpl html
+autocmd FileType typescript JsPreTmpl html
+autocmd FileType typescript syn clear foldBraces
+" }}}
+
 " vim-jsdoc {{{
 let g:jsdoc_default_mapping=0
 let g:jsdoc_allow_input_prompt=1
-nmap <leader>l :JsDoc<CR>
+nmap <leader>jsd :JsDoc<CR>
 " }}}
 
 " vim-json {{{
@@ -1089,6 +1076,14 @@ let g:livedown_autorun = 0  " Auto-Open Preview on markdown
 let g:livedown_open = 1     " Open Browser on Preview
 let g:livedown_port = 1337  " Browser Port
 nnoremap <silent><F14> :LivedownPreview<CR>
+" }}}
+
+" vim-multiple-cursors {{{
+let g:multi_cursor_exit_from_visual_mode=0
+" }}}
+
+" vim-polyglot {{{
+" let g:polyglot_disabled = ['javascript']
 " }}}
 
 " vim-signify {{{
@@ -1113,20 +1108,27 @@ let g:signify_sign_changedelete      = '*'
 " }}}
 
 " YouCompleteMe {{{
-" autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
-" nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-" " let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
-" let g:ycm_collect_identifiers_from_comments_and_strings=1
-" let g:ycm_collect_identifiers_from_tags_files=1
-" " let g:ycm_filepath_completion_use_working_dir = 1
-" let g:ycm_add_preview_to_completeopt=1
-" let g:ycm_autoclose_preview_window_after_completion=1
-" let g:ycm_complete_in_comments=1
-" let g:ycm_complete_in_strings=1
-" let g:ycm_use_ultisnips_completer=1
-" " pyenv
-" let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-" let g:ycm_python_binary_path = '/usr/local/bin/python'
+autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
+let g:ycm_key_list_select_completion = ['<TAB>']
+let g:ycm_key_list_previous_completion = ['<S-TAB>']
+let g:ycm_key_list_stop_completion = ['<C-y>', '<UP>', '<DOWN>']
+let g:ycm_collect_identifiers_from_comments_and_strings=1
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_add_preview_to_completeopt=1
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings=1
+let g:ycm_use_ultisnips_completer=1
+let g:ycm_show_diagnostics_ui=1 " Disable to use ALE
+" let g:ycm_min_num_of_chars_for_completion=3
+" let g:ycm_min_num_identifier_candidate_chars=3
+" let g:ycm_auto_trigger=0
+" pyenv
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1136,34 +1138,27 @@ let g:signify_sign_changedelete      = '*'
 "-------------------------------------------------------------------------------
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
-
 " airline doesn't behave when set before Vundle:Config
-" colorscheme base16-oceanicnext
 let g:solarized_termtrans=1
 let g:solarized_term_italics=1
-
-" let s:fmColorSchemeDark='base16-eighties'
-" let s:fmColorSchemeLight='base16-eighties'
-" let s:fmColorSchemeDark='base16-materia'
-" let s:fmColorSchemeLight='base16-materia'
-" let s:fmColorSchemeDark='base16-oceanicnext'
-let s:fmColorSchemeDark='solarized8_dark_high'
-
-" let s:fmColorSchemeLight='base16-oceanicnext'
-" let s:fmColorSchemeLight='base16-solarized-light'
+" let s:fmColorSchemeDark='solarized8_dark_high'
 let s:fmColorSchemeLight='solarized8_light'
 
-" nnoremap  <leader>B :<c-u>exe 'colors' (g:colors_name =~# 'dark'
-    " \ ? substitute(g:colors_name, 'dark', 'light', '')
-    " \ : substitute(g:colors_name, 'light', 'dark', '')
-    " \ )<cr>
+colorscheme OceanicNext
+let s:fmColorSchemeDark='OceanicNext'
+" let s:fmColorSchemeLight='OceanicNext'
+let g:airline_theme='oceanicnext'
+let g:oceanic_next_terminal_bold = 1
+let g:oceanic_next_terminal_italic = 1
 
 " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
 if $ITERM_PROFILE == 'Night'
     set background=dark
+    let g:airline_theme='oceanicnext'
     execute 'colorscheme '.s:fmColorSchemeDark
 else
     set background=light
+    let g:airline_theme='solarized'
     execute 'colorscheme '.s:fmColorSchemeLight
 endif
 
@@ -1175,7 +1170,7 @@ function! s:ToggleBackground()
 endfunction
 
 command! ToggleBg call s:ToggleBackground()
-nnoremap <leader>bg :ToggleBg<CR> 
+nnoremap <leader>bg :ToggleBg<CR>
 
 "-------------------------------------------------------------------------------
 " }}}
