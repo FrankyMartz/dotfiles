@@ -99,10 +99,8 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
-set omnifunc=csscomplete#CompleteCSS
-
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog='/usr/local/opt/python@2/bin/python2'
+let g:python3_host_prog='/usr/local/opt/python@3/bin/python3'
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -116,7 +114,7 @@ set termencoding=utf-8          " Encoding used for the terminal
 set fileformat=unix
 
 " Save when losing focus
-autocmd FocusLost * :silent! wall
+au FocusLost * :silent! wa
 
 set undofile
 set backup                              " Enable Backups
@@ -175,16 +173,23 @@ set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 " => Mapping {{{
 "-------------------------------------------------------------------------------
 " Navigation - Buffer
-map <c-h> <c-w>h
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-l> <c-w>l
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
 
 " Buffer Horizontal Navigation
-nnoremap ˙ z30h
-nnoremap ¬ z30l
-" nnoremap <m-H> z20h
-" nnoremap <m-L> z20l
+nnoremap <ScrollWheelLeft> 20zh
+nnoremap <ScrollWheelRigth> 20zl
+imap <ScrollWheelLeft> <Left>
+imap <ScrollWheelRight> <Right>
+" nnoremap ˙ z30h
+" nnoremap ¬ z30l
+" nnoremap <M-h> 20zh
+" nnoremap <M-l> 20zl
+" nnoremap ˍ 20zh
+" nnoremap - 20zl
+
 
 " Switch (previous,next) Buffer
 nmap <leader>kk :bnext<CR>
@@ -316,6 +321,7 @@ augroup ft_css
     au BufNewFile,BufRead *.sass setlocal filetype=sass
     au BufNewFile,BufRead *.less setlocal filetype=less
     au BufNewFile,BufRead *.styl setlocal filetype=stylus
+    au FileType css set omnifunc=csscomplete#CompleteCSS
 
     " au FileType less UltiSnipsAddFiletypes less.css
     au FileType scss,sass,less,css setlocal foldmethod=marker foldmarker={,}
@@ -374,6 +380,7 @@ augroup END
 augroup ft_html
     au!
     au FileType html setlocal ts=2 sts=2 sw=2 expandtab
+    au FileType html UltiSnipsAddFiletypes html.css.javascript
 augroup END
 " }}}
 
@@ -397,7 +404,8 @@ augroup ft_javascript
     au FileType javascript.spec UltiSnipsAddFiletypes javascript.javascript-jasmine
     au FileType javascript setlocal foldmethod=syntax
     " au FileType javascript setlocal foldmethod=marker foldmarker={,}
-    au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+    " au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 augroup END
 " }}}
 
@@ -589,7 +597,9 @@ endif
 " set guifont=Menlo:h11
 "set guifont=hack:h11
 
-"set synmaxcol=500              " Don't highlight lines longer than
+autocmd BufEnter * :syntax sync fromstart
+
+set synmaxcol=0                 " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 " Prevent Location List color column and numbers
 au FileType qf setlocal nonumber colorcolumn=
@@ -614,10 +624,11 @@ au FileType qf setlocal nonumber colorcolumn=
 
 " Ack {{{
 if executable('rg')
-  let g:ackprg = 'rg --color=never --column'
+  " let g:ackprg = 'rg --color=never --column'
+  let g:ackprg = 'rg --vimgrep'
 elseif executable('ag')
-    " let g:ackprg = 'ag --vimgrep'
-    let g:ackprg = 'ag --nogroup --nocolor --column'
+    let g:ackprg = 'ag --vimgrep'
+    " let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 
 " let g:ackhighlight = 1
@@ -642,7 +653,7 @@ let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 140,
     \ 'x': 140,
     \ 'y': 140,
-    \ }
+\ }
 " Ale
 let g:airline#extensions#ale#enabled = 1
 " base16
@@ -693,12 +704,13 @@ let g:ale_change_sign_column_color = 1
 let g:ale_open_list = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'go': ['gometalinter', 'gofmt'],
-\}
+    \ 'javascript': ['eslint', 'standard'],
+    \ 'go': ['gometalinter', 'gofmt'],
+    \ 'html': [],
+\ }
 let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\}
+    \ 'javascript': ['eslint'],
+\ }
 let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_go_gometalinter_options = '--fast'
 nmap <leader>ek <Plug>(ale_previous_wrap)
@@ -756,24 +768,54 @@ nnoremap <leader>ig :IndentLinesToggle<CR>
 
 " javascript-libraries-syntax {{{
 let g:used_javascript_libs = join([
-            \ 'angularjs',
-            \ 'angularui',
-            \ 'angularuirouter',
-            \ 'backbone',
-            \ 'chai',
-            \ 'd3',
-            \ 'flux',
-            \ 'handlebars',
-            \ 'jasmine',
-            \ 'jquery',
-            \ 'prelude',
-            \ 'ramda',
-            \ 'react',
-            \ 'requirejs',
-            \ 'sugar',
-            \ 'underscore',
-            \ 'vue'
-            \ ], ',') 
+    \ 'angularjs',
+    \ 'angularui',
+    \ 'angularuirouter',
+    \ 'backbone',
+    \ 'chai',
+    \ 'd3',
+    \ 'flux',
+    \ 'handlebars',
+    \ 'jasmine',
+    \ 'jquery',
+    \ 'prelude',
+    \ 'ramda',
+    \ 'react',
+    \ 'requirejs',
+    \ 'sugar',
+    \ 'underscore',
+    \ 'vue'
+\ ], ',') 
+" }}}
+
+" Neotags.nvim {{{
+let g:neotags_enabled = 1
+let g:neotags_ignore = [
+    \ 'html',
+    \ 'text',
+    \ 'nofile',
+    \ 'mail',
+    \ 'qf',
+\ ]
+" set regexpengine=1
+" Utilize RipGrep
+let g:neotags_highlight = 1
+let g:neotags_appendpath = 0
+let g:neotags_recursive = 1
+" let g:neotags_ctags_args = [
+    " \ '-L -',
+    " \ '--fields=+l',
+    " \ '--c-kinds=+p',
+    " \ '--c++-kinds=+p',
+    " \ '--sort=no',
+    " \ '--extra=+q'
+" \ ]
+
+" Or this one for ripgrep. Not both.
+"/usr/local/bin/ctags
+" let g:neotags_ctags_bin = 'rg --files '. getcwd() .' | /usr/local/bin/ctags'
+" let g:neotags_verbose = 1
+let g:neotags_find_tool = 'rg --files'
 " }}}
 
 " NERDTree {{{
@@ -788,10 +830,11 @@ let NERDTreeMouseMode=2
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 let NERDTreeCascadeSingleChildDir=0
-let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
-                        \ 'xapian_index', '.*.pid', 'monitor.py',
-                        \ '.*-fixtures-.*.json', '.*\.o$', 'db.db', 'tags', 'tags.bak',
-                        \ '.*\.pdf$', '.*\.mid$', '.*\.midi$']
+let NERDTreeIgnore = [
+    \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
+    \ '.*.pid', 'monitor.py', '.DS_Store', '.*-fixtures-.*.json', '.*\.o$',
+    \ 'db.db', 'tags', 'tags.bak', '.*\.pdf$', '.*\.mid$', '.*\.midi$'
+\ ]
 " }}}
 
 " NERDTree Commentor {{{
@@ -811,11 +854,10 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "",
     \ 'Ignored'   : ' ',
     \ "Unknown"   : ""
-    \ }
+\ }
 " }}}
 
 " PromptLine {{{
-" let g:promptline_theme = 'airline_visual'
 let g:promptline_powerline_symbols = 1
 let g:promptline_preset = {
     \'a' : [ promptline#slices#cwd() ],
@@ -824,7 +866,8 @@ let g:promptline_preset = {
     \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
     \'y' : [ promptline#slices#python_virtualenv() ],
     \'z' : [ promptline#slices#jobs() ],
-    \'warn' : [ promptline#slices#last_exit_code() ]}
+    \'warn' : [ promptline#slices#last_exit_code() ]
+\ }
 " }}}
 
 " Surround {{{
@@ -868,74 +911,99 @@ let g:tagbar_type_go = {
 \ }
 
 let g:tagbar_type_css = {
-\  'ctagstype' : 'css',
-\  'kinds' : [
-\    'v:variables',
-\    'c:classes',
-\    'i:identities',
-\    't:tags',
-\    'm:medias'
-\  ],
-\ 'deffile' : expand(defdir) . 'css.cnf'
+    \ 'ctagstype' : 'css',
+    \ 'kinds' : [
+        \ 'v:variables',
+        \ 'c:classes',
+        \ 'i:identities',
+        \ 't:tags',
+        \ 'm:medias'
+    \ ],
+    \ 'deffile' : expand(defdir) . 'css.cnf'
 \}
 
 let g:tagbar_type_less = {
-\  'ctagstype' : 'less',
-\  'kinds' : [
-\    'v:variable',
-\    'c:class',
-\    'i:id',
-\    't:tag',
-\    'm:media'
-\  ],
-\ 'deffile' : expand(defdir) . 'less.cnf'
-\}
+    \ 'ctagstype' : 'less',
+    \ 'kinds' : [
+        \ 'v:variable',
+        \ 'c:class',
+        \ 'i:id',
+        \ 't:tag',
+        \ 'm:media'
+    \ ],
+    \ 'deffile' : expand(defdir) . 'less.cnf'
+\ }
 
 let g:tagbar_type_scss = {
-\  'ctagstype' : 'scss',
-\  'kinds' : [
-\    'm:mixins',
-\    'v:variables',
-\    'c:classes',
-\    'i:identities',
-\    't:tags',
-\    'd:medias'
-\  ],
-\ 'deffile' : expand(defdir) . 'scss.cnf'
-\}
+    \ 'ctagstype' : 'scss',
+    \ 'kinds' : [
+        \ 'm:mixins',
+        \ 'v:variables',
+        \ 'c:classes',
+        \ 'i:identities',
+        \ 't:tags',
+        \ 'd:medias'
+    \ ],
+    \ 'deffile' : expand(defdir) . 'scss.cnf'
+\ }
 
 let g:tagbar_type_typescript = {
-  \ 'ctagsbin' : 'tstags',
-  \ 'ctagsargs' : '-f-',
-  \ 'kinds': [
-    \ 'e:enums:0:1',
-    \ 'f:function:0:1',
-    \ 't:typealias:0:1',
-    \ 'M:Module:0:1',
-    \ 'I:import:0:1',
-    \ 'i:interface:0:1',
-    \ 'C:class:0:1',
-    \ 'm:method:0:1',
-    \ 'p:property:0:1',
-    \ 'v:variable:0:1',
-    \ 'c:const:0:1',
-  \ ],
-  \ 'sort' : 0
+    \ 'ctagstype' : 'typescript',
+    \ 'kinds': [
+        \ 'e:enums:0:1',
+        \ 'f:function:0:1',
+        \ 't:typealias:0:1',
+        \ 'M:Module:0:1',
+        \ 'I:import:0:1',
+        \ 'i:interface:0:1',
+        \ 'C:class:0:1',
+        \ 'm:method:0:1',
+        \ 'p:property:0:1',
+        \ 'v:variable:0:1',
+        \ 'c:const:0:1',
+    \ ],
+    \ 'sort' : 0,
+    \ 'deffile' : expand(defdir) . 'typescript.cnf'
+\ }
+
+let g:tagbar_type_js = {
+    \ 'ctagstype' : 'js',
+    \ 'kinds' : [
+        \ 't:tag',
+        \ 'i:import',
+        \ 'v:variable',
+        \ 'a:array',
+        \ 'c:class',
+        \ 'c:class',
+        \ 'f:function',
+        \ 'g:generator',
+        \ 'm:method',
+        \ 'p:property',
+        \ 'o:object',
+        \ 'e:export',
+    \ ],
+    \ 'deffile' : expand(defdir) . 'js.cnf'
 \ }
 " }}}
 
-" UltiSnips {{{
-let g:UltiSnipsUsePythonVersion=3
-let g:UltiSnipsExpandTrigger='<c-K>'
-let g:UltiSnipsJumpForwardTrigger='<c-K>'
-let g:UltiSnipsJumpBackwardTrigger='<c-J>'
-" }}}
-
 " vim-devicon {{{
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+let g:webdevicons_enable=1
+let g:webdevicons_enable_nerdtree=1
+let g:webdevicons_enable_airline_tabline=1
+let g:webdevicons_enable_airline_statusline=1
+let g:webdevicons_enable_ctrlp=1
+
+let g:WebDevIconsUnicodeGlyphDoubleWidth=1
+let g:webdevicons_conceal_nerdtree_brackets=1
+let g:WebDevIconsNerdTreeAfterGlyphPadding=' '
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+
+let g:WebDevIconsUnicodeDecorateFolderNodes=1
+let g:DevIconsEnableFoldersOpenClose=1
+let g:DevIconsEnableFolderPatternMatching=1
+let g:DevIconsEnableFolderExtensionPatternMatching=0
+let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
+
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = '' "   
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
@@ -1028,15 +1096,19 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
-let g:gutentags_ctags_executable_javascript = 'jsctags'
-let g:gutentags_ctags_executable_typescript = 'tstags'
+" let g:gutentags_ctags_executable_javascript = 'jsctags'
+" let g:gutentags_ctags_executable_javascript = 'ctags'
+" let g:gutentags_ctags_executable_typescript = 'tstags'
 " }}}
 
 " vim-javascript {{{
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
-let g:javascript_fold = 0
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
 let g:javascript_conceal_function             = "ƒ"
 let g:javascript_conceal_null                 = "ø"
 let g:javascript_conceal_this                 = "@"
@@ -1051,10 +1123,9 @@ let g:javascript_conceal_arrow_function       = "⇒"
 
 " vim-js-pretty-template {{{
 " Register tag name associated the filetype
-" call jspretmpl#register_tag('gql', 'graphql')
+autocmd! User vim-js-pretty-template call jspretmpl#register_tag('gql', 'graphql')
 autocmd FileType javascript JsPreTmpl html
-autocmd FileType typescript JsPreTmpl html
-autocmd FileType typescript syn clear foldBraces
+autocmd FileType typescript JsPreTmpl markdown
 " }}}
 
 " vim-jsdoc {{{
@@ -1083,7 +1154,7 @@ let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-polyglot {{{
-" let g:polyglot_disabled = ['javascript']
+let g:polyglot_disabled = ['javascript', 'typescript']
 " }}}
 
 " vim-signify {{{
@@ -1107,6 +1178,17 @@ let g:signify_sign_change            = '~'
 let g:signify_sign_changedelete      = '*'
 " }}}
 
+" vim-signature {{{
+let g:SignatureMarkerTextHLDynamic = 1
+" }}}
+
+" UltiSnips {{{
+let g:UltiSnipsUsePythonVersion=3
+let g:UltiSnipsExpandTrigger='<c-K>'
+let g:UltiSnipsJumpForwardTrigger='<c-K>'
+let g:UltiSnipsJumpBackwardTrigger='<c-J>'
+" }}}
+
 " YouCompleteMe {{{
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -1127,8 +1209,8 @@ let g:ycm_show_diagnostics_ui=1 " Disable to use ALE
 " let g:ycm_min_num_identifier_candidate_chars=3
 " let g:ycm_auto_trigger=0
 " pyenv
-let g:ycm_path_to_python_interpreter = '/usr/local/bin/python3'
-let g:ycm_python_binary_path = '/usr/local/bin/python3'
+let g:ycm_path_to_python_interpreter = '/usr/local/opt/python@3/bin/python3'
+let g:ycm_python_binary_path = '/usr/local/opt/python@3/bin/python3'
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1139,28 +1221,27 @@ let g:ycm_python_binary_path = '/usr/local/bin/python3'
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let g:solarized_termtrans=1
-let g:solarized_term_italics=1
-" let s:fmColorSchemeDark='solarized8_dark_high'
-let s:fmColorSchemeLight='solarized8_light'
-
-colorscheme OceanicNext
 let s:fmColorSchemeDark='OceanicNext'
-" let s:fmColorSchemeLight='OceanicNext'
-let g:airline_theme='oceanicnext'
-let g:oceanic_next_terminal_bold = 1
-let g:oceanic_next_terminal_italic = 1
+let s:fmColorSchemeLight = 'solarized8'
 
-" $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
-if $ITERM_PROFILE == 'Night'
-    set background=dark
-    let g:airline_theme='oceanicnext'
-    execute 'colorscheme '.s:fmColorSchemeDark
-else
-    set background=light
-    let g:airline_theme='solarized'
-    execute 'colorscheme '.s:fmColorSchemeLight
-endif
+function! s:setColorScheme()
+    " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
+    if $ITERM_PROFILE == 'Night'
+        set background=dark
+        let g:airline_theme='oceanicnext'
+        let g:oceanic_next_terminal_bold = 1
+        let g:oceanic_next_terminal_italic = 1
+        execute 'colorscheme '.s:fmColorSchemeDark
+    else
+        set background=light
+        let g:airline_theme = 'solarized'
+        let g:solarized_termtrans = 1
+        let g:solarized_term_italics = 1
+        let g:solarized_enable_extra_hi_groups = 1
+        execute 'colorscheme '.s:fmColorSchemeLight
+    endif
+endfunction
+call s:setColorScheme()
 
 function! s:ToggleBackground()
     let fmShade = &background == 'dark' ? 'light' : 'dark'

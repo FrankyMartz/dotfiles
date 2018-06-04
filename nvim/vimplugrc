@@ -10,6 +10,10 @@ if empty(glob('~/.nvim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall
 endif
 
+function! UpdateRemote(arg)
+    UpdateRemotePlugins
+endfunction
+
 " YouCompleteMe {{{
 function! BuildYCM(info)
     " info is a dictionary with 3 fields
@@ -21,6 +25,19 @@ function! BuildYCM(info)
     endif
 endfunction
 " }}}
+
+" vim-markdown-composer {{{
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+" }}}
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.nvim/bundle')
@@ -38,12 +55,14 @@ Plug 'easymotion/vim-easymotion'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
 Plug 'direnv/direnv.vim'
+Plug 'keith/investigate.vim'
 
 " Window
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'ludovicchabant/vim-gutentags'
-" Plug 'c0r73x/neotags.nvim'
+Plug 'universal-ctags/ctags'
+" Plug 'ludovicchabant/vim-gutentags'
+Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
@@ -61,6 +80,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
 " Plug 'cyansprite/Extract'
 Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
+Plug 'brettanomyces/nvim-editcommand'
+Plug 'rliang/termedit.nvim'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
@@ -78,6 +99,7 @@ Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 
 " >> HTML
 Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
+" Plug  'webdesus/polymer-ide.vim', { 'do': 'npm install' }
 
 " >> CSS
 Plug 'ap/vim-css-color'
@@ -88,23 +110,25 @@ Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> JavaScript
-" Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-" Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx', 'coffeescript', 'coffee'] }
 " Plug 'hushicai/tagbar-javascript.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
-" Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'facebook/vim-flow', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'neoclide/vim-jsx-improve', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
-Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'md'] }
+" Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'md'] }
 Plug 'ajorgensen/vim-markdown-toc', { 'for': ['markdown', 'md'] }
-Plug 'shime/vim-livedown', { 'for': ['markdown', 'md'] }
+" Plug 'shime/vim-livedown', { 'for': ['markdown', 'md'] }
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': ['markdown', 'md'] }
 
 " >> PHP
 " Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
@@ -126,6 +150,7 @@ Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
 Plug 'lifepillar/vim-solarized8'
 Plug 'mhartington/oceanic-next'
 " Plug 'morhetz/gruvbox'
+" Plug 'arcticicestudio/nord-vim'
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'

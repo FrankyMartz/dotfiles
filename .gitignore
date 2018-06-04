@@ -13,6 +13,8 @@ nvim/bundle/
 nvim/tmp/
 nvim/spell/
 nvim/.netrwhist
+nvim/nvim/
+
 
 # Environment
 .env
