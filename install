@@ -4,23 +4,20 @@
 # Prepare Apple Mac with essentials
 #
 # Author:   Franky Martinez <frankymartz@gmail.com>
-# Version:  0.1.0
 ################################################################################
-set -e -u
+set -e -u;
 
 # TimeStamp Everything!
-date +"(%a) %b %d, %Y [%Z] %r"
-
+date +"(%a) %b %d, %Y [%Z] %r";
 
 #===============================================================================
 # GLOBALS
 #===============================================================================
-readonly _PWD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-readonly _BIN="${PWD}/bin"
+readonly _PWD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
+readonly _BIN="${PWD}/bin";
 
-# Import Tools -----------------------------------------------------------------
-source ./src/utils.sh
-
+# Utility ----------------------------------------------------------------------
+source "./utility/console.sh";
 
 #===============================================================================
 # VERIFY USER ROOT PERMISSION.
@@ -34,11 +31,11 @@ source ./src/utils.sh
 #===============================================================================
 # VERIFY DIRECTORY STRUCTURE
 #===============================================================================
-cLog "==> Validating \"./bin\" Directory..."
+cLog "==> Validating \"./bin\" Directory...";
 
-[[ -d "$_BIN/python" ]] || mkdir -p "$_BIN/python"
+[[ -d "$_BIN/python" ]] || mkdir -p "$_BIN/python";
 
-cLog "==> Validate \"./bin\" Directory...DONE" 1
+cLog "==> Validate \"./bin\" Directory...DONE" 1;
 
 
 #===============================================================================
@@ -46,14 +43,17 @@ cLog "==> Validate \"./bin\" Directory...DONE" 1
 #===============================================================================
 
 # BASH -------------------------------------------------------------------------
-source ./bash/install_bash.sh
+source ./bash/install_bash.sh;
+
+# ZSH --------------------------------------------------------------------------
+source ./zsh/install_zshell.sh;
 
 # BASE -------------------------------------------------------------------------
-source ./src/install_base.sh
+source ./src/install_base.sh;
 
 # GIT --------------------------------------------------------------------------
-source ./git/install_git.sh
+source ./git/install_git.sh;
 
 # NEOVIM -----------------------------------------------------------------------
-source ./nvim/install_neovim.sh
+source ./nvim/install_neovim.sh;
 
