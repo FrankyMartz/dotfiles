@@ -151,6 +151,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'mhartington/oceanic-next'
 " Plug 'morhetz/gruvbox'
 " Plug 'arcticicestudio/nord-vim'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'

@@ -989,9 +989,11 @@ let g:tagbar_type_js = {
 " vim-devicon {{{
 let g:webdevicons_enable=1
 let g:webdevicons_enable_nerdtree=1
+let g:webdevicons_enable_vimfiler = 1
 let g:webdevicons_enable_airline_tabline=1
 let g:webdevicons_enable_airline_statusline=1
 let g:webdevicons_enable_ctrlp=1
+let g:webdevicons_enable_flagship_statusline = 1
 
 let g:WebDevIconsUnicodeGlyphDoubleWidth=1
 let g:webdevicons_conceal_nerdtree_brackets=1
@@ -1009,6 +1011,13 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*service.*\.ts$'] = '' 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
+
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\(-lock\)\?\.json'] = ''  
+" TODO: Validate REGEX in Assignment
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\(\..\+\)\?\.json'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\(tslint\|eslint\)\.json'] = '' 
+
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\.map$'] = '慎' 
 " }}}
 
 " vim-delve {{{
@@ -1151,6 +1160,10 @@ nnoremap <silent><F14> :LivedownPreview<CR>
 
 " vim-multiple-cursors {{{
 let g:multi_cursor_exit_from_visual_mode=0
+" }}}
+
+" vim-nerdtree-syntax-highlight {{{
+" let g:NERDTreeFileExtensionHighlightFullName = 1
 " }}}
 
 " vim-polyglot {{{
