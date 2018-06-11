@@ -131,6 +131,7 @@ install "python";
 install "pipenv";
 install "pyenv";
 install "pyenv-virtualenvwrapper";
+install "pipenv"
 
 # Languege: Ruby ---------------------------------------------------------------
 install "ruby";
