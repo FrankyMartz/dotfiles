@@ -644,8 +644,8 @@ let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
 let g:airline_detect_spell=1
 let g:airline_inactive_collapse=1
-let g:airline_skip_empty_sections = 1
-let g:airline_highlighting_cache = 1
+let g:airline_skip_empty_sections=1
+let g:airline_highlighting_cache=1
 let g:airline_powerline_fonts=1
 let g:airline_exclude_preview=1
 let g:airline_section_y = airline#section#create_right(['ffenc','gutentags#statusline()'])
@@ -654,44 +654,45 @@ let g:airline#extensions#default#section_truncate_width = {
     \ 'x': 140,
     \ 'y': 140,
 \ }
-" Ale
-let g:airline#extensions#ale#enabled = 1
-" base16
-let g:airline_base16_improved_contrast = 1
-let g:airline#themes#base16#constant = 1
-" Git
-let g:airline#extensions#branch#format = 1
-" Promptline
-let g:airline#extensions#promptline#snapshot_file = '~/.dotfiles/bin/.shell_prompt.sh'
-let g:airline#extensions#promptline#enabled = 0
-let g:airline#extensions#windowswap#enabled = 1
-" Windowswap
-let g:airline#extensions#windowswap#indicator_text = 'WS'
-" vim-ctrlspace
-let g:airline#extensions#ctrlspace#enabled = 1
-let g:CtrlSpaceStatuslineFunction = 'airline#extensions#ctrlspace#statusline()'
-" YouCompleteMe
-let g:airline#extensions#ycm#enabled = 1
-" Hunks -  vim-signify
-let g:airline#extensions#hunks#enabled = 1
-let g:airline#extensions#hunks#non_zero_only = 0
-let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-" Whitespace
-let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#whitespace#checks = [ 'indent', 'trailing', 'long', 'mixed-indent-file' ]
-let g:airline#extensions#whitespace#max_lines = 20000
-let g:airline#extensions#whitespace#show_message = 1
-let g:airline#extensions#whitespace#trailing_format = 'trailing[%s]'
-let g:airline#extensions#whitespace#mixed_indent_format = 'mixed-indent[%s]'
-let g:airline#extensions#whitespace#long_format = 'long[%s]'
-let g:airline#extensions#whitespace#mixed_indent_file_format = 'mix-indent-file[%s]'
-let airline#extensions#c_like_langs = ['c', 'cpp', 'cuda', 'go', 'javascript', 'ld', 'php']
-" tabline
+" Ale --------------------------------------------------------------------------
+let g:airline#extensions#ale#enabled=1
+" Base16 -----------------------------------------------------------------------
+" let g:airline_base16_improved_contrast=1
+" let g:airline#themes#base16#constant=1
+" Git --------------------------------------------------------------------------
+let g:airline#extensions#branch#format=1
+" PromptLine -------------------------------------------------------------------
+let g:airline#extensions#promptline#snapshot_file='~/.dotfiles/bin/.shell_prompt.sh'
+let g:airline#extensions#promptline#enabled=0
+let g:airline#extensions#windowswap#enabled=1
+" WindowSwap -------------------------------------------------------------------
+let g:airline#extensions#windowswap#indicator_text='WS'
+" YouCompleteMe ----------------------------------------------------------------
+let g:airline#extensions#ycm#enabled=1
+" Vim-Signify ------------------------------------------------------------------
+let g:airline#extensions#hunks#enabled=1
+let g:airline#extensions#hunks#non_zero_only=0
+let g:airline#extensions#hunks#hunk_symbols=['+', '~', '-']
+" WhiteSpace -------------------------------------------------------------------
+let g:airline#extensions#whitespace#enabled=1
+let g:airline#extensions#whitespace#checks=[ 'indent', 'trailing', 'long', 'mixed-indent-file' ]
+let g:airline#extensions#whitespace#max_lines=20000
+let g:airline#extensions#whitespace#show_message=1
+let g:airline#extensions#whitespace#trailing_format='trailing[%s]'
+let g:airline#extensions#whitespace#mixed_indent_format='mixed-indent[%s]'
+let g:airline#extensions#whitespace#long_format='long[%s]'
+let g:airline#extensions#whitespace#mixed_indent_file_format='mix-indent-file[%s]'
+let airline#extensions#c_like_langs=['c', 'cpp', 'cuda', 'go', 'javascript', 'typescript', 'ld', 'php']
+" vim-ctrlspace ----------------------------------------------------------------
+let g:CtrlSpaceUseTabline=0
+let g:airline#extensions#ctrlspace#enabled=1
+let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
+" TabLine ----------------------------------------------------------------------
 let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
-let g:airline#extensions#tabline#buffer_min_count=2
+let g:airline#extensions#tabline#buffer_min_count=1
 let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline#extensions#tabline#switch_buffers_and_tabs=1
-let g:airline#extensions#tabline#exclude_preview = 1
+" let g:airline#extensions#tabline#switch_buffers_and_tabs=1
+let g:airline#extensions#tabline#exclude_preview=1
 let g:airline#extensions#tabline#left_sep=''
 let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
 " }}}
@@ -950,17 +951,17 @@ let g:tagbar_type_scss = {
 let g:tagbar_type_typescript = {
     \ 'ctagstype' : 'typescript',
     \ 'kinds': [
-        \ 'e:enums:0:1',
-        \ 'f:function:0:1',
-        \ 't:typealias:0:1',
-        \ 'M:Module:0:1',
-        \ 'I:import:0:1',
+        \ 'n:namespace:0:1',
+        \ 'm:module:0:1',
+        \ 'c:class:0:1',
+        \ 'a:abstractclass:0:1',
+        \ 't:type:0:1',
         \ 'i:interface:0:1',
-        \ 'C:class:0:1',
-        \ 'm:method:0:1',
-        \ 'p:property:0:1',
+        \ 'e:enum:0:1',
         \ 'v:variable:0:1',
-        \ 'c:const:0:1',
+        \ 'f:function:0:1',
+        \ 'l:lambda:0:1',
+        \ 'p:member:0:1',
     \ ],
     \ 'sort' : 0,
     \ 'deffile' : expand(defdir) . 'typescript.cnf'
@@ -1007,10 +1008,12 @@ let g:DevIconsEnableFolderExtensionPatternMatching=0
 let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
+" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = '' "   
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*service.*\.ts$'] = '' 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
+"    簾
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\(-lock\)\?\.json'] = ''  
 " TODO: Validate REGEX in Assignment
@@ -1036,6 +1039,7 @@ endif
 " }}}
 
 " vim-ctrlspace {{{
+" let g:CtrlSpaceSetDefaultMapping=0
 let s:aCtrlSpaceCacheDir='~/.nvim/tmp/ctrlspace//'
 if !isdirectory(expand(s:aCtrlSpaceCacheDir))
     call mkdir(expand(s:aCtrlSpaceCacheDir), 'p')
@@ -1044,10 +1048,10 @@ let g:CtrlSpaceCacheDir = expand(s:aCtrlSpaceCacheDir)
 " let g:CtrlSpaceSearchTiming = 0
 " [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
 nmap <c-space> <nul>
-let g:CtrlSpaceUseMouseAndArrowsInTerm = 1
-let g:CtrlSpaceLoadLastWorkspaceOnStart = 1
-let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
-let g:CtrlSpaceSaveWorkspaceOnExit = 1
+let g:CtrlSpaceUseMouseAndArrowsInTerm=1
+let g:CtrlSpaceLoadLastWorkspaceOnStart=1
+let g:CtrlSpaceSaveWorkspaceOnSwitch=1
+let g:CtrlSpaceSaveWorkspaceOnExit=1
 
 if executable('rg')
     let g:CtrlSpaceGlobCommand = 'rg -l --hidden --nocolor -g ""'
@@ -1235,7 +1239,7 @@ let g:ycm_python_binary_path = '/usr/local/opt/python@3/bin/python3'
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
 let s:fmColorSchemeDark='OceanicNext'
-let s:fmColorSchemeLight = 'solarized8'
+let s:fmColorSchemeLight = 'solarized8_high'
 
 function! s:setColorScheme()
     " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
@@ -1248,8 +1252,10 @@ function! s:setColorScheme()
     else
         set background=light
         let g:airline_theme = 'solarized'
+        let g:solarized_visibility = 'high'
         let g:solarized_termtrans = 1
         let g:solarized_term_italics = 1
+        let g:solarized_old_cursor_style=1
         let g:solarized_enable_extra_hi_groups = 1
         execute 'colorscheme '.s:fmColorSchemeLight
     endif

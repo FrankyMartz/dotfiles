@@ -65,7 +65,7 @@ Plug 'universal-ctags/ctags'
 Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+" Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
 Plug 'wesQ3/vim-windowswap'
 
@@ -123,6 +123,10 @@ Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascri
 " Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'neoclide/vim-jsx-improve', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 
+" >> TypeScript
+Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
+Plug 'jason0x43/vim-js-indent', { 'for': ['typescript', 'ts', 'tsx'] }
+
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
 " Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'md'] }
@@ -141,9 +145,6 @@ Plug 'jmcantrell/vim-virtualenv'
 " >> GoLang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'sebdah/vim-delve', { 'for': 'go' }
-
-" >> TypeScript
-Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
 
 " Color and Font
 " Plug 'chriskempson/base16-vim'

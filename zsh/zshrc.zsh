@@ -43,7 +43,10 @@ unsetopt beep
 # ZPLUG
 #===============================================================================
 
-[[ -f "${DOTFILE_DIR}/zsh/zplug.zsh" ]] && source "${DOTFILE_DIR}/zsh/zplug.zsh";
+if [[ -f "${DOTFILE_DIR}/zsh/zplugrc.zsh" ]]; then
+    source "${DOTFILE_DIR}/zsh/zplugrc.zsh"
+    alias zplugrc='$EDITOR ~/.dotfiles/zsh/zplugrc.zsh' # Quick access to the ~/.zplugrc file
+fi
 
 #===============================================================================
 # Alias

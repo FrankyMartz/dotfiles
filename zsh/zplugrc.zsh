@@ -8,7 +8,7 @@
 
 export ZPLUG_HOME="${HOME}/.zplug";
 [[ -f "${ZPLUG_HOME}/init.zsh" ]] && source "${ZPLUG_HOME}/init.zsh";
-zplug clear;
+# zplug clear;
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
@@ -46,6 +46,7 @@ zplug "plugins/git-extras", from:oh-my-zsh;
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug "denysdovhan/spaceship-prompt", from:github, as:theme, use:spaceship.zsh;
 
+# SPACESHIP_PROMPT_ADD_NEWLINE=false
 SPACESHIP_CHAR_SUFFIX=" "; # 
 SPACESHIP_CHAR_SYMBOL=""; #       
 

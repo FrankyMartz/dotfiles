@@ -30,6 +30,9 @@ install "zsh-completion";
 # GNU Core
 #===============================================================================
 
+# GNU awk
+install "gawk"
+
 # GNU core utilities (those that come with OS X are outdated)
 install "coreutils";
 
