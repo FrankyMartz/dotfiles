@@ -18,7 +18,15 @@ DOTFILE_DIR="${HOME}/.dotfiles"
 
 export LANG=en_US.UTF-8
 
+# shellcheck source=/dev/null
+[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
+
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc";
+
+
+# iTerm Integration ------------------------------------------------------------
+# shellcheck source=/dev/null
+[[ -x "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh";
 
 #===============================================================================
 # Foundation
@@ -30,9 +38,6 @@ HISTSIZE=5000
 SAVEHIST=5000
 setopt appendhistory autocd extendedglob nomatch notify
 unsetopt beep
-
-# shellcheck source=/dev/null
-[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
 
 #===============================================================================
 # ZPLUG

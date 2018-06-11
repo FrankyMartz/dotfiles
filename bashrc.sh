@@ -74,10 +74,6 @@ if [[ -x "$(command -v fd)" ]]; then
     }
 fi
 
-# iTerm Integration ------------------------------------------------------------
-# shellcheck source=/dev/null
-# [[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash";
-
 # GNUpg ------------------------------------------------------------------------
 PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
 
@@ -93,7 +89,7 @@ export IRCSERVER="http://chat.freenode.net";
 #===============================================================================
 
 # PYTHON -----------------------------------------------------------------------
-PATH="/usr/local/opt/python@2/bin:$PATH"
+PATH="/usr/local/opt/python@2/bin:${PATH}"
 # PATH="/usr/local/opt/python/libexec/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 # Auto-Complete
@@ -132,6 +128,7 @@ fi
 #PATH="${PATH}:${HOME}/.composer/vendor/bin"
 
 # NodeJS -----------------------------------------------------------------------
+PATH="/Users/frankymartz/npm/bin:${PATH}"
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 

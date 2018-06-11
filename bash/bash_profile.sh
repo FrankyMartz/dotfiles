@@ -38,6 +38,10 @@ if [[ -x "$(command -v brew)" ]]; then
     [[ -f "${BREW_PREFIX}/etc/bash_completion" ]] && source "${BREW_PREFIX}/etc/bash_completion";
 fi
 
+# iTerm Integration ------------------------------------------------------------
+# shellcheck source=/dev/null
+[[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash";
+
 
 #===============================================================================
 # PROMPT LOOK

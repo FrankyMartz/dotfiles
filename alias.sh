@@ -11,13 +11,21 @@
 #===============================================================================
 
 # alias less='less --RAW-CONTROL-CHARS';
-export LESSOPEN="| $(which highlight) %s --out-format xterm256 --line-numbers --quiet --force --style solarized-light"
-export LESS=" -R"
-alias less='less -m -N -g -i -J --line-numbers --underline-special'
-alias more='less'
+__GET_LESS_THEME () {
+    local _ITERM_PROFILE_LIGHT="Light";
+    if [[ "$ITERM_PROFILE" == "$_ITERM_PROFILE_LIGHT" ]]; then
+        echo "solarized-light";
+    else
+        echo "solarized-dark";
+    fi
+}
+export LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
+export LESS=" -R";
+alias less='less -m -N -g -i -J --line-numbers --underline-special';
+alias more='less';
 
 # Use "highlight" in place of "cat"
-alias cat="highlight $1 --out-format xterm256 --line-numbers --quiet --force --style solarized-light"
+alias cat="highlight $1 --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
 
 alias la='ls -lAFh --color --group-directories-first'; # color-mode
 alias irc='screen -t 1 irssi';
