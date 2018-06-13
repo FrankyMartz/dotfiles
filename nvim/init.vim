@@ -172,6 +172,7 @@ set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 "-------------------------------------------------------------------------------
 " => Mapping {{{
 "-------------------------------------------------------------------------------
+
 " Navigation - Buffer
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
@@ -185,11 +186,10 @@ imap <ScrollWheelLeft> <Left>
 imap <ScrollWheelRight> <Right>
 " nnoremap ˙ z30h
 " nnoremap ¬ z30l
-" nnoremap <M-h> 20zh
-" nnoremap <M-l> 20zl
+nnoremap <M-h> 20zh
+nnoremap <M-l> 20zl
 " nnoremap ˍ 20zh
 " nnoremap - 20zl
-
 
 " Switch (previous,next) Buffer
 nmap <leader>kk :bnext<CR>
@@ -578,7 +578,7 @@ au TermOpen * setlocal nonumber norelativenumber
 "-------------------------------------------------------------------------------
 " => Plug-Vim {{{
 "-------------------------------------------------------------------------------
-source ~/.config/nvim/vimplugrc
+source ~/.config/nvim/vimplugrc.vim
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -1013,7 +1013,12 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*service.*\.ts$'] = '' 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
-"    簾
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
+
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = '' 
+"    簾  
+"   
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\(-lock\)\?\.json'] = ''  
 " TODO: Validate REGEX in Assignment

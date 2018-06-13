@@ -65,7 +65,7 @@ Plug 'universal-ctags/ctags'
 Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
-" Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'edkolev/promptline.vim'
 Plug 'wesQ3/vim-windowswap'
 
@@ -81,7 +81,8 @@ Plug 'tpope/vim-characterize'
 " Plug 'cyansprite/Extract'
 Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 Plug 'brettanomyces/nvim-editcommand'
-Plug 'rliang/termedit.nvim'
+" Plug 'rliang/termedit.nvim'
+Plug 'matze/vim-move'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
