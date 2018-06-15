@@ -4,6 +4,7 @@
 # Author:   Franky Martinez <frankymartz@gmail.com>
 # Version:  0.1.0
 ################################################################################
+
 bin/
 
 # Neovim
@@ -18,3 +19,6 @@ nvim/nvim/
 
 # Environment
 .env
+
+# ZSHELL
+zsh/zsh_plugins.sh
