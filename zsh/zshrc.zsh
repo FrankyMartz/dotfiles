@@ -40,13 +40,46 @@ setopt appendhistory autocd extendedglob nomatch notify
 unsetopt beep
 
 #===============================================================================
-# ZPLUG
+# ANTIBODY
 #===============================================================================
 
-if [[ -f "${DOTFILE_DIR}/zsh/zplugrc.zsh" ]]; then
-    source "${DOTFILE_DIR}/zsh/zplugrc.zsh"
-    alias zplugrc='$EDITOR ~/.dotfiles/zsh/zplugrc.zsh' # Quick access to the ~/.zplugrc file
-fi
+# HOTFIX: https://github.com/zsh-users/antigen/issues/593
+autoload -U is-at-least
+source "${HOME}/.dotfiles/zsh/zsh_plugins.sh"
+
+export BOOKMARKS_FILE="${DOTFILE_DIR}/bin/zsh_cd_bookmarks";
+
+# Package: AutoSuggestion ------------------------------------------------------
+
+ZSH_AUTOSUGGEST_USE_ASYNC=true;
+
+# SpaceShip-Prompt -------------------------------------------------------------
+
+# SPACESHIP_PROMPT_ADD_NEWLINE=false
+SPACESHIP_CHAR_SUFFIX=" "; # 
+SPACESHIP_CHAR_SYMBOL=""; #       
+
+# SPACESHIP_VI_MODE_SHOW=true;
+SPACESHIP_VI_MODE_PREFIX=" "; # [ 
+# SPACESHIP_VI_MODE_SUFFIX=" "; # ] 
+SPACESHIP_VI_MODE_INSERT="卑"; #  卑    
+SPACESHIP_VI_MODE_NORMAL="喝"; #  喝        
+SPACESHIP_VI_MODE_COLOR="cyan";
+
+
+SPACESHIP_GIT_SYMBOL=" ";
+SPACESHIP_GIT_STATUS_UNTRACKED="";
+SPACESHIP_GIT_STATUS_ADDED="●"; #  ● ✚
+SPACESHIP_GIT_STATUS_MODIFIED="";
+SPACESHIP_GIT_STATUS_RENAMED="➡"; #   
+SPACESHIP_GIT_STATUS_DELETED="";
+SPACESHIP_GIT_STATUS_STASHED="";
+SPACESHIP_GIT_STATUS_UNMERGED=" ";
+SPACESHIP_GIT_STATUS_AHEAD="⬆";
+SPACESHIP_GIT_STATUS_BEHIND="⬇";
+SPACESHIP_GIT_STATUS_DIVERGED=" ";
+
+spaceship_vi_mode_enable
 
 #===============================================================================
 # Alias
