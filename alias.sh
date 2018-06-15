@@ -20,7 +20,7 @@ __GET_LESS_THEME () {
     fi
 }
 export LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
-export LESS=" -R";
+# export LESS=" -R";
 alias less='less -m -N -g -i -J --line-numbers --underline-special';
 alias more='less';
 

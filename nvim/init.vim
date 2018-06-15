@@ -99,6 +99,8 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
+" let g:python3_host_prog='/usr/local/opt/pypy/bin/pypy'
+" let g:python3_host_prog='/usr/local/opt/pypy3/bin/pypy3'
 let g:python_host_prog='/usr/local/opt/python@2/bin/python2'
 let g:python3_host_prog='/usr/local/opt/python@3/bin/python3'
 
@@ -1231,8 +1233,10 @@ let g:ycm_show_diagnostics_ui=1 " Disable to use ALE
 " let g:ycm_min_num_identifier_candidate_chars=3
 " let g:ycm_auto_trigger=0
 " pyenv
-let g:ycm_path_to_python_interpreter = '/usr/local/opt/python@3/bin/python3'
-let g:ycm_python_binary_path = '/usr/local/opt/python@3/bin/python3'
+let g:ycm_path_to_python_interpreter='/usr/local/opt/python@3/bin/python3'
+let g:ycm_python_binary_path='/usr/local/opt/python@3/bin/python3'
+" let g:ycm_path_to_python_interpreter='/usr/local/opt/pypy3/bin/pypy3'
+" let g:ycm_python_binary_path='/usr/local/opt/pypy3/bin/pypy3'
 " }}}
 
 "-------------------------------------------------------------------------------

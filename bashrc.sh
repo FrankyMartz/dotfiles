@@ -89,6 +89,7 @@ export IRCSERVER="http://chat.freenode.net";
 #===============================================================================
 
 # PYTHON -----------------------------------------------------------------------
+
 PATH="/usr/local/opt/python@2/bin:${PATH}"
 # PATH="/usr/local/opt/python/libexec/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
@@ -106,6 +107,7 @@ if [[ -x "$(command -v pyenv-virtualenv-init)" ]]; then
 fi
 
 # GO-LANG ----------------------------------------------------------------------
+
 export GOROOT="/usr/local/opt/go/libexec";
 export GOPATH="${HOME}/go";
 # export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
@@ -113,6 +115,7 @@ PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 # PATH="${PATH}:${HOME}/go_appengine";
 
 # RBENV ------------------------------------------------------------------------
+
 ## Use Homebrew's directories rather than ~/.rbenv add to your profile
 export RBENV_ROOT="/usr/local/var/rbenv"
 export PATH="${RBENV_ROOT}/bin:${PATH}"
@@ -125,10 +128,16 @@ if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
 fi
 
 # PHP --------------------------------------------------------------------------
+
 #PATH="${PATH}:${HOME}/.composer/vendor/bin"
 
 # NodeJS -----------------------------------------------------------------------
+
 PATH="/Users/frankymartz/npm/bin:${PATH}"
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
+
+# Mono -------------------------------------------------------------------------
+
+export MONO_GAC_PREFIX="/usr/local"
 
