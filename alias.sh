@@ -11,7 +11,7 @@
 #===============================================================================
 
 # alias less='less --RAW-CONTROL-CHARS';
-__GET_LESS_THEME () {
+function __GET_LESS_THEME () {
     local _ITERM_PROFILE_LIGHT="Light";
     if [[ "$ITERM_PROFILE" == "$_ITERM_PROFILE_LIGHT" ]]; then
         echo "solarized-light";
@@ -35,7 +35,15 @@ alias chrome-canary='/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Goo
 
 alias pe='path-extractor';
 alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git st';
-alias pass-keygen="openssl rand -base64";
+# alias pass-keygen="openssl rand -base64";
+function genpw () {
+    local LENGTH=25
+    if [ ! -z "$1" ] && [ $1 -gt 1 ]; then
+        LENGTH=$1
+    fi
+    local NUMBYTES=`echo $LENGTH | awk '{print int($1*1.16)+1}'`
+    openssl rand -base64 $NUMBYTES | tr -d "=+/" | cut -c1-$LENGTH
+}
 
 #===============================================================================
 # Bind

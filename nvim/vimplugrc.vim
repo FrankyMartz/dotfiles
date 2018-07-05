@@ -61,8 +61,8 @@ Plug 'keith/investigate.vim'
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'universal-ctags/ctags'
-" Plug 'ludovicchabant/vim-gutentags'
-Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
+Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
+" Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
@@ -154,6 +154,7 @@ Plug 'mhartington/oceanic-next'
 " Plug 'morhetz/gruvbox'
 " Plug 'arcticicestudio/nord-vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'ayu-theme/ayu-vim'
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'

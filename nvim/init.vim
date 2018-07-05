@@ -589,7 +589,7 @@ source ~/.config/nvim/vimplugrc.vim
 "-------------------------------------------------------------------------------
 " => Color and Font {{{
 "-------------------------------------------------------------------------------
-"
+
 if has('termguicolors')
     set termguicolors               " Set True Colors in Terminal
 else
@@ -707,7 +707,7 @@ let g:ale_change_sign_column_color = 1
 let g:ale_open_list = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {
-    \ 'javascript': ['eslint', 'standard'],
+    \ 'javascript': ['standard'],
     \ 'go': ['gometalinter', 'gofmt'],
     \ 'html': [],
 \ }
@@ -817,7 +817,7 @@ let g:neotags_recursive = 1
 " Or this one for ripgrep. Not both.
 "/usr/local/bin/ctags
 " let g:neotags_ctags_bin = 'rg --files '. getcwd() .' | /usr/local/bin/ctags'
-" let g:neotags_verbose = 1
+let g:neotags_verbose = 1
 let g:neotags_find_tool = 'rg --files'
 " }}}
 
@@ -1116,6 +1116,9 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_project_root = ['.root']
+let g:gutentags_auto_add_gtags_cscope = 0
 " let g:gutentags_ctags_executable_javascript = 'jsctags'
 " let g:gutentags_ctags_executable_javascript = 'ctags'
 " let g:gutentags_ctags_executable_typescript = 'tstags'
@@ -1247,8 +1250,10 @@ let g:ycm_python_binary_path='/usr/local/opt/python@3/bin/python3'
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let s:fmColorSchemeDark='OceanicNext'
 let s:fmColorSchemeLight = 'solarized8_high'
+let s:fmColorSchemeDark='OceanicNext'
+" let g:ayucolor='light'
+" let s:fmColorSchemeLight='ayu'
 
 function! s:setColorScheme()
     " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
@@ -1260,12 +1265,15 @@ function! s:setColorScheme()
         execute 'colorscheme '.s:fmColorSchemeDark
     else
         set background=light
+        " let g:airline_theme = 'ayu'
+
         let g:airline_theme = 'solarized'
         let g:solarized_visibility = 'high'
         let g:solarized_termtrans = 1
         let g:solarized_term_italics = 1
         let g:solarized_old_cursor_style=1
         let g:solarized_enable_extra_hi_groups = 1
+
         execute 'colorscheme '.s:fmColorSchemeLight
     endif
 endfunction

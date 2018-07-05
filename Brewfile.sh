@@ -100,7 +100,11 @@ install "mercurial";
 install "neovim";
 
 # Utility: ctag ----------------------------------------------------------------
-install "universal-ctags";
+# install "universal-ctags";
+install "ctags";
+install "cscope";
+install "sqlite";
+install "global" --with-ctags --with-pygments --with-sqlite3;
 
 # Utility: Syntax Hightlight ---------------------------------------------------
 install "highlight";
@@ -166,7 +170,6 @@ install "mono";
 # install "selenium-server-standalone";
 # install "mongodb";
 # install "redis";
-# install "sqlite";
 
 #===============================================================================
 # Homebrew: Finish

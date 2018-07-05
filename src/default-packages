@@ -1,4 +1,7 @@
+@angular/cli
+@vue/cli
 csslint
+ember-cli
 eslint
 eslint-plugin-typescript
 htmlhint
