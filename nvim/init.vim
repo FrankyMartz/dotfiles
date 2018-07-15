@@ -1012,12 +1012,12 @@ let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.ts$'] = '' "   
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.ts$'] = ' '
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.ts$'] = 'ﰩ'
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.ts$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.ts$'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.ts$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$'] = '' "   
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.\%(ts\|js\|es6\|jsx\)$'] = ' '
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.\%(ts\|js\|es6\|jsx\)$'] = 'ﰩ'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.\%(ts\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = '' 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = '' 
