@@ -836,7 +836,8 @@ let NERDTreeCascadeSingleChildDir=0
 let NERDTreeIgnore = [
     \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
     \ '.*.pid', 'monitor.py', '.DS_Store', '.*-fixtures-.*.json', '.*\.o$',
-    \ 'db.db', 'tags', 'tags.bak', '.*\.pdf$', '.*\.mid$', '.*\.midi$'
+    \ 'db.db', 'tags', 'tags.bak', '.*\.pdf$', '.*\.mid$', '.*\.midi$',
+    \ 'GPATH', 'GRTAGS', 'GTAGS'
 \ ]
 " }}}
 
@@ -1011,23 +1012,24 @@ let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*spec.*\.ts$'] = '' "   
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*module.*\.ts$'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*service.*\.ts$'] = '' 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*component.*\.ts$'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.ts$'] = '' "   
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.ts$'] = ' '
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.ts$'] = 'ﰩ'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.ts$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.ts$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.ts$'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = '' 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = '' 
-"    簾  
-"   
+"    簾               ﰩ    
+"    ﯤ          
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\(-lock\)\?\.json'] = ''  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json'] = ''  
 " TODO: Validate REGEX in Assignment
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\(\..\+\)\?\.json'] = '' 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\(tslint\|eslint\)\.json'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json'] = '' 
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\.map$'] = '慎' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$'] = '慎' 
 " }}}
 
 " vim-delve {{{
