@@ -11,8 +11,8 @@
 	; signingkey = A32BDCE6FF5DD64C
 
 [core]
-	pager = less
-    ; pager = cat
+    ; pager = less
+    pager = cat
     excludesfile = ~/.gitignore_global
     editor = nvim
     ignorecase = false
