@@ -40,12 +40,12 @@ setopt appendhistory autocd extendedglob nomatch notify
 unsetopt beep
 
 #===============================================================================
-# ANTIBODY
+# PLUGINS
 #===============================================================================
 
 # HOTFIX: https://github.com/zsh-users/antigen/issues/593
-autoload -U is-at-least
-source "${HOME}/.dotfiles/zsh/zsh_plugins.sh"
+# autoload -U is-at-least
+# source "${HOME}/.dotfiles/zsh/zsh_plugins.sh"
 
 export BOOKMARKS_FILE="${DOTFILE_DIR}/bin/zsh_cd_bookmarks";
 
@@ -68,16 +68,16 @@ SPACESHIP_VI_MODE_COLOR="cyan";
 
 
 SPACESHIP_GIT_SYMBOL=" ";
-SPACESHIP_GIT_STATUS_UNTRACKED="";
+SPACESHIP_GIT_STATUS_UNTRACKED=""; # ◎ ◉  
 SPACESHIP_GIT_STATUS_ADDED="●"; #  ● ✚
-SPACESHIP_GIT_STATUS_MODIFIED="";
-SPACESHIP_GIT_STATUS_RENAMED="➡"; #   
+SPACESHIP_GIT_STATUS_MODIFIED="○"; # ○  
+SPACESHIP_GIT_STATUS_RENAMED="➡"; #    
 SPACESHIP_GIT_STATUS_DELETED="";
 SPACESHIP_GIT_STATUS_STASHED="";
-SPACESHIP_GIT_STATUS_UNMERGED=" ";
+SPACESHIP_GIT_STATUS_UNMERGED=" "; #  劣
 SPACESHIP_GIT_STATUS_AHEAD="⬆";
 SPACESHIP_GIT_STATUS_BEHIND="⬇";
-SPACESHIP_GIT_STATUS_DIVERGED=" ";
+SPACESHIP_GIT_STATUS_DIVERGED=" "; #  咽
 
 spaceship_vi_mode_enable
 

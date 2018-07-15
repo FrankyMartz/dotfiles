@@ -9,22 +9,23 @@
 
 mafredri/zsh-async
 supercrabtree/k
-zsh-users/zsh-completions
+# git/git folder:contrib/completion kind:zsh
 
+zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-history-substring-search
-
-jocelynmallon/zshmarks
 
 # Package: OhMyZsh -------------------------------------------------------------
 
 robbyrussell/oh-my-zsh folder:plugins/common-aliases
 robbyrussell/oh-my-zsh folder:plugins/vim-mode
 robbyrussell/oh-my-zsh folder:plugins/git-extras
+# robbyrussell/oh-my-zsh folder:plugins/gitfast/_git
 
 # Package: Prompt --------------------------------------------------------------
 
 denysdovhan/spaceship-prompt
 zsh-users/zsh-syntax-highlighting
 
-
+// Change Source after all plugins are loaded
+# chrissicool/zsh-bash
