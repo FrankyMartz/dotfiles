@@ -128,11 +128,15 @@ install "shellcheck";
 # Languege: GoLang -------------------------------------------------------------
 install "go";
 install "dep";
+install "goenv";
 
 # Languege: NodeJS -------------------------------------------------------------
 install "node";
-install "node-build";
+
+tap "nodenv/nodenv";
 install "nodenv";
+install "node-build";
+install "nodenv-package-json-engine";
 install "nodenv/nodenv/nodenv-default-packages";
 
 # Languege: Python -------------------------------------------------------------

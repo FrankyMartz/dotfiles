@@ -55,8 +55,13 @@ export EDITOR="nvim";
 #===============================================================================
 
 # export FZF_DEFAULT_COMMAND='(git ls-tree -r --name-only HEAD || fd --type f --hidden --follow --exclude .git)';
+# export FZF_DEFAULT_COMMAND=$(cat <<-END
+    # git ls-tree -r --name-only HEAD || 
+    # rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null ||
+    # fd --type f --hidden --follow --exclude .git
+# END
+# );
 export FZF_DEFAULT_COMMAND=$(cat <<-END
-    git ls-tree -r --name-only HEAD || 
     rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null ||
     fd --type f --hidden --follow --exclude .git
 END
@@ -155,3 +160,4 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 
 export MONO_GAC_PREFIX="/usr/local"
 
+export GTAGSLABEL="pygment"

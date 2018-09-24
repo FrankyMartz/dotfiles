@@ -99,10 +99,14 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
-" let g:python3_host_prog='/usr/local/opt/pypy/bin/pypy'
-" let g:python3_host_prog='/usr/local/opt/pypy3/bin/pypy3'
-let g:python_host_prog='/usr/local/opt/python@2/bin/python2'
-let g:python3_host_prog='/usr/local/opt/python@3/bin/python3'
+let g:python_host_prog='/usr/local/bin/python2'
+let g:python3_host_prog='/usr/local/bin/python3'
+
+let g:node_host_prog='/usr/local/lib/node_modules/neovim/bin/cli.js'
+
+" Enable Project Based Configuration
+set exrc
+set secure
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -249,8 +253,12 @@ nnoremap <c-s> <c-w>s
 nnoremap <c-v> <c-w>v
 
 " Resize Window
-nnoremap <silent> + :exe "vertical resize +" . (winwidth(0) * 1/8)<CR>
-nnoremap <silent> - :exe "vertical resize -" . (winwidth(0) * 1/8)<CR>
+" Window (Buffer) Height
+nnoremap <silent> <Leader>+ :exe "resize +" . (winheight(0) * 1/8)<CR>
+nnoremap <silent> <Leader>_ :exe "resize -" . (winheight(0) * 1/8)<CR>
+" Window (BUffer) Width
+nnoremap <silent> <Leader>= :exe "vertical resize +" . (winwidth(0) * 1/8)<CR>
+nnoremap <silent> <Leader>- :exe "vertical resize -" . (winwidth(0) * 1/8)<CR>
 
 " Clear Search Results
 nnoremap <leader><space> :noh<cr>
@@ -563,15 +571,21 @@ augroup END
 " We have to have a winheight bigger than we want to set winminheight. But if we
 " set winheight to be huge before winminheight, the winminheight set will fail.
 "set winwidth=84
-set winheight=10
-set winminheight=10
-set winheight=999
+set winheight=5
+set winminheight=5
+" set winheight=999
 
 set diffopt+=vertical
 set diffopt+=iwhite
 
 " Disable Line Numbers in Terminal
 au TermOpen * setlocal nonumber norelativenumber
+
+function! DisableScrollBind()
+    set noscrollbind
+    set nocursorbind
+endfunction
+noremap <silent><leader>nb :call DisableScrollBind()<CR>
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -656,26 +670,48 @@ let g:airline#extensions#default#section_truncate_width = {
     \ 'x': 140,
     \ 'y': 140,
 \ }
-" Ale --------------------------------------------------------------------------
+let g:airline#extensions#tabline#ignore_bufadd_pat = 'gundo|undotree|vimfiler|tagbar|nerd_tree|startify'
+
+" Airline : Ale ================================================================
 let g:airline#extensions#ale#enabled=1
-" Base16 -----------------------------------------------------------------------
+
+" Airline : Base16 =============================================================
 " let g:airline_base16_improved_contrast=1
 " let g:airline#themes#base16#constant=1
-" Git --------------------------------------------------------------------------
+
+" Airline : Git ================================================================
 let g:airline#extensions#branch#format=1
-" PromptLine -------------------------------------------------------------------
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline#extensions#branch#sha1_len = 10
+
+" Airline : Gutentags ==========================================================
+let g:airline#extensions#gutentags#enabled = 1
+
+" Airline : Fugitive ===========================================================
+let g:airline#extensions#fugitiveline#enabled = 1
+
+" Airline : Hunks ==============================================================
+let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#hunks#non_zero_only = 0
+
+" Airline : PromptLine =========================================================
 let g:airline#extensions#promptline#snapshot_file='~/.dotfiles/bin/.shell_prompt.sh'
 let g:airline#extensions#promptline#enabled=0
 let g:airline#extensions#windowswap#enabled=1
-" WindowSwap -------------------------------------------------------------------
+
+" Airline : WindowSwap =========================================================
 let g:airline#extensions#windowswap#indicator_text='WS'
-" YouCompleteMe ----------------------------------------------------------------
+
+" Airline : YouCompleteMe ======================================================
 let g:airline#extensions#ycm#enabled=1
-" Vim-Signify ------------------------------------------------------------------
+
+" Airline : Signify ============================================================
 let g:airline#extensions#hunks#enabled=1
 let g:airline#extensions#hunks#non_zero_only=0
 let g:airline#extensions#hunks#hunk_symbols=['+', '~', '-']
-" WhiteSpace -------------------------------------------------------------------
+
+" Airline : WhiteSpace =========================================================
 let g:airline#extensions#whitespace#enabled=1
 let g:airline#extensions#whitespace#checks=[ 'indent', 'trailing', 'long', 'mixed-indent-file' ]
 let g:airline#extensions#whitespace#max_lines=20000
@@ -685,40 +721,70 @@ let g:airline#extensions#whitespace#mixed_indent_format='mixed-indent[%s]'
 let g:airline#extensions#whitespace#long_format='long[%s]'
 let g:airline#extensions#whitespace#mixed_indent_file_format='mix-indent-file[%s]'
 let airline#extensions#c_like_langs=['c', 'cpp', 'cuda', 'go', 'javascript', 'typescript', 'ld', 'php']
-" vim-ctrlspace ----------------------------------------------------------------
+
+" Airline : CtrlSpace ==========================================================
 let g:CtrlSpaceUseTabline=0
 let g:airline#extensions#ctrlspace#enabled=1
+let g:airline#extensions#ctrlp#show_adjacent_modes = 1
+" let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
 let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
-" TabLine ----------------------------------------------------------------------
+
+" Airline : TabLine ============================================================
 let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
+let g:airline#extensions#tabline#buffers_label = 'buffer'
+let g:airline#extensions#tabline#tabs_label = 'tab'
+let g:airline#extensions#tabline#current_first = 1
+let g:airline#extensions#tabline#show_tabs = 1
+let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#buffer_min_count=1
 let g:airline#extensions#tabline#formatter='unique_tail_improved'
+
+" Airline : Tagbar =============================================================
+let g:airline#extensions#tagbar#enabled = 1
 " let g:airline#extensions#tabline#switch_buffers_and_tabs=1
 let g:airline#extensions#tabline#exclude_preview=1
 let g:airline#extensions#tabline#left_sep=''
 let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
+
+" Airline : VirtualEnv =========================================================
+let g:airline#extensions#virtualenv#enabled = 1
 " }}}
 
 " Ale {{{
+" let g:ale_set_loclist = 0
+" let g:ale_set_quickfix = 1
+let g:ale_open_list = 'on_save'
+let g:ale_set_highlights = 1
+" let g:ale_completion_enabled = 1
+let b:ale_set_balloons = 1
+let g:ale_cache_executable_check_failures = 1
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
 let g:ale_change_sign_column_color = 1
-" let g:ale_completion_enabled = 1
-let g:ale_open_list = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_linters = {
-    \ 'javascript': ['standard'],
-    \ 'go': ['gometalinter', 'gofmt'],
-    \ 'html': [],
-\ }
-let g:ale_fixers = {
-    \ 'javascript': ['eslint'],
-\ }
+let g:ale_keep_list_window_open = 0
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_delay = 400
+" let g:ale_linters = {
+    " \ 'typescript': ['tslint'],
+" \ }
+    " \ 'html': ['tslint'],
+    " \ 'javascript': ['standard'],
+    " \ 'go': ['gometalinter', 'gofmt'],
+
+" let g:ale_fixers = {
+    " \ 'javascript': ['eslint'],
+" \ }
 let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_go_gometalinter_options = '--fast'
+let g:ale_typescript_tsserver_use_global = 1
 nmap <leader>ek <Plug>(ale_previous_wrap)
 nmap <leader>ej <Plug>(ale_next_wrap)
 au BufWinLeave * silent! lclose
+augroup CloseLoclistWindowGroup
+    autocmd!
+    autocmd QuitPre * if empty(&buftype) | lclose | endif
+augroup END
 "  }}}
 
 " DelimitMate {{{
@@ -734,9 +800,27 @@ nmap <leader>? :Gstatus<cr>
 " }}}
 
 " FZF {{{
-nmap <c-t> :FZF<cr>
 if has('nvim')
-  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+    nmap <c-t> :FZF<cr>
+    let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
+    let g:fzf_history_dir = '~/.nvim/tmp/fzf-history//'
+  
+    let g:fzf_colors = { 
+        \ 'fg':      ['fg', 'Normal'],
+        \ 'bg':      ['bg', 'Normal'],
+        \ 'hl':      ['fg', 'Comment'],
+        \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+        \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+        \ 'hl+':     ['fg', 'Statement'],
+        \ 'info':    ['fg', 'PreProc'],
+        \ 'border':  ['fg', 'Ignore'],
+        \ 'prompt':  ['fg', 'Conditional'],
+        \ 'pointer': ['fg', 'Exception'],
+        \ 'marker':  ['fg', 'Keyword'],
+        \ 'spinner': ['fg', 'Label'],
+        \ 'header':  ['fg', 'Comment']
+    \ }
 endif
 " }}}
 
@@ -827,6 +911,7 @@ augroup nerdtree
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 nmap <F8> :NERDTreeToggle<CR>
+let NERDTreeHijackNetrw=0 " Startify Session Patch
 let NERDTreeChDirMode=2
 let NERDTreeBookmarksFile=expand(tempDir).'/NERDTreeBookmarks'
 let NERDTreeMouseMode=2
@@ -854,7 +939,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Renamed"   : "",
     \ "Unmerged"  : "",
     \ "Deleted"   : "",
-    \ "Dirty"     : " ",
+    \ "Dirty"     : "",
     \ "Clean"     : "",
     \ 'Ignored'   : ' ',
     \ "Unknown"   : ""
@@ -862,16 +947,16 @@ let g:NERDTreeIndicatorMapCustom = {
 " }}}
 
 " PromptLine {{{
-let g:promptline_powerline_symbols = 1
-let g:promptline_preset = {
-    \'a' : [ promptline#slices#cwd() ],
-    \'b' : [ promptline#slices#vcs_branch({ 'hg': 1, 'svn': 1, 'fossil': 1 }), promptline#slices#git_status() ],
-    \'c' : [ '' ],
-    \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
-    \'y' : [ promptline#slices#python_virtualenv() ],
-    \'z' : [ promptline#slices#jobs() ],
-    \'warn' : [ promptline#slices#last_exit_code() ]
-\ }
+" let g:promptline_powerline_symbols = 1
+" let g:promptline_preset = {
+    " \'a' : [ promptline#slices#cwd() ],
+    " \'b' : [ promptline#slices#vcs_branch({ 'hg': 1, 'svn': 1, 'fossil': 1 }), promptline#slices#git_status() ],
+    " \'c' : [ '' ],
+    " \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
+    " \'y' : [ promptline#slices#python_virtualenv() ],
+    " \'z' : [ promptline#slices#jobs() ],
+    " \'warn' : [ promptline#slices#last_exit_code() ]
+" \ }
 " }}}
 
 " Surround {{{
@@ -967,6 +1052,25 @@ let g:tagbar_type_typescript = {
         \ 'p:member:0:1',
     \ ],
     \ 'sort' : 0,
+    \ 'kind2scope' : {
+        \ 'n': 'namespace',
+        \ 'm': 'module',
+        \ 'c': 'class',
+        \ 'a': 'abstractclass',
+        \ 'i': 'interface',
+        \ 'f': 'function',
+        \ 'p': 'member',
+    \ },
+    \ 'sro': '.',
+    \ 'scope2kind' : {
+        \ 'namespace': 'n',
+        \ 'module': 'm',
+        \ 'class': 'c',
+        \ 'abstractclass': 'a',
+        \ 'interface': 'i',
+        \ 'function': 'f',
+        \ 'member': 'p',
+    \ },
     \ 'deffile' : expand(defdir) . 'typescript.cnf'
 \ }
 
@@ -1058,9 +1162,10 @@ let g:CtrlSpaceCacheDir = expand(s:aCtrlSpaceCacheDir)
 " [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
 nmap <c-space> <nul>
 let g:CtrlSpaceUseMouseAndArrowsInTerm=1
-let g:CtrlSpaceLoadLastWorkspaceOnStart=1
+let g:CtrlSpaceLoadLastWorkspaceOnStart=0
 let g:CtrlSpaceSaveWorkspaceOnSwitch=1
 let g:CtrlSpaceSaveWorkspaceOnExit=1
+let g:CtrlSpaceHeight = 10
 
 if executable('rg')
     let g:CtrlSpaceGlobCommand = 'rg -l --hidden --nocolor -g ""'
@@ -1118,12 +1223,29 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_modules = ['ctags']
+" let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_project_root = ['.root']
-let g:gutentags_auto_add_gtags_cscope = 0
-" let g:gutentags_ctags_executable_javascript = 'jsctags'
+" let g:gutentags_auto_add_gtags_cscope = 0
+let g:gutentags_ctags_executable_javascript = 'jsctags'
 " let g:gutentags_ctags_executable_javascript = 'ctags'
 " let g:gutentags_ctags_executable_typescript = 'tstags'
+au FileType gitcommit,gitrebase,startify let g:gutentags_enabled=0
+" function! gutentags#build_default_job_options(module) abort
+    " let l:job_opts = {
+                " \ 'detach': 1,
+                " \'on_exit': function(
+                " \    '<SID>nvim_job_exit_wrapper',
+                " \    ['gutentags#'.a:module.'#on_job_exit']),
+                " \'on_stdout': function(
+                " \    '<SID>nvim_job_out_wrapper',
+                " \    ['gutentags#default_io_cb']),
+                " \'on_stderr': function(
+                " \    '<SID>nvim_job_out_wrapper',
+                " \    ['gutentags#default_io_cb'])
+                " \}
+    " return l:job_opts
+" endfunction
 " }}}
 
 " vim-javascript {{{
@@ -1154,9 +1276,15 @@ autocmd FileType typescript JsPreTmpl markdown
 " }}}
 
 " vim-jsdoc {{{
-let g:jsdoc_default_mapping=0
-let g:jsdoc_allow_input_prompt=1
+" let g:jsdoc_default_mapping=0
 nmap <leader>jsd :JsDoc<CR>
+let g:jsdoc_additional_descriptions = 1
+let g:jsdoc_input_description = 1
+let g:jsdoc_allow_input_prompt = 1
+let g:jsdoc_access_descriptions = 1
+let g:jsdoc_underscore_private = 1
+let g:jsdoc_param_description_separator = ' - '
+let g:jsdoc_enable_es6 = 1
 " }}}
 
 " vim-json {{{
@@ -1174,16 +1302,190 @@ let g:livedown_port = 1337  " Browser Port
 nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
+" vim-move {{{
+let g:move_key_modifier = 'C-A'
+" }}}
+
 " vim-multiple-cursors {{{
 let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-nerdtree-syntax-highlight {{{
 " let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeSyntaxEnabledExtensions = ['ts']
 " }}}
 
 " vim-polyglot {{{
 let g:polyglot_disabled = ['javascript', 'typescript']
+" }}}
+
+" vim-startify {{{
+" Set Header Color/Style to Comment
+autocmd ColorScheme * highlight link StartifyHeader Comment
+autocmd User Startified setlocal buflisted
+let g:startify_use_env = 1
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_padding_left = 3
+let g:startify_skiplist = [
+    \ 'COMMIT_EDITMSG',
+    \ escape(fnamemodify(resolve($VIMRUNTIME), ':p'), '\') .'doc',
+    \ 'bundle/.*/doc',
+    \ '/\.git/index$',
+\ ]
+
+function! StartifyEntryFormat()
+    return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
+
+function! s:startify_center_header(lines) abort
+    let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
+    let centered_lines = map(copy(a:lines),
+        \ 'repeat(" ", (longest_line / 5)) . v:val')
+        " \ 'repeat(" ", (&columns / 2) + longest_line + (longest_line / 10)) . v:val')
+        " \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+    return centered_lines
+endfunction
+
+function! s:list_commits()
+    let git = 'git -C ' . getcwd()
+    let commits = systemlist(git .' log --oneline | head -n5')
+    let git = 'G'. git[1:]
+    return map(commits, '{"line": "  " . matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
+endfunction
+
+function! s:get_project_name()
+    let git = 'git -C ' . getcwd()
+    let dirname = system(git . ' rev-parse --abbrev-ref HEAD')
+    return "   " . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : getcwd())
+endfunction
+
+let g:startify_lists = [
+    \ { 'type': 'files',                    'header': ['   MRU']                },
+    \ { 'type': 'dir',                      'header': [s:get_project_name()]    },
+    \ { 'type': 'sessions',                 'header': ['   Sessions']           },
+    \ { 'type': 'bookmarks',                'header': ['   Bookmarks']          },
+    \ { 'type': 'commands',                 'header': ['   Commands']           },
+    \ { 'type': function('s:list_commits'), 'header': ['   Commits']            }
+\ ]
+
+let s:startify_tmp_header_01 = [
+\ "                                                                    ,t",
+\ "              ;t                                                  1;1",
+\ "               f1f1i                                          it ,,,t",
+\ "                11t:. t                                    1t    i i",
+\ "                ::,:   , ..                             ;,         f",
+\ "                 Gf1i..     t1                       i;            .",
+\ "                 ff;;,....     :1                 :t              i",
+\ "                 ,...::,,.        1              .                C",
+\ "                  fti;,,.           i          ,                 .",
+\ "                  .i:.:...           ,       .L                  ;",
+\ "                   0::,..,,.          i      .                  t",
+\ "                    C.;.::..           .     i                 i",
+\ "                      0fi;:..,;.        L  ;.        :..  ,. G       ,;:",
+\ "          i1C:;G,t,t,,Ci....;i,..i.            ...: , i..   L;1        titi",
+\ "          :LC:iG;1:CiLi, , .,f:;:.1 ,.       ..:i., :.:.               fff",
+\ "           G.:LCL,ff1.,        ..;.i.:1;   ,,,.,. . :.,    . .,.      ,G",
+\ "             C,i1.i.    :00G         ,i,  ..i;,  .    tGG;   ,  ,     ;",
+\ "               ;0080008000GG0G0Giif::.t ,;:  ;.   iiGGG00G0G0CG0GGG;",
+\ "                ,000GG80CG88800000C1i1;1i1;;,.,  1CGGG0i0000GG00GGGC",
+\ "              108GL0GGLtt80GG0G0G0GLGCti1ttii::..GGGG0G0GGC00CLCCC0GC",
+\ "            tCGCfCitt1i;LLC00GG80GGCLG0L1ti    ,:CG00G00CL1LtfGCLL1fGGC8.",
+\ "         GtL:fGLtti:i1CtitL000000GCffLC1t;  :,   iGGGG000CLtLCC1ttfCLtC:  i",
+\ "        0C:ttCt,i;:,i;,ifLGC8000C0tLLL1tf1    1 C;;80C00CGLftftt1;ftfGGi    t",
+\ "     ,ifCtCi:.    1:1CftLCG00001  LLtfft1i   ,i;.LLCiLf8000CtCfL;LCffiCi    .:t",
+\ "   ;GGCtCCfG      fftfLGG0GitG,   GLCLLf,C10  ;;;i.  :Lf1, 0G008G1Lf1fGi     iit.1",
+\ " ;GfCC011fCf1Lt1,,111000i,;fC     ;G0f;G0L80G,: 1i     ;  0 G0i80G00GG1. ,::1,ffff;0",
+\ "tfLCLGC;fffGLG1tfff0G0GGC f11      Gf00G0L00000,C     ti;iL1Cf0 1t.:. ;ii;t    ;f .L G",
+\ "                           L1f    Gt008000000000 f    ii,:",
+\ "                             :    0f000008008000f     .",
+\ "                                 iC00G000iG00000Ct.",
+\ "                                 :C;C0GG00t00000Cf",
+\ "                                  C;f00800;08000Li",
+\ "                                  tf LG00f LGGtfC:",
+\ "                                       ;L0C;    ;",
+\ "                                   ;.,;.  L    .C",
+\ "                                    t.;i; ,f:, L",
+\ "                                     L,CGL LLi.",
+\ "                                      ii1i0C;1,",
+\ "                                      f1;  :;",
+\ "                                       Li  11",
+\ "                                        tftG",
+\ "                                         i:",
+\ "                                         :;",
+\ " ",
+\ " ",
+\ ]
+
+let s:startify_tmp_header_02 = [
+\ " ",
+\ " ",
+\ "                     .ed\"\"\"\" \"\"\"$$$$be.",
+\ "                   -\"           ^\"\"**$$$e.",
+\ "                 .\"                   \'$$$c",
+\ "                /                      \"4$$b",
+\ "               d  3                      $$$$",
+\ "               $  *                   .$$$$$$",
+\ "              .$  ^c           $$$$$e$$$$$$$$.",
+\ "              d$L  4.         4$$$$$$$$$$$$$$b",
+\ "              $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$",
+\ "  e$\"\"=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$",
+\ " z$$b. ^c     3$$$F \"$$$$b   $\"$$$$$$$  $$$$*\"      .=\"\"$c",
+\ "4$$$$L        $$P\"  \"$$b   .$ $$$$$...e$$        .=  e$$$.",
+\ "^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$",
+\ "  \"**$$$ec   \"   %ce\"\"    $$$  $$$$$$$$$$*    .r\" =$$$$P\"\"",
+\ "        \"*$b.  \"c  *$e.    *** d$$$$$\"L$$    .d\"  e$$***\"",
+\ "          ^*$$c ^$c $$$      4J$$$$$% $$$ .e*\".eeP\"",
+\ "             \"$$$$$$\"\'$=e....$*$$**$cz$$\" \"..d$*\"",
+\ "               \"*$$$  *=%4.$ L L$ P3$$$F $$$P\"",
+\ "                  \"$   \"%*ebJLzb$e$$$$$b $P\"",
+\ "                    %..      4$$$$$$$$$$ \"",
+\ "                     $$$e   z$$$$$$$$$$%",
+\ "                      \"*$c  \"$$$$$$$P\"",
+\ "                       .\"\"\"*$$$$$$$$bc",
+\ "                    .-\"    .$***$$$\"\"\"*e.",
+\ "                 .-\"    .e$\"     \"*$c  ^*b.",
+\ "          .=*\"\"\"\"    .e$*\"          \"*bc  \"*$e..",
+\ "        .$\"        .z*\"               ^*$e.   \"*****e.",
+\ "        $$ee$c   .d\"                     \"*$.        3.",
+\ "        ^*$E\")$..$\"                         *   .ee==d%",
+\ "           $.d$$$*                           *  J$$$e*",
+\ "            \"\"\"\"\"                              \"$$$\"",
+\ " ",
+\ " ",
+\ ]
+
+let s:startify_tmp_header_03 = [
+\ "   Web browsers are useless here.",
+\ " ",
+\ " ",
+\ "         ,+++77777++=:,                    +=                      ,,++=7++=,,",
+\ "       7~?7   +7I77 :,I777  I          77 7+77 7:        ,?777777??~,=+=~I7?,=77 I",
+\ "   =7I7I~7  ,77: ++:~+7 77=7777 7     +77=7 =7I7     ,I777= 77,:~7 +?7, ~7   ~ 777?",
+\ "   77+7I 777~,,=7~  ,::7=7: 7 77   77: 7 7 +77,7 I777~+777I=   =:,77,77  77 7,777,",
+\ "     = 7  ?7 , 7~,~  + 77 ?: :?777 +~77 77? I7777I7I7 777+77   =:, ?7   +7 777?",
+\ "         77 ~I == ~77= +777 777~: I,+77?  7  7:?7? ?7 7 7 77 ~I   7I,,?7 I77~",
+\ "          I 7=77~+77+?=:I+~77?     , I 7? 77 7   777~ +7 I+?7  +7~?777,77I",
+\ "            =77 77= +7 7777         ,7 7?7:,??7     +7    7   77??+ 7777,",
+\ "                =I, I 7+:77?         +7I7?7777 :             :7 7",
+\ "                   7I7I?77 ~         +7:77,     ~         +7,::7   7",
+\ "                  ,7~77?7? ?:         7+:77777,           77 :7777=",
+\ "                   ?77 +I7+,7         7~  7,+7  ,?       ?7?~?777:",
+\ "                      I777=7777 ~     77 :  77 =7+,    I77  777",
+\ "                        +      ~?     , + 7    ,, ~I,  = ? ,",
+\ "                                       77:I+",
+\ "                                       ,7",
+\ "                                        :77",
+\ "                                           :",
+\ "   Welcome.",
+\ ]
+
+highlight StartifyHeader ctermfg=111 guifg=#98A8FF
+if exists("+termguicolors")
+    set termguicolors
+endif
+let g:startify_custom_header = s:startify_tmp_header_03
+" let g:startify_custom_header = s:startify_center_header(s:startify_tmp_header_03)
 " }}}
 
 " vim-signify {{{
@@ -1219,8 +1521,10 @@ let g:UltiSnipsJumpBackwardTrigger='<c-J>'
 " }}}
 
 " YouCompleteMe {{{
-autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jt :YcmCompleter GoToType<CR>
+nnoremap <leader>gt :YcmCompleter GetType<CR>
 " let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
 let g:ycm_key_list_select_completion = ['<TAB>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>']
@@ -1238,10 +1542,8 @@ let g:ycm_show_diagnostics_ui=1 " Disable to use ALE
 " let g:ycm_min_num_identifier_candidate_chars=3
 " let g:ycm_auto_trigger=0
 " pyenv
-let g:ycm_path_to_python_interpreter='/usr/local/opt/python@3/bin/python3'
-let g:ycm_python_binary_path='/usr/local/opt/python@3/bin/python3'
-" let g:ycm_path_to_python_interpreter='/usr/local/opt/pypy3/bin/pypy3'
-" let g:ycm_python_binary_path='/usr/local/opt/pypy3/bin/pypy3'
+let g:ycm_path_to_python_interpreter=g:python3_host_prog
+let g:ycm_python_binary_path=g:python3_host_prog
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1252,7 +1554,7 @@ let g:ycm_python_binary_path='/usr/local/opt/python@3/bin/python3'
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let s:fmColorSchemeLight = 'solarized8_high'
+let s:fmColorSchemeLight='solarized8_high'
 let s:fmColorSchemeDark='OceanicNext'
 " let g:ayucolor='light'
 " let s:fmColorSchemeLight='ayu'
@@ -1309,4 +1611,5 @@ nnoremap <leader>bg :ToggleBg<CR>
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
+
 

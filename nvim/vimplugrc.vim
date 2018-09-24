@@ -56,17 +56,20 @@ Plug 'chrisbra/vim-diff-enhanced'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
 Plug 'direnv/direnv.vim'
 Plug 'keith/investigate.vim'
+Plug 'tpope/vim-obsession'
+Plug '/usr/local/opt/fzf'
 
 " Window
-Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'
+Plug 'tpope/vim-fugitive' | Plug 'mhinz/vim-startify' | Plug 'gregsexton/gitv', {'on': ['Gitv']} | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'universal-ctags/ctags'
-Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
+" Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
+Plug 'ludovicchabant/vim-gutentags'
 " Plug 'c0r73x/neotags.nvim', {'do': function('UpdateRemote')}
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'edkolev/promptline.vim'
+" Plug 'edkolev/promptline.vim'
 Plug 'wesQ3/vim-windowswap'
 
 " Editing
@@ -80,13 +83,13 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
 " Plug 'cyansprite/Extract'
 Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
-Plug 'brettanomyces/nvim-editcommand'
+" Plug 'brettanomyces/nvim-editcommand'
 " Plug 'rliang/termedit.nvim'
 Plug 'matze/vim-move'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
-Plug 'w0rp/ale'
+Plug 'w0rp/ale' ", { 'tag': 'v2.0.1' }
 " Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
@@ -113,20 +116,21 @@ Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 
 " >> JavaScript
 Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx', 'coffeescript', 'coffee'] }
+" Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx', 'coffeescript', 'coffee'] }
 " Plug 'hushicai/tagbar-javascript.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'facebook/vim-flow', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'angelozerr/tern-lint', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 " Plug 'neoclide/vim-jsx-improve', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'Galooshi/vim-import-js', {'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx']}
 
 " >> TypeScript
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
-Plug 'jason0x43/vim-js-indent', { 'for': ['typescript', 'ts', 'tsx'] }
+Plug 'jason0x43/vim-js-indent', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
