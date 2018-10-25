@@ -143,7 +143,7 @@ export PATH="${RBENV_ROOT}/bin:${PATH}"
 [[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
-    PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:${PATH}";
+    PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:${PATH}";
 fi
 
 # PHP --------------------------------------------------------------------------

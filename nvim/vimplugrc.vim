@@ -55,7 +55,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
 Plug 'direnv/direnv.vim'
-Plug 'keith/investigate.vim'
+" Plug 'keith/investigate.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
 
@@ -75,7 +75,7 @@ Plug 'wesQ3/vim-windowswap'
 " Editing
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
-Plug 'vim-scripts/matchit.zip'
+" Plug 'vim-scripts/matchit.zip'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
@@ -86,11 +86,11 @@ Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 " Plug 'brettanomyces/nvim-editcommand'
 " Plug 'rliang/termedit.nvim'
 Plug 'matze/vim-move'
+Plug 'wellle/targets.vim'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
 Plug 'w0rp/ale' ", { 'tag': 'v2.0.1' }
-" Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
 
@@ -106,6 +106,7 @@ Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
 " Plug  'webdesus/polymer-ide.vim', { 'do': 'npm install' }
 
 " >> CSS
+"Plug 'chrisbra/Colorizer'
 Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
@@ -134,9 +135,7 @@ Plug 'jason0x43/vim-js-indent', { 'for': ['javascript', 'javascript.jsx', 'es6',
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
-" Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'md'] }
 Plug 'ajorgensen/vim-markdown-toc', { 'for': ['markdown', 'md'] }
-" Plug 'shime/vim-livedown', { 'for': ['markdown', 'md'] }
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': ['markdown', 'md'] }
 
 " >> PHP

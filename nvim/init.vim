@@ -25,6 +25,9 @@
 "===============================================================================
 "=> General {{{
 "-------------------------------------------------------------------------------
+set encoding=utf-8
+scriptencoding=utf-8
+
 " syntax enable                   " Enable Syntax Highlighting
 syntax on                       " Enable Syntax Highlighting–Allow VIM override
 set autoread                    " Automatically read externally changes to file
@@ -38,7 +41,6 @@ set tabpagemax=50               " Maximum tab pages
 " be put into background without being written; and that marks and undo history
 " are preserved.
 set hidden
-set nocompatible
 
 set switchbuf=useopen           " Jump to specified buffer when jumping buffers
 
@@ -92,7 +94,7 @@ set wildignore+=migrations                          " Django migrations
 set wildignore+=*.pyc                               " Python byte code
 set wildignore+=*.orig                              " Merge resolution files
 
-set backspace=indent,eol,start  " Allow backspace over everything in insert modeA
+set backspace=indent,eol,start  " Allow backspace over everything in insert mode
 
 set cpoptions+=d    " Use tags relative to CWD
 
@@ -115,12 +117,9 @@ set secure
 "-------------------------------------------------------------------------------
 " => File and Backup {{{
 "-------------------------------------------------------------------------------
-set encoding=utf-8
 set termencoding=utf-8          " Encoding used for the terminal
+set fileformats=unix
 set fileformat=unix
-
-" Save when losing focus
-au FocusLost * :silent! wa
 
 set undofile
 set backup                              " Enable Backups
@@ -229,12 +228,6 @@ vnoremap <silent> P "0p<cr>
 cnoremap w!! w !sudo tee % >/dev/null
 " Open .nvimrc file
 nnoremap <leader>ev <c-w><c-v><c-l>:e $MYVIMRC<cr>
-" Toggle display invisible characters
-nmap <leader>i :set list!<cr>
-" Set line numbers to relative
-nmap <leader>r :set relativenumber<cr>
-" Toggle cursorline
-nmap <leader>c :set cursorline!<cr>
 
 " Insert Mode Magic
 " -> quick escape
@@ -247,6 +240,10 @@ inoremap AA <esc>A
 inoremap OO <esc>O
 " -> clear row and place cursor inline
 inoremap CC <esc>cc
+
+" Easy Single Line Indent
+vnoremap < <gv
+vnoremap > >gv
 
 " Split Buffers
 nnoremap <c-s> <c-w>s
@@ -288,7 +285,7 @@ set showmatch               " Highlight closing ), >, }, ], etc...
 nnoremap / /\v
 vnoremap / /\v
 
-set rtp+=/usr/local/opt/fzf
+set runtimepath+=/usr/local/opt/fzf
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -546,12 +543,19 @@ augroup END
 " VIMRC {{{
 augroup ft_vimrc
     au!
+    " Save when losing focus
+    au FocusLost * :silent! wa
+    au BufEnter * :syntax sync fromstart
+    " Prevent Location List color column and numbers
+    au FileType qf setlocal nonumber colorcolumn=
     au BufReadPre * setlocal foldmethod=indent
     " Automatically save folding
     au BufWinLeave * silent! mkview
     au BufWinEnter * silent! loadview
     au WinEnter * setlocal cursorline
     au WinLeave * setlocal nocursorline
+    " au WinEnter * setlocal cursorline cursorcolumn
+    " au WinLeave * setlocal nocursorline nocursorcolumn
     " Make Neovim return to same line on file reopen
     au BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -581,11 +585,18 @@ set diffopt+=iwhite
 " Disable Line Numbers in Terminal
 au TermOpen * setlocal nonumber norelativenumber
 
-function! DisableScrollBind()
-    set noscrollbind
-    set nocursorbind
+function! SetScrollBind(isBound)
+    if a:isBound
+        set noscrollbind
+        set nocursorbind
+    else
+        set scrollbind
+        set cursorbind
+    endif
 endfunction
-noremap <silent><leader>nb :call DisableScrollBind()<CR>
+
+noremap <silent>[og :call SetScrollBind()<CR>
+noremap <silent>]og :call SetScrollBind(1)<CR>
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -613,12 +624,8 @@ endif
 " set guifont=Menlo:h11
 "set guifont=hack:h11
 
-autocmd BufEnter * :syntax sync fromstart
-
 set synmaxcol=0                 " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
-" Prevent Location List color column and numbers
-au FileType qf setlocal nonumber colorcolumn=
 
 " highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
 " highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
@@ -738,6 +745,7 @@ let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#buffer_min_count=1
 let g:airline#extensions#tabline#formatter='unique_tail_improved'
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " Airline : Tagbar =============================================================
 let g:airline#extensions#tagbar#enabled = 1
@@ -753,7 +761,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 " Ale {{{
 " let g:ale_set_loclist = 0
 " let g:ale_set_quickfix = 1
-let g:ale_open_list = 'on_save'
+" let g:ale_open_list = 'on_save'
 let g:ale_set_highlights = 1
 " let g:ale_completion_enabled = 1
 let b:ale_set_balloons = 1
@@ -765,25 +773,29 @@ let g:ale_keep_list_window_open = 0
 " let g:ale_lint_on_text_changed = 0
 " let g:ale_lint_on_insert_leave = 0
 " let g:ale_lint_delay = 400
-" let g:ale_linters = {
-    " \ 'typescript': ['tslint'],
-" \ }
-    " \ 'html': ['tslint'],
-    " \ 'javascript': ['standard'],
-    " \ 'go': ['gometalinter', 'gofmt'],
-
-" let g:ale_fixers = {
-    " \ 'javascript': ['eslint'],
-" \ }
+let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
+let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
+let g:ale_linters = {
+    \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
+    \ 'javascript': ['standard'],
+    \ 'go': ['gometalinter', 'gofmt'],
+\ }
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+    \ 'typescript': ['tslint'],
+    \ 'javascript': ['standard'],
+    \ 'html': [],
+\ }
 let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_go_gometalinter_options = '--fast'
-let g:ale_typescript_tsserver_use_global = 1
-nmap <leader>ek <Plug>(ale_previous_wrap)
-nmap <leader>ej <Plug>(ale_next_wrap)
-au BufWinLeave * silent! lclose
-augroup CloseLoclistWindowGroup
-    autocmd!
-    autocmd QuitPre * if empty(&buftype) | lclose | endif
+" let g:ale_typescript_tsserver_use_global = 1
+nmap <leader>ek <Plug>(ale_previous)
+nmap <leader>ej <Plug>(ale_next)
+
+augroup plug_ale
+    au!
+    au BufWinLeave * silent! lclose
+    au QuitPre * if empty(&buftype) | lclose | endif
 augroup END
 "  }}}
 
@@ -793,6 +805,14 @@ let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 
 " EditorConfig {{{
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+" }}}
+
+" Far {{{
+" let g:far#source = 'rg'
+" let g:far#source = 'agnvim'
+let g:far#source = 'rgnvim'
+" let g:far#auto_preview = 0
+" let g:far#debug = 1
 " }}}
 
 " Fugitive {{{
@@ -805,8 +825,8 @@ if has('nvim')
     let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
     let g:fzf_history_dir = '~/.nvim/tmp/fzf-history//'
-  
-    let g:fzf_colors = { 
+
+    let g:fzf_colors = {
         \ 'fg':      ['fg', 'Normal'],
         \ 'bg':      ['bg', 'Normal'],
         \ 'hl':      ['fg', 'Comment'],
@@ -835,8 +855,11 @@ function! s:goyo_leave()
     set scrolloff=5
 endfunction
 
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
+augroup plug_goyo
+    au!
+    au! User GoyoEnter nested call <SID>goyo_enter()
+    au! User GoyoLeave nested call <SID>goyo_leave()
+augroup END
 " }}}
 
 " Gundo {{{
@@ -872,7 +895,7 @@ let g:used_javascript_libs = join([
     \ 'sugar',
     \ 'underscore',
     \ 'vue'
-\ ], ',') 
+\ ], ',')
 " }}}
 
 " Neotags.nvim {{{
@@ -905,19 +928,47 @@ let g:neotags_verbose = 1
 let g:neotags_find_tool = 'rg --files'
 " }}}
 
+" NERDCommenter {{{
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+" let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+" }}}
+
 " NERDTree {{{
 augroup nerdtree
     " Quit when NERDTree is only open buffer
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 nmap <F8> :NERDTreeToggle<CR>
-let NERDTreeHijackNetrw=0 " Startify Session Patch
-let NERDTreeChDirMode=2
-let NERDTreeBookmarksFile=expand(tempDir).'/NERDTreeBookmarks'
-let NERDTreeMouseMode=2
-let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
+let NERDTreeBookmarksFile=expand(tempDir).'/NERDTreeBookmarks'
 let NERDTreeCascadeSingleChildDir=0
+let NERDTreeChDirMode=2
+let NERDTreeHijackNetrw=0 " Startify Session Patch
+let NERDTreeMinimalUI=1
+let NERDTreeMouseMode=2
+let NERDTreeNaturalSort=1
+let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore = [
     \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
     \ '.*.pid', 'monitor.py', '.DS_Store', '.*-fixtures-.*.json', '.*\.o$',
@@ -933,16 +984,16 @@ let NERDSpaceDelims=1
 
 " NERDTree Git Plugin {{{
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "",
-    \ "Staged"    : "",
-    \ "Untracked" : "",
-    \ "Renamed"   : "",
-    \ "Unmerged"  : "",
-    \ "Deleted"   : "",
-    \ "Dirty"     : "",
-    \ "Clean"     : "",
+    \ 'Modified'  : '',
+    \ 'Staged'    : '',
+    \ 'Untracked' : '',
+    \ 'Renamed'   : '',
+    \ 'Unmerged'  : '',
+    \ 'Deleted'   : '',
+    \ 'Dirty'     : '',
+    \ 'Clean'     : '',
     \ 'Ignored'   : ' ',
-    \ "Unknown"   : ""
+    \ 'Unknown'   : ''
 \ }
 " }}}
 
@@ -969,7 +1020,7 @@ let g:surround_indent = 1
 " }}}
 
 " Tagbar {{{
-let defdir="~/.nvim/deffile/"
+let defdir='~/.nvim/deffile/'
 nmap <F9> :TagbarToggle<CR>
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -1116,28 +1167,28 @@ let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$'] = '' "   
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$'] = '' "  
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.\%(ts\|js\|es6\|jsx\)$'] = ' '
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.\%(ts\|js\|es6\|jsx\)$'] = 'ﰩ'
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.\%(ts\|js\|es6\|jsx\)$']=''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$'] = ''
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = '' 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = ''
 "    簾               ﰩ    
 "    ﯤ          
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json'] = ''  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json'] = ''
 " TODO: Validate REGEX in Assignment
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json'] = '' 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json'] = '' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json'] = ''
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$'] = '慎' 
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$'] = '慎'
 " }}}
 
 " vim-delve {{{
-let g:delve_backend = "native"
+let g:delve_backend = 'native'
 let s:aDelveCachePath='~/.nvim/tmp/vim-delve//'
 if !isdirectory(expand(s:aDelveCachePath))
     call mkdir(expand(s:aDelveCachePath), 'p')
@@ -1148,6 +1199,7 @@ let g:delve_cache_path = expand(s:aDelveCachePath)
 " vim-diff-enhanced {{{
 if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+    " let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=histogram")'
 endif
 " }}}
 
@@ -1184,8 +1236,8 @@ let g:flow#enable = 0
 " Setting
 let g:go_test_show_name = 1
 let g:go_autodetect_gopath = 1
-let g:go_fmt_command = "goimports"
-let g:go_term_mode = "split"
+let g:go_fmt_command = 'goimports'
+let g:go_term_mode = 'split'
 let g:go_textobj_include_function_doc = 1
 " Syntax Highlight
 let g:go_highlight_types = 1
@@ -1203,12 +1255,9 @@ let g:go_highlight_space_tab_error = 1
 let g:go_highlight_chan_whitespace_error = 1
 let g:go_highlight_array_whitespace_error = 1
 " Shortcuts
-if isdirectory(expand("$GOPATH/src/github.com/golang/lint/misc/vim"))
-    set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+if isdirectory(expand('$GOPATH/src/github.com/golang/lint/misc/vim'))
+    set runtimepath+=$GOPATH/src/github.com/golang/lint/misc/vim
 endif
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
-autocmd FileType go nmap <leader>t  <Plug>(go-test)
-autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -1218,19 +1267,27 @@ function! s:build_go_files()
     call go#cmd#Build(0)
   endif
 endfunction
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+augroup plug_go
+    au!
+    au FileType go nmap <leader>r <Plug>(go-run)
+    au FileType go nmap <leader>t <Plug>(go-test)
+    au FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+    au FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+augroup END
 " }}}
 
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
 let g:gutentags_modules = ['ctags']
+let g:gutentags_resolve_symlinks = 1
+let g:gutentags_define_advanced_commands = 1
 " let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_project_root = ['.root']
 " let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_ctags_executable_javascript = 'jsctags'
 " let g:gutentags_ctags_executable_javascript = 'ctags'
 " let g:gutentags_ctags_executable_typescript = 'tstags'
-au FileType gitcommit,gitrebase,startify let g:gutentags_enabled=0
 " function! gutentags#build_default_job_options(module) abort
     " let l:job_opts = {
                 " \ 'detach': 1,
@@ -1246,6 +1303,14 @@ au FileType gitcommit,gitrebase,startify let g:gutentags_enabled=0
                 " \}
     " return l:job_opts
 " endfunction
+augroup plug_gutentags
+    au!
+    au FileType gitcommit,gitrebase,startify let g:gutentags_enabled=0
+augroup END
+
+if &diff
+    let g:gutentags_enabled = 0
+endif
 " }}}
 
 " vim-javascript {{{
@@ -1256,23 +1321,26 @@ augroup javascript_folding
     au!
     au FileType javascript setlocal foldmethod=syntax
 augroup END
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
+let g:javascript_conceal_function             = 'ƒ'
+let g:javascript_conceal_null                 = 'ø'
+let g:javascript_conceal_this                 = '@'
+let g:javascript_conceal_return               = '⇚'
+let g:javascript_conceal_undefined            = '¿'
+let g:javascript_conceal_NaN                  = 'ℕ'
+let g:javascript_conceal_prototype            = '¶'
+let g:javascript_conceal_static               = '•'
+let g:javascript_conceal_super                = 'Ω'
+let g:javascript_conceal_arrow_function       = '⇒'
 " }}}
 
 " vim-js-pretty-template {{{
-" Register tag name associated the filetype
-autocmd! User vim-js-pretty-template call jspretmpl#register_tag('gql', 'graphql')
-autocmd FileType javascript JsPreTmpl html
-autocmd FileType typescript JsPreTmpl markdown
+augroup plug_jsprettytemplate
+    au!
+    " Register tag name associated the filetype
+    au! User vim-js-pretty-template call jspretmpl#register_tag('gql','graphql')
+    au FileType javascript JsPreTmpl html
+    au FileType typescript JsPreTmpl markdown
+augroup END
 " }}}
 
 " vim-jsdoc {{{
@@ -1311,8 +1379,12 @@ let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-nerdtree-syntax-highlight {{{
+" let g:NERDTreeLimitedSyntax = 1
 " let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeSyntaxEnabledExtensions = ['ts']
+" let g:NERDTreeExactMatchHighlightFullName = 1
+" let g:NERDTreePatternMatchHighlightFullName = 1
+let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+" let g:NERDTreeHighlightFoldersFullName = 1
 " }}}
 
 " vim-polyglot {{{
@@ -1320,9 +1392,6 @@ let g:polyglot_disabled = ['javascript', 'typescript']
 " }}}
 
 " vim-startify {{{
-" Set Header Color/Style to Comment
-autocmd ColorScheme * highlight link StartifyHeader Comment
-autocmd User Startified setlocal buflisted
 let g:startify_use_env = 1
 let g:startify_change_to_dir = 0
 let g:startify_change_to_vcs_root = 1
@@ -1357,7 +1426,7 @@ endfunction
 function! s:get_project_name()
     let git = 'git -C ' . getcwd()
     let dirname = system(git . ' rev-parse --abbrev-ref HEAD')
-    return "   " . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : getcwd())
+    return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : getcwd())
 endfunction
 
 let g:startify_lists = [
@@ -1370,122 +1439,128 @@ let g:startify_lists = [
 \ ]
 
 let s:startify_tmp_header_01 = [
-\ "                                                                    ,t",
-\ "              ;t                                                  1;1",
-\ "               f1f1i                                          it ,,,t",
-\ "                11t:. t                                    1t    i i",
-\ "                ::,:   , ..                             ;,         f",
-\ "                 Gf1i..     t1                       i;            .",
-\ "                 ff;;,....     :1                 :t              i",
-\ "                 ,...::,,.        1              .                C",
-\ "                  fti;,,.           i          ,                 .",
-\ "                  .i:.:...           ,       .L                  ;",
-\ "                   0::,..,,.          i      .                  t",
-\ "                    C.;.::..           .     i                 i",
-\ "                      0fi;:..,;.        L  ;.        :..  ,. G       ,;:",
-\ "          i1C:;G,t,t,,Ci....;i,..i.            ...: , i..   L;1        titi",
-\ "          :LC:iG;1:CiLi, , .,f:;:.1 ,.       ..:i., :.:.               fff",
-\ "           G.:LCL,ff1.,        ..;.i.:1;   ,,,.,. . :.,    . .,.      ,G",
-\ "             C,i1.i.    :00G         ,i,  ..i;,  .    tGG;   ,  ,     ;",
-\ "               ;0080008000GG0G0Giif::.t ,;:  ;.   iiGGG00G0G0CG0GGG;",
-\ "                ,000GG80CG88800000C1i1;1i1;;,.,  1CGGG0i0000GG00GGGC",
-\ "              108GL0GGLtt80GG0G0G0GLGCti1ttii::..GGGG0G0GGC00CLCCC0GC",
-\ "            tCGCfCitt1i;LLC00GG80GGCLG0L1ti    ,:CG00G00CL1LtfGCLL1fGGC8.",
-\ "         GtL:fGLtti:i1CtitL000000GCffLC1t;  :,   iGGGG000CLtLCC1ttfCLtC:  i",
-\ "        0C:ttCt,i;:,i;,ifLGC8000C0tLLL1tf1    1 C;;80C00CGLftftt1;ftfGGi    t",
-\ "     ,ifCtCi:.    1:1CftLCG00001  LLtfft1i   ,i;.LLCiLf8000CtCfL;LCffiCi    .:t",
-\ "   ;GGCtCCfG      fftfLGG0GitG,   GLCLLf,C10  ;;;i.  :Lf1, 0G008G1Lf1fGi     iit.1",
-\ " ;GfCC011fCf1Lt1,,111000i,;fC     ;G0f;G0L80G,: 1i     ;  0 G0i80G00GG1. ,::1,ffff;0",
-\ "tfLCLGC;fffGLG1tfff0G0GGC f11      Gf00G0L00000,C     ti;iL1Cf0 1t.:. ;ii;t    ;f .L G",
-\ "                           L1f    Gt008000000000 f    ii,:",
-\ "                             :    0f000008008000f     .",
-\ "                                 iC00G000iG00000Ct.",
-\ "                                 :C;C0GG00t00000Cf",
-\ "                                  C;f00800;08000Li",
-\ "                                  tf LG00f LGGtfC:",
-\ "                                       ;L0C;    ;",
-\ "                                   ;.,;.  L    .C",
-\ "                                    t.;i; ,f:, L",
-\ "                                     L,CGL LLi.",
-\ "                                      ii1i0C;1,",
-\ "                                      f1;  :;",
-\ "                                       Li  11",
-\ "                                        tftG",
-\ "                                         i:",
-\ "                                         :;",
-\ " ",
-\ " ",
+\ '                                                                    ,t',
+\ '              ;t                                                  1;1',
+\ '               f1f1i                                          it ,,,t',
+\ '                11t:. t                                    1t    i i',
+\ '                ::,:   , ..                             ;,         f',
+\ '                 Gf1i..     t1                       i;            .',
+\ '                 ff;;,....     :1                 :t              i',
+\ '                 ,...::,,.        1              .                C',
+\ '                  fti;,,.           i          ,                 .',
+\ '                  .i:.:...           ,       .L                  ;',
+\ '                   0::,..,,.          i      .                  t',
+\ '                    C.;.::..           .     i                 i',
+\ '                      0fi;:..,;.        L  ;.        :..  ,. G       ,;:',
+\ '          i1C:;G,t,t,,Ci....;i,..i.            ...: , i..   L;1        titi',
+\ '          :LC:iG;1:CiLi, , .,f:;:.1 ,.       ..:i., :.:.               fff',
+\ '           G.:LCL,ff1.,        ..;.i.:1;   ,,,.,. . :.,    . .,.      ,G',
+\ '             C,i1.i.    :00G         ,i,  ..i;,  .    tGG;   ,  ,     ;',
+\ '               ;0080008000GG0G0Giif::.t ,;:  ;.   iiGGG00G0G0CG0GGG;',
+\ '                ,000GG80CG88800000C1i1;1i1;;,.,  1CGGG0i0000GG00GGGC',
+\ '              108GL0GGLtt80GG0G0G0GLGCti1ttii::..GGGG0G0GGC00CLCCC0GC',
+\ '            tCGCfCitt1i;LLC00GG80GGCLG0L1ti    ,:CG00G00CL1LtfGCLL1fGGC8.',
+\ '         GtL:fGLtti:i1CtitL000000GCffLC1t;  :,   iGGGG000CLtLCC1ttfCLtC:  i',
+\ '        0C:ttCt,i;:,i;,ifLGC8000C0tLLL1tf1    1 C;;80C00CGLftftt1;ftfGGi    t',
+\ '     ,ifCtCi:.    1:1CftLCG00001  LLtfft1i   ,i;.LLCiLf8000CtCfL;LCffiCi    .:t',
+\ '   ;GGCtCCfG      fftfLGG0GitG,   GLCLLf,C10  ;;;i.  :Lf1, 0G008G1Lf1fGi     iit.1',
+\ ' ;GfCC011fCf1Lt1,,111000i,;fC     ;G0f;G0L80G,: 1i     ;  0 G0i80G00GG1. ,::1,ffff;0',
+\ 'tfLCLGC;fffGLG1tfff0G0GGC f11      Gf00G0L00000,C     ti;iL1Cf0 1t.:. ;ii;t    ;f .L G',
+\ '                           L1f    Gt008000000000 f    ii,:',
+\ '                             :    0f000008008000f     .',
+\ '                                 iC00G000iG00000Ct.',
+\ '                                 :C;C0GG00t00000Cf',
+\ '                                  C;f00800;08000Li',
+\ '                                  tf LG00f LGGtfC:',
+\ '                                       ;L0C;    ;',
+\ '                                   ;.,;.  L    .C',
+\ '                                    t.;i; ,f:, L',
+\ '                                     L,CGL LLi.',
+\ '                                      ii1i0C;1,',
+\ '                                      f1;  :;',
+\ '                                       Li  11',
+\ '                                        tftG',
+\ '                                         i:',
+\ '                                         :;',
+\ ' ,
+\ ' ,
 \ ]
 
 let s:startify_tmp_header_02 = [
-\ " ",
-\ " ",
-\ "                     .ed\"\"\"\" \"\"\"$$$$be.",
-\ "                   -\"           ^\"\"**$$$e.",
-\ "                 .\"                   \'$$$c",
-\ "                /                      \"4$$b",
-\ "               d  3                      $$$$",
-\ "               $  *                   .$$$$$$",
-\ "              .$  ^c           $$$$$e$$$$$$$$.",
-\ "              d$L  4.         4$$$$$$$$$$$$$$b",
-\ "              $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$",
-\ "  e$\"\"=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$",
-\ " z$$b. ^c     3$$$F \"$$$$b   $\"$$$$$$$  $$$$*\"      .=\"\"$c",
-\ "4$$$$L        $$P\"  \"$$b   .$ $$$$$...e$$        .=  e$$$.",
-\ "^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$",
-\ "  \"**$$$ec   \"   %ce\"\"    $$$  $$$$$$$$$$*    .r\" =$$$$P\"\"",
-\ "        \"*$b.  \"c  *$e.    *** d$$$$$\"L$$    .d\"  e$$***\"",
-\ "          ^*$$c ^$c $$$      4J$$$$$% $$$ .e*\".eeP\"",
-\ "             \"$$$$$$\"\'$=e....$*$$**$cz$$\" \"..d$*\"",
-\ "               \"*$$$  *=%4.$ L L$ P3$$$F $$$P\"",
-\ "                  \"$   \"%*ebJLzb$e$$$$$b $P\"",
-\ "                    %..      4$$$$$$$$$$ \"",
-\ "                     $$$e   z$$$$$$$$$$%",
-\ "                      \"*$c  \"$$$$$$$P\"",
-\ "                       .\"\"\"*$$$$$$$$bc",
-\ "                    .-\"    .$***$$$\"\"\"*e.",
-\ "                 .-\"    .e$\"     \"*$c  ^*b.",
-\ "          .=*\"\"\"\"    .e$*\"          \"*bc  \"*$e..",
-\ "        .$\"        .z*\"               ^*$e.   \"*****e.",
-\ "        $$ee$c   .d\"                     \"*$.        3.",
-\ "        ^*$E\")$..$\"                         *   .ee==d%",
-\ "           $.d$$$*                           *  J$$$e*",
-\ "            \"\"\"\"\"                              \"$$$\"",
-\ " ",
-\ " ",
+\ ' ',
+\ ' ',
+\ '                     .ed\"\"\"\" \"\"\"$$$$be.',
+\ '                   -\"           ^\"\"**$$$e.',
+\ '                 .\"                   \"$$$c',
+\ '                /                      \"4$$b',
+\ '               d  3                      $$$$',
+\ '               $  *                   .$$$$$$',
+\ '              .$  ^c           $$$$$e$$$$$$$$.',
+\ '              d$L  4.         4$$$$$$$$$$$$$$b',
+\ '              $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$',
+\ '  e$\"\"=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$',
+\ ' z$$b. ^c     3$$$F \"$$$$b   $\"$$$$$$$  $$$$*\"      .=\"\"$c',
+\ '4$$$$L        $$P\"  \"$$b   .$ $$$$$...e$$        .=  e$$$.',
+\ '^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$',
+\ '  \"**$$$ec   \"   %ce\"\"    $$$  $$$$$$$$$$*    .r\" =$$$$P\"\"',
+\ '        \"*$b.  \"c  *$e.    *** d$$$$$\"L$$    .d\"  e$$***\"',
+\ '          ^*$$c ^$c $$$      4J$$$$$% $$$ .e*\".eeP\"',
+\ '             \"$$$$$$\"\"$=e....$*$$**$cz$$\" \"..d$*\"',
+\ '               \"*$$$  *=%4.$ L L$ P3$$$F $$$P\"',
+\ '                  \"$   \"%*ebJLzb$e$$$$$b $P\"',
+\ '                    %..      4$$$$$$$$$$ \"',
+\ '                     $$$e   z$$$$$$$$$$%',
+\ '                      \"*$c  \"$$$$$$$P\"',
+\ '                       .\"\"\"*$$$$$$$$bc',
+\ '                    .-\"    .$***$$$\"\"\"*e.',
+\ '                 .-\"    .e$\"     \"*$c  ^*b.',
+\ '          .=*\"\"\"\"    .e$*\"          \"*bc  \"*$e..',
+\ '        .$\"        .z*\"               ^*$e.   \"*****e.',
+\ '        $$ee$c   .d\"                     \"*$.        3.',
+\ '        ^*$E\")$..$\"                         *   .ee==d%',
+\ '           $.d$$$*                           *  J$$$e*',
+\ '            \"\"\"\"\"                              \"$$$\"',
+\ ' ',
+\ ' ',
 \ ]
 
 let s:startify_tmp_header_03 = [
-\ "   Web browsers are useless here.",
-\ " ",
-\ " ",
-\ "         ,+++77777++=:,                    +=                      ,,++=7++=,,",
-\ "       7~?7   +7I77 :,I777  I          77 7+77 7:        ,?777777??~,=+=~I7?,=77 I",
-\ "   =7I7I~7  ,77: ++:~+7 77=7777 7     +77=7 =7I7     ,I777= 77,:~7 +?7, ~7   ~ 777?",
-\ "   77+7I 777~,,=7~  ,::7=7: 7 77   77: 7 7 +77,7 I777~+777I=   =:,77,77  77 7,777,",
-\ "     = 7  ?7 , 7~,~  + 77 ?: :?777 +~77 77? I7777I7I7 777+77   =:, ?7   +7 777?",
-\ "         77 ~I == ~77= +777 777~: I,+77?  7  7:?7? ?7 7 7 77 ~I   7I,,?7 I77~",
-\ "          I 7=77~+77+?=:I+~77?     , I 7? 77 7   777~ +7 I+?7  +7~?777,77I",
-\ "            =77 77= +7 7777         ,7 7?7:,??7     +7    7   77??+ 7777,",
-\ "                =I, I 7+:77?         +7I7?7777 :             :7 7",
-\ "                   7I7I?77 ~         +7:77,     ~         +7,::7   7",
-\ "                  ,7~77?7? ?:         7+:77777,           77 :7777=",
-\ "                   ?77 +I7+,7         7~  7,+7  ,?       ?7?~?777:",
-\ "                      I777=7777 ~     77 :  77 =7+,    I77  777",
-\ "                        +      ~?     , + 7    ,, ~I,  = ? ,",
-\ "                                       77:I+",
-\ "                                       ,7",
-\ "                                        :77",
-\ "                                           :",
-\ "   Welcome.",
+\ '   Web browsers are useless here.',
+\ ' ',
+\ ' ',
+\ '         ,+++77777++=:,                    +=                      ,,++=7++=,,',
+\ '       7~?7   +7I77 :,I777  I          77 7+77 7:        ,?777777??~,=+=~I7?,=77 I',
+\ '   =7I7I~7  ,77: ++:~+7 77=7777 7     +77=7 =7I7     ,I777= 77,:~7 +?7, ~7   ~ 777?',
+\ '   77+7I 777~,,=7~  ,::7=7: 7 77   77: 7 7 +77,7 I777~+777I=   =:,77,77  77 7,777,',
+\ '     = 7  ?7 , 7~,~  + 77 ?: :?777 +~77 77? I7777I7I7 777+77   =:, ?7   +7 777?',
+\ '         77 ~I == ~77= +777 777~: I,+77?  7  7:?7? ?7 7 7 77 ~I   7I,,?7 I77~',
+\ '          I 7=77~+77+?=:I+~77?     , I 7? 77 7   777~ +7 I+?7  +7~?777,77I',
+\ '            =77 77= +7 7777         ,7 7?7:,??7     +7    7   77??+ 7777,',
+\ '                =I, I 7+:77?         +7I7?7777 :             :7 7',
+\ '                   7I7I?77 ~         +7:77,     ~         +7,::7   7',
+\ '                  ,7~77?7? ?:         7+:77777,           77 :7777=',
+\ '                   ?77 +I7+,7         7~  7,+7  ,?       ?7?~?777:',
+\ '                      I777=7777 ~     77 :  77 =7+,    I77  777',
+\ '                        +      ~?     , + 7    ,, ~I,  = ? ,',
+\ '                                       77:I+',
+\ '                                       ,7',
+\ '                                        :77',
+\ '                                           :',
+\ '   Welcome.',
 \ ]
 
 highlight StartifyHeader ctermfg=111 guifg=#98A8FF
-if exists("+termguicolors")
+if exists('+termguicolors')
     set termguicolors
 endif
 let g:startify_custom_header = s:startify_tmp_header_03
 " let g:startify_custom_header = s:startify_center_header(s:startify_tmp_header_03)
+augroup plug_startify
+    au!
+    " Set Header Color/Style to Comment
+    au ColorScheme * highlight link StartifyHeader Comment
+    au User Startified setlocal buflisted
+augroup END
 " }}}
 
 " vim-signify {{{
@@ -1555,13 +1630,14 @@ let g:ycm_python_binary_path=g:python3_host_prog
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
 let s:fmColorSchemeLight='solarized8_high'
+" let s:fmColorSchemeLight='solarized8_flat'
 let s:fmColorSchemeDark='OceanicNext'
 " let g:ayucolor='light'
 " let s:fmColorSchemeLight='ayu'
 
 function! s:setColorScheme()
     " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
-    if $ITERM_PROFILE == 'Night'
+    if $ITERM_PROFILE =~? 'Night'
         set background=dark
         let g:airline_theme='oceanicnext'
         let g:oceanic_next_terminal_bold = 1
@@ -1573,6 +1649,7 @@ function! s:setColorScheme()
 
         let g:airline_theme = 'solarized'
         let g:solarized_visibility = 'high'
+        let g:solarized_diffmode = 'high'
         let g:solarized_termtrans = 1
         let g:solarized_term_italics = 1
         let g:solarized_old_cursor_style=1
@@ -1584,8 +1661,8 @@ endfunction
 call s:setColorScheme()
 
 function! s:ToggleBackground()
-    let fmShade = &background == 'dark' ? 'light' : 'dark'
-    let fmColorScheme = fmShade == 'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
+    let fmShade = &background =~? 'dark' ? 'light' : 'dark'
+    let fmColorScheme = fmShade =~?'dark' ? s:fmColorSchemeDark : s:fmColorSchemeLight
     execute 'set background='.fmShade
     execute 'colorscheme '.fmColorScheme
 endfunction
