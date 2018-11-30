@@ -42,57 +42,116 @@
     prompt = false
 
 [alias]
-    st = status -sb
+    aa = add --all
+    apa = add --patch
+    au = add --update
+    av = add --verbose
+    ap = apply
+
     br = branch -vv
     bra = branch -vv --all
-    bed = branch --edit-description
-    aa = add --all :/
-    ci = commit -v
-    ca = commit --amend -v
+    bred = branch --edit-description
+    brd = branch -d
+    brD = branch -D
+    brl = blame -b -w
+    brnm = branch --no-merged
+    brr = branch --remote
+
+    bs = bisect
+    bsb = bisect bad
+    bsg = bisect good
+    bsr = bisect reset
+    bss = bisect start
+
+    c = commit -v
+    ca = commit -v --amend
+    can = commit -v --no-edit --amend
+    ca = commit -v -a
+    caa = commit -v -a --amend
+    caan = commit -v -a --no-edit --amend
+    caans = commit -v -a -s --no-edit --amend
+    cam = commit -a -m
+    csm = commit -s -m
+    cm = commit -m
+
+    cf = config --list
+    cl = clone --recurse-submodules
+    clean = clean -fd
+    pristine = !sh -c 'git reset --hard && git clean -dfx'
+
     co = checkout
+    cob = checkout -b
+    com = checkout master
+    cod = checkout develop
+
+    cleanup = !sh -c 'git remote prune origin && git gc'
     cp = cherry-pick
+    credit = shortlog -sn
+
+    dic = diff --cached
+    dicc = diff --cached --color-words=.
+    dicg = diff --cached -G
+    dics = diff --cached --stat
+    dicw = diff --cached --color-words
+    dih = diff HEAD~
+    dihc = diff HEAD~ --color-words=.
+    dihg = diff HEAD~ -G
+    dihs = diff HEAD~ --stat
+    dihw = diff HEAD~ --color-words
     di = diff
+    dic = diff --color-words=.
     dig = diff -G
     dis = diff --stat
     diw = diff --color-words
-    dic = diff --color-words=.
-    dc = diff --cached
-    dcg = diff --cached -G
-    dcs = diff --cached --stat
-    dcw = diff --cached --color-words
-    dcc = diff --cached --color-words=.
-    dh = diff HEAD~
-    dhg = diff HEAD~ -G
-    dhs = diff HEAD~ --stat
-    dhw = diff HEAD~ --color-words
-    dhc = diff HEAD~ --color-words=.
-    grp = grep -C 1
-    gr = log --graph --format=compact # graph
-    grl = log --graph --format=line # graph line
-    grd = log --graph --format=detail # graph detail
-    gra = log --graph --format=compact --all # graph all
-    gral = log --graph --format=line --all # graph all line
-    grad = log --graph --format=detail --all # graph all in detail
-    grm = log --merges --format=line
-    ;gr = log --graph --full-history --all --pretty=format:'%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n'
     dlog = log --pretty=full --color
+
+    f = fetch
+    fa = fetch --all --prune
+    fo = fetch origin
+
+    gr = log --graph --format=compact # graph
+    gra = log --graph --format=compact --all # graph all
+    grad = log --graph --format=detail --all # graph all in detail
+    gral = log --graph --format=line --all # graph all line
+    grd = log --graph --format=detail # graph detail
+    grl = log --graph --format=line # graph line
+    grm = log --merges --format=line
+    grp = grep -C 1
+
     ls = ls-tree -r --name-only
-    credit = shortlog -sn
+    pop-commit = reset --soft HEAD~1
+    remotes = remote -v
+
+    p = pull
+    po = pull origin
+    pom = pull origin master
+    pod = pull origin develop
+
+    rb = rebase --preserve-merges --stat
+    rbm = rebase --preserve-merges --stat master
+    rbd = rebase --preserve-merges --stat develop
+    rba = rebase --abort
+    rbc = rebase --continue
+    rbs = rebase --skip
+    rbi = rebase -i
+
+    st = status -sb
+
+    sta = stash save
+    staa = stash apply
+    stac = stash clear
+    stad = stash drop
+    stal = stash list
+    stap = stash pop
+    stas = stash show --text
+    stall = stash --all
+
+    tags = tag -l
+    tar = !sh -c "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
+    targz = !sh -c "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
     update-submodules = submodule update --init --recursive
     upgrade-submodules = submodule update --init --remote
-    tags = tag -l
-    branches = branch -a
-    remotes = remote -v
-    cleanup = !git remote prune origin && git gc
-    ; today = log --all --author="$(git config --get user.name)" --after=yesterday --pretty=format:"%h - %ad: %s"
-    ; today = !sh -c \"git log --all --author='${git config --get user.name}' --after=yesterday --pretty=format:'%h - %ad: %s'\"
-    ; week = !sh -c \”git log --all --author='${git config --get user.name}' --after='7 days ago' --pretty=format:'%h - %ad: %s'\”
-    ; yesterday = !sh -c \”git log --all --author='${git config --get user.name}' --after='two days ago' --before=yesterday --pretty=format:'%h - %ad: %s'\”
-    ; team = !sh -c \”git log --all --format='%an' . | sort | uniq -c | sort -nr\”
-    pop-commit = reset --soft HEAD~1
-    tar = ! "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
-    targz = ! "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
-    zip = ! "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
+    zip = !sh -c "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
 
 [credential]
     helper = osxkeychain

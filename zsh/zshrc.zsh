@@ -20,7 +20,6 @@ export LANG=en_US.UTF-8
 
 # shellcheck source=/dev/null
 [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
-
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc";
 
 

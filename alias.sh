@@ -24,6 +24,8 @@ export LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbe
 alias less='less -m -N -g -i -J --line-numbers --underline-special';
 alias more='less';
 
+alias g='git';
+
 # Use "highlight" in place of "cat"
 alias cat="highlight $1 --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
 

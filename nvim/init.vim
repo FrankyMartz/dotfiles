@@ -27,6 +27,7 @@
 "-------------------------------------------------------------------------------
 set encoding=utf-8
 scriptencoding=utf-8
+let &shell='/usr/local/bin/zsh --login'
 
 " syntax enable                   " Enable Syntax Highlighting
 syntax on                       " Enable Syntax Highlighting–Allow VIM override
@@ -166,7 +167,7 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 set conceallevel=1              " Enable Code Conceal
-set concealcursor=""            " Show all concealed chars in cursorline
+set concealcursor="nc"          " Show concealed chars in cursorline
 
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 
@@ -242,8 +243,12 @@ inoremap OO <esc>O
 inoremap CC <esc>cc
 
 " Easy Single Line Indent
-vnoremap < <gv
-vnoremap > >gv
+" nnoremap <silent> <Leader>< V<<esc>
+" nnoremap <silent> <Leader>> V><esc>
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 
 " Split Buffers
 nnoremap <c-s> <c-w>s
@@ -319,7 +324,7 @@ augroup ft_coffee
 augroup END
 " }}}
 
-" CSS {{{
+" CSS, SASS, Stylus, LESS  {{{
 augroup ft_css
     au!
     au FileType css,scss,sass,less,stylus setlocal ts=4 sts=4 sw=4 noexpandtab
@@ -388,6 +393,7 @@ augroup ft_html
     au!
     au FileType html setlocal ts=2 sts=2 sw=2 expandtab
     au FileType html UltiSnipsAddFiletypes html.css.javascript
+    au FileType html setlocal foldmethod=syntax
 augroup END
 " }}}
 
@@ -495,7 +501,7 @@ augroup ft_typescript
     au FileType typescript setlocal ts=2 sts=2 sw=2 cocu="" expandtab
     au BufRead,BufNewFile *.ts setlocal filetype=typescript
     au BufRead,BufNewFile *.tsx setlocal filetype=typescript
-    au FileType typescript setlocal foldmethod=syntax
+    " au FileType typescript setlocal foldmethod=syntax
 augroup END
 " }}}
 
@@ -587,16 +593,16 @@ au TermOpen * setlocal nonumber norelativenumber
 
 function! SetScrollBind(isBound)
     if a:isBound
-        set noscrollbind
-        set nocursorbind
+        execute 'set scrollbind'
+        execute 'set cursorbind'
     else
-        set scrollbind
-        set cursorbind
+        execute 'set noscrollbind'
+        execute 'set nocursorbind'
     endif
 endfunction
 
-noremap <silent>[og :call SetScrollBind()<CR>
-noremap <silent>]og :call SetScrollBind(1)<CR>
+noremap <silent>[og :call SetScrollBind(1)<CR>
+noremap <silent>]og :call SetScrollBind(0)<CR>
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -671,12 +677,12 @@ let g:airline_skip_empty_sections=1
 let g:airline_highlighting_cache=1
 let g:airline_powerline_fonts=1
 let g:airline_exclude_preview=1
-let g:airline_section_y = airline#section#create_right(['ffenc','gutentags#statusline()'])
+" let g:airline_section_y = airline#section#create_right(['ffenc','gutentags#statusline()'])
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 140,
     \ 'x': 140,
-    \ 'y': 140,
 \ }
+" \ 'y': 140,
 let g:airline#extensions#tabline#ignore_bufadd_pat = 'gundo|undotree|vimfiler|tagbar|nerd_tree|startify'
 
 " Airline : Ale ================================================================
@@ -736,6 +742,9 @@ let g:airline#extensions#ctrlp#show_adjacent_modes = 1
 " let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
 let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
 
+" Airline : CursorMode =========================================================
+let g:airline#extensions#cursormode#enabled = 1
+
 " Airline : TabLine ============================================================
 let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
 let g:airline#extensions#tabline#buffers_label = 'buffer'
@@ -744,6 +753,7 @@ let g:airline#extensions#tabline#current_first = 1
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#buffer_min_count=1
+let g:airline#extensions#tabline#fnamecollapse = 1
 let g:airline#extensions#tabline#formatter='unique_tail_improved'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
@@ -759,36 +769,42 @@ let g:airline#extensions#virtualenv#enabled = 1
 " }}}
 
 " Ale {{{
-" let g:ale_set_loclist = 0
-" let g:ale_set_quickfix = 1
-" let g:ale_open_list = 'on_save'
 let g:ale_set_highlights = 1
 " let g:ale_completion_enabled = 1
 let b:ale_set_balloons = 1
 let g:ale_cache_executable_check_failures = 1
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = ''
 let g:ale_change_sign_column_color = 1
-let g:ale_keep_list_window_open = 0
-" let g:ale_lint_on_text_changed = 0
-" let g:ale_lint_on_insert_leave = 0
+let g:ale_cursor_detail = 0
+" let g:ale_keep_list_window_open = 0
 " let g:ale_lint_delay = 400
-let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
-let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_filetype_changed = 1
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
 let g:ale_linters = {
     \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
     \ 'javascript': ['standard'],
     \ 'go': ['gometalinter', 'gofmt'],
 \ }
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_fixers = {
     \ 'typescript': ['tslint'],
     \ 'javascript': ['standard'],
     \ 'html': [],
 \ }
-let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_go_gometalinter_options = '--fast'
-" let g:ale_typescript_tsserver_use_global = 1
+let g:ale_javascript_eslint_options = '--no-color'
+let g:ale_open_list = 'on_save'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = ''
+let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
+let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
+let g:ale_typescript_tsserver_use_global = 1
+
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = '  ' " ⌫ ﱥ                 
+
 nmap <leader>ek <Plug>(ale_previous)
 nmap <leader>ej <Plug>(ale_next)
 
@@ -869,11 +885,12 @@ nnoremap <F7> :MundoToggle<CR>
 
 " indentLine {{{
 let g:indentLine_enabled = 1
-let g:indentLine_conceallevel = 1
-let g:indentLine_concealcursor='¦'
+let g:indentLine_char = '¦'
+let g:indentLine_first_char = '¦'
+let g:indentLine_setConceal = 1
 let g:indentLine_setColors=0
-nnoremap <leader>ig :IndentLinesToggle<CR>
-" let g:indentLine_bgcolor_term = 202
+let g:indentLine_showFirstIndentLevel = 1
+nnoremap <leader>ti :IndentLinesToggle<CR>
 " }}}
 
 " javascript-libraries-syntax {{{
@@ -955,7 +972,7 @@ let g:NERDToggleCheckAllLines = 1
 " }}}
 
 " NERDTree {{{
-augroup nerdtree
+augroup plug_nerdtree
     " Quit when NERDTree is only open buffer
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
@@ -995,19 +1012,6 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : ' ',
     \ 'Unknown'   : ''
 \ }
-" }}}
-
-" PromptLine {{{
-" let g:promptline_powerline_symbols = 1
-" let g:promptline_preset = {
-    " \'a' : [ promptline#slices#cwd() ],
-    " \'b' : [ promptline#slices#vcs_branch({ 'hg': 1, 'svn': 1, 'fossil': 1 }), promptline#slices#git_status() ],
-    " \'c' : [ '' ],
-    " \'x' : [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
-    " \'y' : [ promptline#slices#python_virtualenv() ],
-    " \'z' : [ promptline#slices#jobs() ],
-    " \'warn' : [ promptline#slices#last_exit_code() ]
-" \ }
 " }}}
 
 " Surround {{{
@@ -1087,43 +1091,24 @@ let g:tagbar_type_scss = {
     \ 'deffile' : expand(defdir) . 'scss.cnf'
 \ }
 
-let g:tagbar_type_typescript = {
-    \ 'ctagstype' : 'typescript',
-    \ 'kinds': [
-        \ 'n:namespace:0:1',
-        \ 'm:module:0:1',
-        \ 'c:class:0:1',
-        \ 'a:abstractclass:0:1',
-        \ 't:type:0:1',
-        \ 'i:interface:0:1',
-        \ 'e:enum:0:1',
-        \ 'v:variable:0:1',
-        \ 'f:function:0:1',
-        \ 'l:lambda:0:1',
-        \ 'p:member:0:1',
-    \ ],
-    \ 'sort' : 0,
-    \ 'kind2scope' : {
-        \ 'n': 'namespace',
-        \ 'm': 'module',
-        \ 'c': 'class',
-        \ 'a': 'abstractclass',
-        \ 'i': 'interface',
-        \ 'f': 'function',
-        \ 'p': 'member',
-    \ },
-    \ 'sro': '.',
-    \ 'scope2kind' : {
-        \ 'namespace': 'n',
-        \ 'module': 'm',
-        \ 'class': 'c',
-        \ 'abstractclass': 'a',
-        \ 'interface': 'i',
-        \ 'function': 'f',
-        \ 'member': 'p',
-    \ },
-    \ 'deffile' : expand(defdir) . 'typescript.cnf'
-\ }
+let g:tagbar_type_typescript = {                                                  
+  \ 'ctagsbin' : 'tstags',                                                        
+  \ 'ctagsargs' : '-f-',                                                           
+  \ 'kinds': [                                                                     
+    \ 'e:enums:0:1',                                                               
+    \ 'f:function:0:1',                                                            
+    \ 't:typealias:0:1',                                                           
+    \ 'M:Module:0:1',                                                              
+    \ 'I:import:0:1',                                                              
+    \ 'i:interface:0:1',                                                           
+    \ 'C:class:0:1',                                                               
+    \ 'm:method:0:1',                                                              
+    \ 'p:property:0:1',                                                            
+    \ 'v:variable:0:1',                                                            
+    \ 'c:const:0:1',                                                              
+  \ ],                                                                            
+  \ 'sort' : 0                                                                    
+\ }     
 
 let g:tagbar_type_js = {
     \ 'ctagstype' : 'js',
@@ -1198,21 +1183,23 @@ let g:delve_cache_path = expand(s:aDelveCachePath)
 
 " vim-diff-enhanced {{{
 if &diff
-    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-    " let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=histogram")'
+    " let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=patience")'
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=histogram")'
 endif
 " }}}
 
 " vim-ctrlspace {{{
 " let g:CtrlSpaceSetDefaultMapping=0
-let s:aCtrlSpaceCacheDir='~/.nvim/tmp/ctrlspace//'
+let s:aCtrlSpaceCacheDir='~/.nvim/tmp/ctrlspacecache/'
 if !isdirectory(expand(s:aCtrlSpaceCacheDir))
     call mkdir(expand(s:aCtrlSpaceCacheDir), 'p')
 endif
 let g:CtrlSpaceCacheDir = expand(s:aCtrlSpaceCacheDir)
 " let g:CtrlSpaceSearchTiming = 0
 " [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
-nmap <c-space> <nul>
+" nmap <c-space> <nul>
+let g:CtrlSpaceDefaultMappingKey = '<c-space> '
+let g:CtrlSpaceUseArrowsInTerm = 1
 let g:CtrlSpaceUseMouseAndArrowsInTerm=1
 let g:CtrlSpaceLoadLastWorkspaceOnStart=0
 let g:CtrlSpaceSaveWorkspaceOnSwitch=1
@@ -1220,16 +1207,12 @@ let g:CtrlSpaceSaveWorkspaceOnExit=1
 let g:CtrlSpaceHeight = 10
 
 if executable('rg')
-    let g:CtrlSpaceGlobCommand = 'rg -l --hidden --nocolor -g ""'
+    let g:CtrlSpaceGlobCommand = 'rg --hidden --vimgrep --files'
 elseif executable('ag')
-    let g:CtrlSpaceGlobCommand = 'ag -l --hidden --nocolor -g ""'
+" if executable('ag')
+    let g:CtrlSpaceGlobCommand = '/usr/bin/env ag -l --hidden --vimgrep -g ""'
 endif
 let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
-" }}}
-
-" vim-flow {{{
-" Use Syntastic instead. (vim-flow) includes autocompletion so keep around.
-let g:flow#enable = 0
 " }}}
 
 " vim-go {{{
@@ -1287,6 +1270,7 @@ let g:gutentags_project_root = ['.root']
 " let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_ctags_executable_javascript = 'jsctags'
 " let g:gutentags_ctags_executable_javascript = 'ctags'
+let g:gutentags_ctags_executable_typescript = 'ctags'
 " let g:gutentags_ctags_executable_typescript = 'tstags'
 " function! gutentags#build_default_job_options(module) abort
     " let l:job_opts = {
@@ -1317,10 +1301,6 @@ endif
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
-augroup javascript_folding
-    au!
-    au FileType javascript setlocal foldmethod=syntax
-augroup END
 let g:javascript_conceal_function             = 'ƒ'
 let g:javascript_conceal_null                 = 'ø'
 let g:javascript_conceal_this                 = '@'
@@ -1355,19 +1335,8 @@ let g:jsdoc_param_description_separator = ' - '
 let g:jsdoc_enable_es6 = 1
 " }}}
 
-" vim-json {{{
-let g:vim_json_syntax_conceal=0
-" }}}
-
 " vim-jsx {{{
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-" }}}
-
-" vim-livedown {{{
-let g:livedown_autorun = 0  " Auto-Open Preview on markdown
-let g:livedown_open = 1     " Open Browser on Preview
-let g:livedown_port = 1337  " Browser Port
-nnoremap <silent><F14> :LivedownPreview<CR>
 " }}}
 
 " vim-move {{{
@@ -1389,6 +1358,9 @@ let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exac
 
 " vim-polyglot {{{
 let g:polyglot_disabled = ['javascript', 'typescript']
+
+" vim-json
+" let g:vim_json_syntax_conceal=0
 " }}}
 
 " vim-startify {{{
@@ -1572,16 +1544,15 @@ let g:signify_update_on_focusgained = 1
 let g:signify_cursorhold_normal = 1
 " let g:signify_cursorhold_insert = 1
 let g:signify_vcs_list = ['git', 'hg']
-" let g:signify_sign_add               = ''
-" let g:signify_sign_delete            = ''
-" let g:signify_sign_delete_first_line = '‾'
-" let g:signify_sign_change            = ''
-" let g:signify_sign_changedelete      = ''
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '~'
 let g:signify_sign_changedelete      = '*'
+nmap <leader>gj <plug>(signify-next-hunk)<CR>
+nmap <leader>gk <plug>(signify-prev-hunk)<CR>
+nmap <leader>gd :SignifyDiff<CR>
+nmap <leader>gf :SignifyFold<CR>
 " }}}
 
 " vim-signature {{{
@@ -1590,20 +1561,32 @@ let g:SignatureMarkerTextHLDynamic = 1
 
 " UltiSnips {{{
 let g:UltiSnipsUsePythonVersion=3
-let g:UltiSnipsExpandTrigger='<c-K>'
-let g:UltiSnipsJumpForwardTrigger='<c-K>'
-let g:UltiSnipsJumpBackwardTrigger='<c-J>'
+let g:UltiSnipsExpandTrigger = '<nop>'
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
 " }}}
 
 " YouCompleteMe {{{
+" let g:loaded_youcompleteme = 1
 " autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-nnoremap <leader>jt :YcmCompleter GoToType<CR>
-nnoremap <leader>gt :YcmCompleter GetType<CR>
+nnoremap <leader>yjd :YcmCompleter GoTo<CR>
+nnoremap <leader>yjt :YcmCompleter GoToType<CR>
+nnoremap <leader>yjr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>ygt :YcmCompleter GetType<CR>
+nnoremap <leader>yoi :YcmCompleter OrganizeImports<CR>
 " let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
 let g:ycm_key_list_select_completion = ['<TAB>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>']
 let g:ycm_key_list_stop_completion = ['<C-y>', '<UP>', '<DOWN>']
+let g:ycm_use_ultisnips_completer = 1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_seed_identifiers_with_syntax=1
@@ -1646,7 +1629,6 @@ function! s:setColorScheme()
     else
         set background=light
         " let g:airline_theme = 'ayu'
-
         let g:airline_theme = 'solarized'
         let g:solarized_visibility = 'high'
         let g:solarized_diffmode = 'high'
@@ -1654,7 +1636,6 @@ function! s:setColorScheme()
         let g:solarized_term_italics = 1
         let g:solarized_old_cursor_style=1
         let g:solarized_enable_extra_hi_groups = 1
-
         execute 'colorscheme '.s:fmColorSchemeLight
     endif
 endfunction
