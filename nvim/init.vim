@@ -203,27 +203,17 @@ nmap <leader>jj :bprevious<CR>
 nmap <leader>hh :tabprevious<CR>
 nmap <leader>ll :tabnext<CR>
 
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
-" nmap <leader>bq :bp <BAR> bd #<CR>
-" Show all open buffers and their status
-" nmap <leader>bl :ls<CR>
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+" nnoremap  <leader>yy  "+yy
 
-" COPY / PASTE ... PLEASE
-"vnoremap <leader>y "*y
-"noremap <leader>p :silent! set paste<cr>"*p:set nopaste<cr>
-
-function! ClipboardYank()
-  call system('pbcopy', @@)
-endfunction
-function! ClipboardPaste()
-  let @@ = system('pbpaste')
-endfunction
-
-vnoremap <silent> <leader>y y:call ClipboardYank()<cr>
-vnoremap <silent> <leader>d d:call ClipboardYank()<cr>
-nnoremap <silent> <leader>p :call ClipboardPaste()<cr>p<cr>
-vnoremap <silent> P "0p<cr>
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
 " Sudo to write (handle permission-denied error)
 cnoremap w!! w !sudo tee % >/dev/null
@@ -775,13 +765,14 @@ let b:ale_set_balloons = 1
 let g:ale_cache_executable_check_failures = 1
 let g:ale_change_sign_column_color = 1
 let g:ale_cursor_detail = 0
-" let g:ale_keep_list_window_open = 0
 " let g:ale_lint_delay = 400
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
-" let g:ale_lint_on_insert_leave = 0
 " let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 0
 let g:ale_linters = {
     \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
     \ 'javascript': ['standard'],
@@ -1091,24 +1082,25 @@ let g:tagbar_type_scss = {
     \ 'deffile' : expand(defdir) . 'scss.cnf'
 \ }
 
-let g:tagbar_type_typescript = {                                                  
-  \ 'ctagsbin' : 'tstags',                                                        
-  \ 'ctagsargs' : '-f-',                                                           
-  \ 'kinds': [                                                                     
-    \ 'e:enums:0:1',                                                               
-    \ 'f:function:0:1',                                                            
-    \ 't:typealias:0:1',                                                           
-    \ 'M:Module:0:1',                                                              
-    \ 'I:import:0:1',                                                              
-    \ 'i:interface:0:1',                                                           
-    \ 'C:class:0:1',                                                               
-    \ 'm:method:0:1',                                                              
-    \ 'p:property:0:1',                                                            
-    \ 'v:variable:0:1',                                                            
-    \ 'c:const:0:1',                                                              
-  \ ],                                                                            
-  \ 'sort' : 0                                                                    
-\ }     
+let g:tagbar_type_typescript = {
+    \ 'ctagstype' : 'ts',
+    \ 'ctagsbin' : 'tstags',
+    \ 'ctagsargs' : '-f-',
+    \ 'kinds': [
+        \ 'e:enums:0:1',
+        \ 'f:function:0:1',
+        \ 't:typealias:0:1',
+        \ 'M:Module:0:1',
+        \ 'I:import:0:1',
+        \ 'i:interface:0:1',
+        \ 'C:class:0:1',
+        \ 'm:method:0:1',
+        \ 'p:property:0:1',
+        \ 'v:variable:0:1',
+        \ 'c:const:0:1',
+    \ ],
+    \ 'sort' : 0,
+\ }
 
 let g:tagbar_type_js = {
     \ 'ctagstype' : 'js',
@@ -1117,7 +1109,6 @@ let g:tagbar_type_js = {
         \ 'i:import',
         \ 'v:variable',
         \ 'a:array',
-        \ 'c:class',
         \ 'c:class',
         \ 'f:function',
         \ 'g:generator',
@@ -1268,10 +1259,8 @@ let g:gutentags_define_advanced_commands = 1
 " let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_project_root = ['.root']
 " let g:gutentags_auto_add_gtags_cscope = 0
-let g:gutentags_ctags_executable_javascript = 'jsctags'
-" let g:gutentags_ctags_executable_javascript = 'ctags'
-let g:gutentags_ctags_executable_typescript = 'ctags'
-" let g:gutentags_ctags_executable_typescript = 'tstags'
+let g:gutentags_ctags_executable_javascript = 'ctags'
+let g:gutentags_exclude_filetypes = ['typescript']
 " function! gutentags#build_default_job_options(module) abort
     " let l:job_opts = {
                 " \ 'detach': 1,
@@ -1318,8 +1307,10 @@ augroup plug_jsprettytemplate
     au!
     " Register tag name associated the filetype
     au! User vim-js-pretty-template call jspretmpl#register_tag('gql','graphql')
-    au FileType javascript JsPreTmpl html
-    au FileType typescript JsPreTmpl markdown
+    au FileType javascript JsPreTmpl
+    au FileType javascript.jsx JsPreTmpl
+    au FileType typescript JsPreTmpl
+    au FileType typescript.tsx JsPreTmpl
 augroup END
 " }}}
 
@@ -1583,9 +1574,6 @@ nnoremap <leader>yjr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>ygt :YcmCompleter GetType<CR>
 nnoremap <leader>yoi :YcmCompleter OrganizeImports<CR>
 " let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
-let g:ycm_key_list_select_completion = ['<TAB>']
-let g:ycm_key_list_previous_completion = ['<S-TAB>']
-let g:ycm_key_list_stop_completion = ['<C-y>', '<UP>', '<DOWN>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_collect_identifiers_from_comments_and_strings=1
 let g:ycm_collect_identifiers_from_tags_files=1

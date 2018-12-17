@@ -105,9 +105,9 @@
     diw = diff --color-words
     dlog = log --pretty=full --color
 
-    f = fetch
+    f = fetch --prune
     fa = fetch --all --prune
-    fo = fetch origin
+    fo = fetch origin -prune
 
     gr = log --graph --format=compact # graph
     gra = log --graph --format=compact --all # graph all
