@@ -63,16 +63,16 @@
     bsr = bisect reset
     bss = bisect start
 
-    c = commit -v
-    ca = commit -v --amend
-    can = commit -v --no-edit --amend
-    ca = commit -v -a
-    caa = commit -v -a --amend
-    caan = commit -v -a --no-edit --amend
-    caans = commit -v -a -s --no-edit --amend
-    cam = commit -a -m
-    csm = commit -s -m
-    cm = commit -m
+    c = commit --verbose
+    ca = commit --amend
+    caa = commit --amend --all
+    ce =  commit --amend --no-edit
+    cw = commit --amend --only
+    cva = commit --verbose --amend
+    cvc = commit --verbose
+    cf = commit --fixup
+    cs = commit --squash
+    ces = commit --edit --squash
 
     cf = config --list
     cl = clone --recurse-submodules

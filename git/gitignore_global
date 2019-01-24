@@ -31,6 +31,7 @@ tags.temp
 GTAGS
 GRTAGS
 GPATH
+CS_SESSION
 
 #===============================================================================
 # Logs and Database

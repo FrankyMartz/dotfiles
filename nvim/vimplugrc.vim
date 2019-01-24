@@ -20,15 +20,24 @@ function! BuildYCM(info)
     " - name:   name of plugin
     " - status: 'installed', 'updated', or 'unchanged'
     " - force:  set on PlugInstall! or PlugUpdate!
-    if a:info.status == 'updated' || a:info.force
+    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
         !/usr/bin/env python3 ./install.py --all
+    endif
+endfunction
+" }}}
+
+" Neotags {{{
+function! BuildNeotags(info)
+    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
+        !/usr/bin/env make
+        UpdateRemotePlugins
     endif
 endfunction
 " }}}
 
 " vim-markdown-composer {{{
 function! BuildComposer(info)
-  if a:info.status != 'unchanged' || a:info.force
+  if a:info.status !=? 'unchanged' || a:info.force
     if has('nvim')
       !cargo build --release
     else
@@ -57,13 +66,14 @@ Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
+Plug 'dbakker/vim-projectroot'
 
 " Window
-Plug 'https://github.com/rhysd/committia.vim', { 'for': ['gitcommit']}
+Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-fugitive' | Plug 'mhinz/vim-startify' | Plug 'gregsexton/gitv', {'on': ['Gitv']} | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'universal-ctags/ctags'
 " Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
+" Plug 'c0r73x/neotags.nvim', { 'do': function('BuildNeotags') }
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
@@ -82,9 +92,8 @@ Plug 'tpope/vim-characterize'
 Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 Plug 'matze/vim-move'
 Plug 'wellle/targets.vim'
-
-
 Plug 'https://github.com/reedes/vim-textobj-sentence'
+Plug 'mtth/scratch.vim'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'

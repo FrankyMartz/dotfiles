@@ -138,6 +138,7 @@ PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 ## Use Homebrew's directories rather than ~/.rbenv add to your profile
 export RBENV_ROOT="/usr/local/var/rbenv"
 export PATH="${RBENV_ROOT}/bin:${PATH}"
+export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 ## Enable shims and autocompletion add to your profile
 [[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";

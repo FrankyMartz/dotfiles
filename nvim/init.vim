@@ -242,7 +242,7 @@ vnoremap <S-Tab> <gv
 
 " Split Buffers
 nnoremap <c-s> <c-w>s
-nnoremap <c-v> <c-w>v
+nnoremap <c-a-s> <c-w>v
 
 " Resize Window
 " Window (Buffer) Height
@@ -763,9 +763,9 @@ let g:ale_set_highlights = 1
 " let g:ale_completion_enabled = 1
 let b:ale_set_balloons = 1
 let g:ale_cache_executable_check_failures = 1
-let g:ale_change_sign_column_color = 1
+" let g:ale_change_sign_column_color = 1
 let g:ale_cursor_detail = 0
-" let g:ale_lint_delay = 400
+let g:ale_lint_delay = 200
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
 " let g:ale_lint_on_save = 1
@@ -823,7 +823,7 @@ let g:far#source = 'rgnvim'
 " }}}
 
 " Fugitive {{{
-nmap <leader>? :Gstatus<cr>
+nnoremap <leader>? :Gstatus<cr>
 " }}}
 
 " FZF {{{
@@ -907,33 +907,35 @@ let g:used_javascript_libs = join([
 " }}}
 
 " Neotags.nvim {{{
-let g:neotags_enabled = 1
-let g:neotags_ignore = [
-    \ 'html',
-    \ 'text',
-    \ 'nofile',
-    \ 'mail',
-    \ 'qf',
-\ ]
-" set regexpengine=1
-" Utilize RipGrep
-let g:neotags_highlight = 1
-let g:neotags_appendpath = 0
-let g:neotags_recursive = 1
-" let g:neotags_ctags_args = [
-    " \ '-L -',
-    " \ '--fields=+l',
-    " \ '--c-kinds=+p',
-    " \ '--c++-kinds=+p',
-    " \ '--sort=no',
-    " \ '--extra=+q'
+" let g:neotags_enabled = 1
+" let g:neotags_ignore = [
+    " \ 'ctags',
+    " \ '.ctags',
+    " \ 'html',
+    " \ 'text',
+    " \ 'nofile',
+    " \ 'mail',
+    " \ 'qf',
 " \ ]
+" let g:neotags_recursive = 1
+" let g:neotags_find_tool = 'rg --files'
+" set regexpengine=1
+" TypeScript
+" let g:neotags#typescript#order = 'cnfmoited'
+" let g:neotags#typescript#c = { 'group': 'javascriptClassTag' }
+" let g:neotags#typescript#C = { 'group': 'javascriptConstantTag' }
+" let g:neotags#typescript#f = { 'group': 'javascriptFunctionTag' }
+" let g:neotags#typescript#o = { 'group': 'javascriptObjectTag' }
+" let g:neotags#typescript#n = g:neotags#typescript#C
+" let g:neotags#typescript#f = g:neotags#typescript#f
+" let g:neotags#typescript#m = g:neotags#typescript#f
+" let g:neotags#typescript#o = g:neotags#typescript#o
+" let g:neotags#typescript#i = g:neotags#typescript#C
+" let g:neotags#typescript#t = g:neotags#typescript#C
+" let g:neotags#typescript#e = g:neotags#typescript#C
+" let g:neotags#typescript#d = g:neotags#typescript#c
 
-" Or this one for ripgrep. Not both.
-"/usr/local/bin/ctags
-" let g:neotags_ctags_bin = 'rg --files '. getcwd() .' | /usr/local/bin/ctags'
-let g:neotags_verbose = 1
-let g:neotags_find_tool = 'rg --files'
+
 " }}}
 
 " NERDCommenter {{{
@@ -1003,6 +1005,24 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : ' ',
     \ 'Unknown'   : ''
 \ }
+" }}}
+
+" Scratch {{{
+let g:scratch_autohide = 0
+let g:scratch_insert_autohide = 0  
+let g:scratch_filetype = 'markdown'
+
+function! s:set_scratch_path()
+    let repoRoot = projectroot#guess()
+    if isdirectory(repoRoot . '/.git')
+        let scratchPath = repoRoot . '/.git/scratch.vim'
+        let g:scratch_persistence_file = repoRoot . '/.git/scratch.vim'
+    endif
+endfunction
+
+augroup plug_scratch
+    au VimEnter * call s:set_scratch_path()
+augroup END
 " }}}
 
 " Surround {{{
@@ -1082,25 +1102,46 @@ let g:tagbar_type_scss = {
     \ 'deffile' : expand(defdir) . 'scss.cnf'
 \ }
 
-let g:tagbar_type_typescript = {
-    \ 'ctagstype' : 'ts',
-    \ 'ctagsbin' : 'tstags',
-    \ 'ctagsargs' : '-f-',
-    \ 'kinds': [
-        \ 'e:enums:0:1',
-        \ 'f:function:0:1',
-        \ 't:typealias:0:1',
-        \ 'M:Module:0:1',
-        \ 'I:import:0:1',
-        \ 'i:interface:0:1',
-        \ 'C:class:0:1',
-        \ 'm:method:0:1',
-        \ 'p:property:0:1',
-        \ 'v:variable:0:1',
-        \ 'c:const:0:1',
-    \ ],
-    \ 'sort' : 0,
-\ }
+let g:tagbar_type_typescript = {                                                  
+  \ 'ctagsbin' : 'tstags',                                                        
+  \ 'ctagsargs' : '-f-',                                                           
+  \ 'ctagstype' : 'ts',
+  \ 'kinds': [                                                                     
+    \ 'e:enums:0:1',                                                               
+    \ 'f:function:0:1',                                                            
+    \ 't:typealias:0:1',                                                           
+    \ 'M:Module:0:1',                                                              
+    \ 'I:import:0:1',                                                              
+    \ 'i:interface:0:1',                                                           
+    \ 'C:class:0:1',                                                               
+    \ 'm:method:0:1',                                                              
+    \ 'p:property:0:1',                                                            
+    \ 'v:variable:0:1',                                                            
+    \ 'c:const:0:1',                                                              
+  \ ],                                                                            
+  \ 'sort' : 0                                                                    
+\ }  
+
+" let g:tagbar_type_typescript = {
+    " \ 'ctagsbin' : 'tstags',
+    " \ 'ctagsargs' : '-f-',
+    " \ 'ctagstype' : 'ts',
+    " \ 'kinds': [
+        " \ 'I:import:0:1',
+        " \ 'n:modules:0:1',
+        " \ 'M:modules:0:1',
+        " \ 'i:interfaces:0:1',
+        " \ 't:types:0:1',
+        " \ 'e:enums:0:1',
+        " \ 'f:functions:0:1',
+        " \ 'V:varlambdas:0:1',
+        " \ 'v:variables:0:1',
+        " \ 'c:classes:0:1',
+        " \ 'd:decorator:0:1',
+        " \ 'm:members:0:1',
+    " \ ],
+    " \ 'sort' : 0,
+" \ }
 
 let g:tagbar_type_js = {
     \ 'ctagstype' : 'js',
@@ -1256,11 +1297,14 @@ let g:gutentags_enabled = 1
 let g:gutentags_modules = ['ctags']
 let g:gutentags_resolve_symlinks = 1
 let g:gutentags_define_advanced_commands = 1
-" let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_project_root = ['.root']
-" let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_ctags_executable_javascript = 'ctags'
-let g:gutentags_exclude_filetypes = ['typescript']
+" let g:gutentags_ctags_executable_typescript = 'tstags'
+let g:gutentags_ctags_exclude = ['*\.ts']
+
+" let g:gutentags_modules = ['ctags', 'gtags_cscope']
+" let g:gutentags_auto_add_gtags_cscope = 0
+" let g:gutentags_exclude_filetypes = ['typescript']
 " function! gutentags#build_default_job_options(module) abort
     " let l:job_opts = {
                 " \ 'detach': 1,
@@ -1400,94 +1444,7 @@ let g:startify_lists = [
     \ { 'type': 'commands',                 'header': ['   Commands']           },
     \ { 'type': function('s:list_commits'), 'header': ['   Commits']            }
 \ ]
-
-let s:startify_tmp_header_01 = [
-\ '                                                                    ,t',
-\ '              ;t                                                  1;1',
-\ '               f1f1i                                          it ,,,t',
-\ '                11t:. t                                    1t    i i',
-\ '                ::,:   , ..                             ;,         f',
-\ '                 Gf1i..     t1                       i;            .',
-\ '                 ff;;,....     :1                 :t              i',
-\ '                 ,...::,,.        1              .                C',
-\ '                  fti;,,.           i          ,                 .',
-\ '                  .i:.:...           ,       .L                  ;',
-\ '                   0::,..,,.          i      .                  t',
-\ '                    C.;.::..           .     i                 i',
-\ '                      0fi;:..,;.        L  ;.        :..  ,. G       ,;:',
-\ '          i1C:;G,t,t,,Ci....;i,..i.            ...: , i..   L;1        titi',
-\ '          :LC:iG;1:CiLi, , .,f:;:.1 ,.       ..:i., :.:.               fff',
-\ '           G.:LCL,ff1.,        ..;.i.:1;   ,,,.,. . :.,    . .,.      ,G',
-\ '             C,i1.i.    :00G         ,i,  ..i;,  .    tGG;   ,  ,     ;',
-\ '               ;0080008000GG0G0Giif::.t ,;:  ;.   iiGGG00G0G0CG0GGG;',
-\ '                ,000GG80CG88800000C1i1;1i1;;,.,  1CGGG0i0000GG00GGGC',
-\ '              108GL0GGLtt80GG0G0G0GLGCti1ttii::..GGGG0G0GGC00CLCCC0GC',
-\ '            tCGCfCitt1i;LLC00GG80GGCLG0L1ti    ,:CG00G00CL1LtfGCLL1fGGC8.',
-\ '         GtL:fGLtti:i1CtitL000000GCffLC1t;  :,   iGGGG000CLtLCC1ttfCLtC:  i',
-\ '        0C:ttCt,i;:,i;,ifLGC8000C0tLLL1tf1    1 C;;80C00CGLftftt1;ftfGGi    t',
-\ '     ,ifCtCi:.    1:1CftLCG00001  LLtfft1i   ,i;.LLCiLf8000CtCfL;LCffiCi    .:t',
-\ '   ;GGCtCCfG      fftfLGG0GitG,   GLCLLf,C10  ;;;i.  :Lf1, 0G008G1Lf1fGi     iit.1',
-\ ' ;GfCC011fCf1Lt1,,111000i,;fC     ;G0f;G0L80G,: 1i     ;  0 G0i80G00GG1. ,::1,ffff;0',
-\ 'tfLCLGC;fffGLG1tfff0G0GGC f11      Gf00G0L00000,C     ti;iL1Cf0 1t.:. ;ii;t    ;f .L G',
-\ '                           L1f    Gt008000000000 f    ii,:',
-\ '                             :    0f000008008000f     .',
-\ '                                 iC00G000iG00000Ct.',
-\ '                                 :C;C0GG00t00000Cf',
-\ '                                  C;f00800;08000Li',
-\ '                                  tf LG00f LGGtfC:',
-\ '                                       ;L0C;    ;',
-\ '                                   ;.,;.  L    .C',
-\ '                                    t.;i; ,f:, L',
-\ '                                     L,CGL LLi.',
-\ '                                      ii1i0C;1,',
-\ '                                      f1;  :;',
-\ '                                       Li  11',
-\ '                                        tftG',
-\ '                                         i:',
-\ '                                         :;',
-\ ' ,
-\ ' ,
-\ ]
-
-let s:startify_tmp_header_02 = [
-\ ' ',
-\ ' ',
-\ '                     .ed\"\"\"\" \"\"\"$$$$be.',
-\ '                   -\"           ^\"\"**$$$e.',
-\ '                 .\"                   \"$$$c',
-\ '                /                      \"4$$b',
-\ '               d  3                      $$$$',
-\ '               $  *                   .$$$$$$',
-\ '              .$  ^c           $$$$$e$$$$$$$$.',
-\ '              d$L  4.         4$$$$$$$$$$$$$$b',
-\ '              $$$$b ^ceeeee.  4$$ECL.F*$$$$$$$',
-\ '  e$\"\"=.      $$$$P d$$$$F $ $$$$$$$$$- $$$$$$',
-\ ' z$$b. ^c     3$$$F \"$$$$b   $\"$$$$$$$  $$$$*\"      .=\"\"$c',
-\ '4$$$$L        $$P\"  \"$$b   .$ $$$$$...e$$        .=  e$$$.',
-\ '^*$$$$$c  %..   *c    ..    $$ 3$$$$$$$$$$eF     zP  d$$$$$',
-\ '  \"**$$$ec   \"   %ce\"\"    $$$  $$$$$$$$$$*    .r\" =$$$$P\"\"',
-\ '        \"*$b.  \"c  *$e.    *** d$$$$$\"L$$    .d\"  e$$***\"',
-\ '          ^*$$c ^$c $$$      4J$$$$$% $$$ .e*\".eeP\"',
-\ '             \"$$$$$$\"\"$=e....$*$$**$cz$$\" \"..d$*\"',
-\ '               \"*$$$  *=%4.$ L L$ P3$$$F $$$P\"',
-\ '                  \"$   \"%*ebJLzb$e$$$$$b $P\"',
-\ '                    %..      4$$$$$$$$$$ \"',
-\ '                     $$$e   z$$$$$$$$$$%',
-\ '                      \"*$c  \"$$$$$$$P\"',
-\ '                       .\"\"\"*$$$$$$$$bc',
-\ '                    .-\"    .$***$$$\"\"\"*e.',
-\ '                 .-\"    .e$\"     \"*$c  ^*b.',
-\ '          .=*\"\"\"\"    .e$*\"          \"*bc  \"*$e..',
-\ '        .$\"        .z*\"               ^*$e.   \"*****e.',
-\ '        $$ee$c   .d\"                     \"*$.        3.',
-\ '        ^*$E\")$..$\"                         *   .ee==d%',
-\ '           $.d$$$*                           *  J$$$e*',
-\ '            \"\"\"\"\"                              \"$$$\"',
-\ ' ',
-\ ' ',
-\ ]
-
-let s:startify_tmp_header_03 = [
+let g:startify_custom_header = [
 \ '   Web browsers are useless here.',
 \ ' ',
 \ ' ',
@@ -1511,13 +1468,7 @@ let s:startify_tmp_header_03 = [
 \ '                                           :',
 \ '   Welcome.',
 \ ]
-
 highlight StartifyHeader ctermfg=111 guifg=#98A8FF
-if exists('+termguicolors')
-    set termguicolors
-endif
-let g:startify_custom_header = s:startify_tmp_header_03
-" let g:startify_custom_header = s:startify_center_header(s:startify_tmp_header_03)
 augroup plug_startify
     au!
     " Set Header Color/Style to Comment
@@ -1528,12 +1479,10 @@ augroup END
 
 " vim-signify {{{
 " autocmd User Fugitive SignifyRefresh
+let g:signify_realtime = 1
 let g:signify_update_on_bufenter = 1
 let g:signify_update_on_focusgained = 1
-" let g:signify_realtime = 1
 " let g:signify_line_highlight = 1
-let g:signify_cursorhold_normal = 1
-" let g:signify_cursorhold_insert = 1
 let g:signify_vcs_list = ['git', 'hg']
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
@@ -1542,8 +1491,8 @@ let g:signify_sign_change            = '~'
 let g:signify_sign_changedelete      = '*'
 nmap <leader>gj <plug>(signify-next-hunk)<CR>
 nmap <leader>gk <plug>(signify-prev-hunk)<CR>
-nmap <leader>gd :SignifyDiff<CR>
-nmap <leader>gf :SignifyFold<CR>
+nmap <leader>gd :SignifyDiff!<CR>
+nmap <leader>gf :SignifyFold!<CR>
 " }}}
 
 " vim-signature {{{
@@ -1657,5 +1606,4 @@ nnoremap <leader>bg :ToggleBg<CR>
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
-
 
