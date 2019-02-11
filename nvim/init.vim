@@ -491,7 +491,7 @@ augroup ft_typescript
     au FileType typescript setlocal ts=2 sts=2 sw=2 cocu="" expandtab
     au BufRead,BufNewFile *.ts setlocal filetype=typescript
     au BufRead,BufNewFile *.tsx setlocal filetype=typescript
-    " au FileType typescript setlocal foldmethod=syntax
+    au FileType typescript setlocal foldmethod=syntax
 augroup END
 " }}}
 
@@ -578,6 +578,8 @@ set winminheight=5
 set diffopt+=vertical
 set diffopt+=iwhite
 
+set foldcolumn=0    " Hide fold depth info from gutter
+
 " Disable Line Numbers in Terminal
 au TermOpen * setlocal nonumber norelativenumber
 
@@ -662,6 +664,7 @@ let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
 let g:airline_detect_spell=1
+let g:airline_detect_spelllang=1
 let g:airline_inactive_collapse=1
 let g:airline_skip_empty_sections=1
 let g:airline_highlighting_cache=1
@@ -682,17 +685,27 @@ let g:airline#extensions#ale#enabled=1
 " let g:airline_base16_improved_contrast=1
 " let g:airline#themes#base16#constant=1
 
-" Airline : Git ================================================================
-let g:airline#extensions#branch#format=1
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#branch#displayed_head_limit = 10
-let g:airline#extensions#branch#sha1_len = 10
+" Airline : CtrlSpace ==========================================================
+let g:CtrlSpaceUseTabline=0
+let g:airline#extensions#ctrlspace#enabled=1
+let g:airline#extensions#ctrlp#show_adjacent_modes = 1
+let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
 
-" Airline : Gutentags ==========================================================
-let g:airline#extensions#gutentags#enabled = 1
+" Airline : CursorMode =========================================================
+let g:airline#extensions#cursormode#enabled = 1
 
 " Airline : Fugitive ===========================================================
 let g:airline#extensions#fugitiveline#enabled = 1
+
+" Airline : Git ================================================================
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#branch#format=1
+let g:airline#extensions#branch#empty_message = ''
+let g:airline#extensions#branch#sha1_len = 10
+let g:airline#extensions#branch#displayed_head_limit = 10
+
+" Airline : Gutentags ==========================================================
+let g:airline#extensions#gutentags#enabled = 1
 
 " Airline : Hunks ==============================================================
 let g:airline#extensions#hunks#enabled = 1
@@ -703,16 +716,34 @@ let g:airline#extensions#promptline#snapshot_file='~/.dotfiles/bin/.shell_prompt
 let g:airline#extensions#promptline#enabled=0
 let g:airline#extensions#windowswap#enabled=1
 
-" Airline : WindowSwap =========================================================
-let g:airline#extensions#windowswap#indicator_text='WS'
-
-" Airline : YouCompleteMe ======================================================
-let g:airline#extensions#ycm#enabled=1
-
 " Airline : Signify ============================================================
 let g:airline#extensions#hunks#enabled=1
 let g:airline#extensions#hunks#non_zero_only=0
 let g:airline#extensions#hunks#hunk_symbols=['+', '~', '-']
+
+" Airline : TabLine ============================================================
+let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
+let g:airline#extensions#tabline#buffers_label = 'buffer'
+let g:airline#extensions#tabline#tabs_label = 'tab'
+let g:airline#extensions#tabline#current_first = 1
+let g:airline#extensions#tabline#show_tabs = 1
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#buffer_min_count=1
+let g:airline#extensions#tabline#fnamecollapse = 1
+let g:airline#extensions#tabline#formatter='unique_tail'
+" let g:airline#extensions#tabline#formatter='unique_tail_improved'
+" let g:airline#extensions#tabline#buffer_nr_show = 1
+" let g:airline#extensions#tabline#show_close_button = 1
+
+" Airline : Tagbar =============================================================
+let g:airline#extensions#tagbar#enabled = 1
+" let g:airline#extensions#tabline#switch_buffers_and_tabs=1
+let g:airline#extensions#tabline#exclude_preview=1
+let g:airline#extensions#tabline#left_sep=''
+let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
+
+" Airline : VirtualEnv =========================================================
+let g:airline#extensions#virtualenv#enabled = 1
 
 " Airline : WhiteSpace =========================================================
 let g:airline#extensions#whitespace#enabled=1
@@ -725,37 +756,11 @@ let g:airline#extensions#whitespace#long_format='long[%s]'
 let g:airline#extensions#whitespace#mixed_indent_file_format='mix-indent-file[%s]'
 let airline#extensions#c_like_langs=['c', 'cpp', 'cuda', 'go', 'javascript', 'typescript', 'ld', 'php']
 
-" Airline : CtrlSpace ==========================================================
-let g:CtrlSpaceUseTabline=0
-let g:airline#extensions#ctrlspace#enabled=1
-let g:airline#extensions#ctrlp#show_adjacent_modes = 1
-" let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
-let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
+" Airline : WindowSwap =========================================================
+let g:airline#extensions#windowswap#indicator_text='WS'
 
-" Airline : CursorMode =========================================================
-let g:airline#extensions#cursormode#enabled = 1
-
-" Airline : TabLine ============================================================
-let g:airline#extensions#tabline#enabled=1  " Automatically displays all buffers
-let g:airline#extensions#tabline#buffers_label = 'buffer'
-let g:airline#extensions#tabline#tabs_label = 'tab'
-let g:airline#extensions#tabline#current_first = 1
-let g:airline#extensions#tabline#show_tabs = 1
-let g:airline#extensions#tabline#show_splits = 1
-let g:airline#extensions#tabline#buffer_min_count=1
-let g:airline#extensions#tabline#fnamecollapse = 1
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline#extensions#tabline#buffer_nr_show = 1
-
-" Airline : Tagbar =============================================================
-let g:airline#extensions#tagbar#enabled = 1
-" let g:airline#extensions#tabline#switch_buffers_and_tabs=1
-let g:airline#extensions#tabline#exclude_preview=1
-let g:airline#extensions#tabline#left_sep=''
-let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
-
-" Airline : VirtualEnv =========================================================
-let g:airline#extensions#virtualenv#enabled = 1
+" Airline : YouCompleteMe ======================================================
+let g:airline#extensions#ycm#enabled=1
 " }}}
 
 " Ale {{{
@@ -1512,6 +1517,10 @@ function ExpandSnippetOrCarriageReturn()
     endif
 endfunction
 inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
+" }}}
+
+" yats {{{
+let g:yats_host_keyword = 1
 " }}}
 
 " YouCompleteMe {{{
