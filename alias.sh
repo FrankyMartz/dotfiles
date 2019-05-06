@@ -32,9 +32,11 @@ alias cat="highlight $1 --out-format xterm256 --line-numbers --quiet --force --s
 alias la='ls -lAFh --color --group-directories-first'; # color-mode
 alias lad='ls -dlAh --color */'; # color-mode
 alias irc='screen -t 1 irssi';
-alias chrome-cors='open -a Google\ Chrome --args --disable-web-security --user-data-dir';
-alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome';
-alias chrome-canary='/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary';
+
+alias chrome='open -a Google\ Chrome'; 
+alias chrome-canary='open -a Google\ Chrome\ Canary'; 
+alias chrome-cors="open -a Google\ Chrome --args --disable-web-security --user-data-dir";
+alias chrome-vscode="open -a Google\ Chrome --remote-debugging-port=9222"
 
 alias nvdiff='nvim -d';
 alias pe='path-extractor';

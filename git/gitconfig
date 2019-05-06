@@ -89,20 +89,22 @@
     credit = shortlog -sn
 
     dic = diff --cached
-    dicc = diff --cached --color-words=.
+    dicw = diff --cached --color-words=.
     dicg = diff --cached -G
     dics = diff --cached --stat
     dicw = diff --cached --color-words
     dih = diff HEAD~
-    dihc = diff HEAD~ --color-words=.
+    dihw = diff HEAD~ --color-words=.
     dihg = diff HEAD~ -G
     dihs = diff HEAD~ --stat
     dihw = diff HEAD~ --color-words
+
+    ; diw = diff --color-words
     di = diff
-    dic = diff --color-words=.
+    diw = diff --color-words=.
     dig = diff -G
     dis = diff --stat
-    diw = diff --color-words
+
     dlog = log --pretty=full --color
 
     f = fetch --prune

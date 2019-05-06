@@ -776,7 +776,7 @@ let g:ale_lint_on_filetype_changed = 1
 " let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
-let g:ale_open_list = 1
+let g:ale_open_list = 'on_save'
 let g:ale_keep_list_window_open = 0
 let g:ale_linters = {
     \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
@@ -791,7 +791,6 @@ let g:ale_fixers = {
 \ }
 let g:ale_go_gometalinter_options = '--fast'
 let g:ale_javascript_eslint_options = '--no-color'
-let g:ale_open_list = 'on_save'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
 let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
@@ -805,9 +804,9 @@ nmap <leader>ek <Plug>(ale_previous)
 nmap <leader>ej <Plug>(ale_next)
 
 augroup plug_ale
-    au!
-    au BufWinLeave * silent! lclose
-    au QuitPre * if empty(&buftype) | lclose | endif
+    autocmd!
+    autocmd QuitPre * if empty(&buftype) | lclose | endif
+    " autocmd BufWinLeave * silent! lclose
 augroup END
 "  }}}
 
@@ -834,10 +833,8 @@ nnoremap <leader>? :Gstatus<cr>
 " FZF {{{
 if has('nvim')
     nmap <c-t> :FZF<cr>
-    let $FZF_DEFAULT_OPTS .= ' --inline-info'
-
     let g:fzf_history_dir = '~/.nvim/tmp/fzf-history//'
-
+    " let $FZF_DEFAULT_OPTS .= ' --inline-info'
     let g:fzf_colors = {
         \ 'fg':      ['fg', 'Normal'],
         \ 'bg':      ['bg', 'Normal'],
@@ -1107,46 +1104,45 @@ let g:tagbar_type_scss = {
     \ 'deffile' : expand(defdir) . 'scss.cnf'
 \ }
 
-let g:tagbar_type_typescript = {                                                  
-  \ 'ctagsbin' : 'tstags',                                                        
-  \ 'ctagsargs' : '-f-',                                                           
-  \ 'ctagstype' : 'ts',
-  \ 'kinds': [                                                                     
-    \ 'e:enums:0:1',                                                               
-    \ 'f:function:0:1',                                                            
-    \ 't:typealias:0:1',                                                           
-    \ 'M:Module:0:1',                                                              
-    \ 'I:import:0:1',                                                              
-    \ 'i:interface:0:1',                                                           
-    \ 'C:class:0:1',                                                               
-    \ 'm:method:0:1',                                                              
-    \ 'p:property:0:1',                                                            
-    \ 'v:variable:0:1',                                                            
-    \ 'c:const:0:1',                                                              
-  \ ],                                                                            
-  \ 'sort' : 0                                                                    
-\ }  
+let g:tagbar_type_typescript = {
+    \ 'ctagsbin' : 'tstags',
+    \ 'ctagsargs' : '-f-',
+    \ 'ctagstype' : 'ts',
+    \ 'kinds': [
+        \ 'e:enums:0:1',
+        \ 'f:function:0:1',
+        \ 't:typealias:0:1',
+        \ 'M:Module:0:1',
+        \ 'I:import:0:1',
+        \ 'i:interface:0:1',
+        \ 'C:class:0:1',
+        \ 'm:method:0:1',
+        \ 'p:property:0:1',
+        \ 'v:variable:0:1',
+        \ 'c:const:0:1',
+    \ ],
+  \ 'sort' : 0,
+  \ 'sro' : '.',
+\ }
 
 " let g:tagbar_type_typescript = {
-    " \ 'ctagsbin' : 'tstags',
-    " \ 'ctagsargs' : '-f-',
-    " \ 'ctagstype' : 'ts',
     " \ 'kinds': [
-        " \ 'I:import:0:1',
-        " \ 'n:modules:0:1',
+        " \ 'c:classes:0:1',
+        " \ 'n:namespaces:0:1',
         " \ 'M:modules:0:1',
+        " \ 'f:functions:0:1',
+        " \ 'v:variables:0:1',
+        " \ 'l:lambdas:0:1',
+        " \ 'm:members:0:1',
         " \ 'i:interfaces:0:1',
         " \ 't:types:0:1',
         " \ 'e:enums:0:1',
-        " \ 'f:functions:0:1',
-        " \ 'V:varlambdas:0:1',
-        " \ 'v:variables:0:1',
-        " \ 'c:classes:0:1',
-        " \ 'd:decorator:0:1',
-        " \ 'm:members:0:1',
+        " \ 'i:imports:0:1',
     " \ ],
     " \ 'sort' : 0,
+    " \ 'deffile' : expand(defdir) . 'typescript.cnf'
 " \ }
+
 
 let g:tagbar_type_js = {
     \ 'ctagstype' : 'js',
@@ -1167,25 +1163,15 @@ let g:tagbar_type_js = {
 \ }
 " }}}
 
-" vim-devicon {{{
-let g:webdevicons_enable=1
-let g:webdevicons_enable_nerdtree=1
-let g:webdevicons_enable_vimfiler = 1
-let g:webdevicons_enable_airline_tabline=1
-let g:webdevicons_enable_airline_statusline=1
-let g:webdevicons_enable_ctrlp=1
-let g:webdevicons_enable_flagship_statusline = 1
-
-let g:WebDevIconsUnicodeGlyphDoubleWidth=1
-let g:webdevicons_conceal_nerdtree_brackets=1
-let g:WebDevIconsNerdTreeAfterGlyphPadding=' '
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-
-let g:WebDevIconsUnicodeDecorateFolderNodes=1
-let g:DevIconsEnableFoldersOpenClose=1
-let g:DevIconsEnableFolderPatternMatching=1
-let g:DevIconsEnableFolderExtensionPatternMatching=0
-let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
+" VimDevIcon {{{
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_vimfiler  =  1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderPatternMatching = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 0
+let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
@@ -1207,6 +1193,19 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.js
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$'] = '慎'
+
+" vimDevIcon: NERDTree
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+" vimDevIcon: Airline
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+" vimDevIcon: CtrlP
+let g:webdevicons_enable_ctrlp = 1
+let g:webdevicons_enable_flagship_statusline = 1
 " }}}
 
 " vim-delve {{{
@@ -1220,8 +1219,8 @@ let g:delve_cache_path = expand(s:aDelveCachePath)
 
 " vim-diff-enhanced {{{
 if &diff
-    " let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=patience")'
-    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=histogram")'
+    let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=patience")'
+    " let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=histogram")'
 endif
 " }}}
 
@@ -1436,9 +1435,10 @@ function! s:list_commits()
 endfunction
 
 function! s:get_project_name()
-    let git = 'git -C ' . getcwd()
+    let cwd = getcwd()
+    let git = 'git -C ' . cwd
     let dirname = system(git . ' rev-parse --abbrev-ref HEAD')
-    return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : getcwd())
+    return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : cwd)
 endfunction
 
 let g:startify_lists = [
@@ -1558,9 +1558,13 @@ let g:ycm_python_binary_path=g:python3_host_prog
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let s:fmColorSchemeLight='solarized8_high'
+let s:fmColorSchemeLight='solarized8'
+" let s:fmColorSchemeLight='solarized8_high'
 " let s:fmColorSchemeLight='solarized8_flat'
-let s:fmColorSchemeDark='OceanicNext'
+" let s:fmColorSchemeDark='OceanicNext'
+" let s:fmColorSchemeDark='base16-eighties'
+let s:fmColorSchemeDark='base16-materia'
+" let s:fmColorSchemeDark='onedark'
 " let g:ayucolor='light'
 " let s:fmColorSchemeLight='ayu'
 
@@ -1568,19 +1572,23 @@ function! s:setColorScheme()
     " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
     if $ITERM_PROFILE =~? 'Night'
         set background=dark
-        let g:airline_theme='oceanicnext'
-        let g:oceanic_next_terminal_bold = 1
-        let g:oceanic_next_terminal_italic = 1
+        " let g:airline_theme='oceanicnext'
+        " let g:oceanic_next_terminal_bold = 1
+        " let g:oceanic_next_terminal_italic = 1
+        " let g:airline_theme='onedark'
+        " let g:onedark_termcolors=16
+        " let g:onedark_hide_endofbuffer = 1
+        " let g:onedark_terminal_italics = 1
         execute 'colorscheme '.s:fmColorSchemeDark
     else
         set background=light
         " let g:airline_theme = 'ayu'
         let g:airline_theme = 'solarized'
-        let g:solarized_visibility = 'high'
+        " let g:solarized_visibility = 'high'
         let g:solarized_diffmode = 'high'
         let g:solarized_termtrans = 1
         let g:solarized_term_italics = 1
-        let g:solarized_old_cursor_style=1
+        " let g:solarized_old_cursor_style=1
         let g:solarized_enable_extra_hi_groups = 1
         execute 'colorscheme '.s:fmColorSchemeLight
     endif

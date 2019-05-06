@@ -66,7 +66,9 @@ Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
+Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 
 " Window
 Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
@@ -94,6 +96,7 @@ Plug 'matze/vim-move'
 Plug 'wellle/targets.vim'
 Plug 'https://github.com/reedes/vim-textobj-sentence'
 Plug 'mtth/scratch.vim'
+Plug 'vim-scripts/LargeFile'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
@@ -118,6 +121,7 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
 " JavaScript / TypeScript
+Plug 'jparise/vim-graphql'
 Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> JavaScript
@@ -153,7 +157,9 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'
-Plug 'mhartington/oceanic-next'
+" Plug 'mhartington/oceanic-next'
+Plug 'chriskempson/base16-vim'
+" Plug 'joshdick/onedark.vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Devicons MUST be loaded last
