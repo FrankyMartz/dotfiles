@@ -190,12 +190,8 @@ nnoremap <ScrollWheelLeft> 20zh
 nnoremap <ScrollWheelRigth> 20zl
 imap <ScrollWheelLeft> <Left>
 imap <ScrollWheelRight> <Right>
-" nnoremap ˙ z30h
-" nnoremap ¬ z30l
 nnoremap <M-h> 20zh
 nnoremap <M-l> 20zl
-" nnoremap ˍ 20zh
-" nnoremap - 20zl
 
 " Switch (previous,next) Buffer
 nmap <leader>kk :bnext<CR>
@@ -207,7 +203,6 @@ nmap <leader>ll :tabnext<CR>
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
-" nnoremap  <leader>yy  "+yy
 
 " " Paste from clipboard
 nnoremap <leader>p "+p
@@ -233,8 +228,6 @@ inoremap OO <esc>O
 inoremap CC <esc>cc
 
 " Easy Single Line Indent
-" nnoremap <silent> <Leader>< V<<esc>
-" nnoremap <silent> <Leader>> V><esc>
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 vnoremap <Tab> >gv
@@ -323,12 +316,9 @@ augroup ft_css
     au BufNewFile,BufRead *.sass setlocal filetype=sass
     au BufNewFile,BufRead *.less setlocal filetype=less
     au BufNewFile,BufRead *.styl setlocal filetype=stylus
-    au FileType css set omnifunc=csscomplete#CompleteCSS
+    " au FileType css set omnifunc=csscomplete#CompleteCSS
 
-    " au FileType less UltiSnipsAddFiletypes less.css
     au FileType scss,sass,less,css setlocal foldmethod=marker foldmarker={,}
-    "au FileType css,scss,sass,less,stylus omnifunc=csscomplete#CompleteCSS
-    "au FileType less,css setlocal isKeyword+=-
     " Make {<cr> insert a pair of brackets in such a way that the cursor is
     " correctly positioned inside of them AND the following code doesn't get
     " unfolded.
@@ -539,6 +529,8 @@ augroup END
 " VIMRC {{{
 augroup ft_vimrc
     au!
+    " Disable Line Numbers in Terminal
+    au TermOpen * setlocal nonumber norelativenumber
     " Save when losing focus
     au FocusLost * :silent! wa
     au BufEnter * :syntax sync fromstart
@@ -550,8 +542,6 @@ augroup ft_vimrc
     au BufWinEnter * silent! loadview
     au WinEnter * setlocal cursorline
     au WinLeave * setlocal nocursorline
-    " au WinEnter * setlocal cursorline cursorcolumn
-    " au WinLeave * setlocal nocursorline nocursorcolumn
     " Make Neovim return to same line on file reopen
     au BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -579,9 +569,6 @@ set diffopt+=vertical
 set diffopt+=iwhite
 
 set foldcolumn=0    " Hide fold depth info from gutter
-
-" Disable Line Numbers in Terminal
-au TermOpen * setlocal nonumber norelativenumber
 
 function! SetScrollBind(isBound)
     if a:isBound
@@ -619,21 +606,8 @@ else
     let base16colorspace=256        " Access colors present in 256 colorspace
 endif
 
-" set guifont=Menlo:h11
-"set guifont=hack:h11
-
 set synmaxcol=0                 " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
-
-" highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-" highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-" highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-
-" hi DiffAdd term=reverse cterm=bold ctermbg=darkgreen ctermfg=black
-" hi DiffChange term=reverse cterm=bold ctermbg=gray ctermfg=black
-" hi DiffText term=reverse cterm=bold ctermbg=blue ctermfg=black
-" hi DiffDelete term=reverse cterm=bold ctermbg=darkred ctermfg=black
-" hi CursorLine cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -645,14 +619,10 @@ set colorcolumn=80              " Column number to highlight
 
 " Ack {{{
 if executable('rg')
-  " let g:ackprg = 'rg --color=never --column'
   let g:ackprg = 'rg --vimgrep'
 elseif executable('ag')
     let g:ackprg = 'ag --vimgrep'
-    " let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
-
-" let g:ackhighlight = 1
 let g:ack_use_dispatch = 1
 command Todo Ack! 'TODO\|FIXME'
 "  }}}
@@ -670,7 +640,6 @@ let g:airline_skip_empty_sections=1
 let g:airline_highlighting_cache=1
 let g:airline_powerline_fonts=1
 let g:airline_exclude_preview=1
-" let g:airline_section_y = airline#section#create_right(['ffenc','gutentags#statusline()'])
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 140,
     \ 'x': 140,
@@ -723,9 +692,6 @@ let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#buffer_min_count=1
 let g:airline#extensions#tabline#fnamecollapse = 1
 let g:airline#extensions#tabline#formatter='unique_tail'
-" let g:airline#extensions#tabline#formatter='unique_tail_improved'
-" let g:airline#extensions#tabline#buffer_nr_show = 1
-" let g:airline#extensions#tabline#show_close_button = 1
 
 " Airline : VirtualEnv =========================================================
 let g:airline#extensions#virtualenv#enabled = 1
@@ -734,7 +700,8 @@ let g:airline#extensions#virtualenv#enabled = 1
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
-call airline#parts#define_function('vista', 'NearestMethodOrFunction')
+" call airline#parts#define_function('vista', 'NearestMethodOrFunction')
+let g:airline_section_y = airline#section#create_right(['vista','NearestMethodOrFunction()'])
 
 
 " Airline : WhiteSpace =========================================================
@@ -750,22 +717,16 @@ let airline#extensions#c_like_langs=['c', 'cpp', 'cuda', 'go', 'javascript', 'ty
 
 " Airline : WindowSwap =========================================================
 let g:airline#extensions#windowswap#indicator_text='WS'
-
-" Airline : YouCompleteMe ======================================================
-" let g:airline#extensions#ycm#enabled=1
 " }}}
 
 " Ale {{{
 let g:ale_set_highlights = 1
-" let g:ale_completion_enabled = 1
 let b:ale_set_balloons = 1
 let g:ale_cache_executable_check_failures = 1
-" let g:ale_change_sign_column_color = 1
 let g:ale_cursor_detail = 0
 let g:ale_lint_delay = 200
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
-" let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_open_list = 'on_save'
@@ -840,11 +801,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " }}}
 
 " Far {{{
-" let g:far#source = 'rg'
-" let g:far#source = 'agnvim'
 let g:far#source = 'rgnvim'
-" let g:far#auto_preview = 0
-" let g:far#debug = 1
 " }}}
 
 " Fugitive {{{
@@ -855,7 +812,6 @@ nnoremap <leader>? :Gstatus<cr>
 if has('nvim')
     nmap <c-t> :FZF<cr>
     let g:fzf_history_dir = '~/.nvim/tmp/fzf-history//'
-    " let $FZF_DEFAULT_OPTS .= ' --inline-info'
     let g:fzf_colors = {
         \ 'fg':      ['fg', 'Normal'],
         \ 'bg':      ['bg', 'Normal'],
@@ -893,7 +849,6 @@ augroup END
 " }}}
 
 " Gundo {{{
-" nnoremap <F7> :GundoToggle<CR>
 nnoremap <F7> :MundoToggle<CR>
 " }}}
 
@@ -929,38 +884,6 @@ let g:used_javascript_libs = join([
 \ ], ',')
 " }}}
 
-" Neotags.nvim {{{
-" let g:neotags_enabled = 1
-" let g:neotags_ignore = [
-    " \ 'ctags',
-    " \ '.ctags',
-    " \ 'html',
-    " \ 'text',
-    " \ 'nofile',
-    " \ 'mail',
-    " \ 'qf',
-" \ ]
-" let g:neotags_recursive = 1
-" let g:neotags_find_tool = 'rg --files'
-" set regexpengine=1
-" TypeScript
-" let g:neotags#typescript#order = 'cnfmoited'
-" let g:neotags#typescript#c = { 'group': 'javascriptClassTag' }
-" let g:neotags#typescript#C = { 'group': 'javascriptConstantTag' }
-" let g:neotags#typescript#f = { 'group': 'javascriptFunctionTag' }
-" let g:neotags#typescript#o = { 'group': 'javascriptObjectTag' }
-" let g:neotags#typescript#n = g:neotags#typescript#C
-" let g:neotags#typescript#f = g:neotags#typescript#f
-" let g:neotags#typescript#m = g:neotags#typescript#f
-" let g:neotags#typescript#o = g:neotags#typescript#o
-" let g:neotags#typescript#i = g:neotags#typescript#C
-" let g:neotags#typescript#t = g:neotags#typescript#C
-" let g:neotags#typescript#e = g:neotags#typescript#C
-" let g:neotags#typescript#d = g:neotags#typescript#c
-
-
-" }}}
-
 " NERDCommenter {{{
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -973,9 +896,6 @@ let g:NERDCompactSexyComs = 1
 
 " Set a language to use its alternate delimiters by default
 let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
@@ -1114,20 +1034,16 @@ let g:delve_cache_path = expand(s:aDelveCachePath)
 " vim-diff-enhanced {{{
 if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", \"--diff-algorithm=patience")'
-    " let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=histogram")'
+    " let &diffexpr='EnhancedDiff#Diff("git diff", '--diff-algorithm=histogram')'
 endif
 " }}}
 
 " vim-ctrlspace {{{
-" let g:CtrlSpaceSetDefaultMapping=0
 let s:aCtrlSpaceCacheDir='~/.nvim/tmp/ctrlspacecache/'
 if !isdirectory(expand(s:aCtrlSpaceCacheDir))
     call mkdir(expand(s:aCtrlSpaceCacheDir), 'p')
 endif
 let g:CtrlSpaceCacheDir = expand(s:aCtrlSpaceCacheDir)
-" let g:CtrlSpaceSearchTiming = 0
-" [FIX] vim-ctrlspace plugin defaults to terminal mapping of <nul>
-" nmap <c-space> <nul>
 let g:CtrlSpaceDefaultMappingKey = '<c-space> '
 let g:CtrlSpaceUseArrowsInTerm = 1
 let g:CtrlSpaceUseMouseAndArrowsInTerm=1
@@ -1135,11 +1051,9 @@ let g:CtrlSpaceLoadLastWorkspaceOnStart=0
 let g:CtrlSpaceSaveWorkspaceOnSwitch=1
 let g:CtrlSpaceSaveWorkspaceOnExit=1
 let g:CtrlSpaceHeight = 10
-
 if executable('rg')
     let g:CtrlSpaceGlobCommand = 'rg --hidden --vimgrep --files'
 elseif executable('ag')
-" if executable('ag')
     let g:CtrlSpaceGlobCommand = '/usr/bin/env ag -l --hidden --vimgrep -g ""'
 endif
 let g:CtrlSpaceCacheDir = expand(tempDir).'/ctrlspacecache'
@@ -1219,7 +1133,6 @@ augroup END
 " }}}
 
 " vim-jsdoc {{{
-" let g:jsdoc_default_mapping=0
 nmap <leader>jsd :JsDoc<CR>
 let g:jsdoc_additional_descriptions = 1
 let g:jsdoc_input_description = 1
@@ -1243,12 +1156,7 @@ let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-nerdtree-syntax-highlight {{{
-" let g:NERDTreeLimitedSyntax = 1
-" let g:NERDTreeFileExtensionHighlightFullName = 1
-" let g:NERDTreeExactMatchHighlightFullName = 1
-" let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-" let g:NERDTreeHighlightFoldersFullName = 1
 " }}}
 
 " vim-polyglot {{{
@@ -1397,36 +1305,19 @@ let g:yats_host_keyword = 1
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
 let s:fmColorSchemeLight='solarized8'
-" let s:fmColorSchemeLight='solarized8_high'
-" let s:fmColorSchemeLight='solarized8_flat'
-" let s:fmColorSchemeDark='OceanicNext'
-" let s:fmColorSchemeDark='base16-eighties'
 let s:fmColorSchemeDark='base16-materia'
-" let s:fmColorSchemeDark='onedark'
-" let g:ayucolor='light'
-" let s:fmColorSchemeLight='ayu'
 
 function! s:setColorScheme()
     " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
     if $ITERM_PROFILE =~? 'Night'
         set background=dark
-        " let g:airline_theme='oceanicnext'
-        " let g:oceanic_next_terminal_bold = 1
-        " let g:oceanic_next_terminal_italic = 1
-        " let g:airline_theme='onedark'
-        " let g:onedark_termcolors=16
-        " let g:onedark_hide_endofbuffer = 1
-        " let g:onedark_terminal_italics = 1
-        execute 'colorscheme '.s:fmColorSchemeDark
+       execute 'colorscheme '.s:fmColorSchemeDark
     else
         set background=light
-        " let g:airline_theme = 'ayu'
         let g:airline_theme = 'solarized'
-        " let g:solarized_visibility = 'high'
         let g:solarized_diffmode = 'high'
         let g:solarized_termtrans = 1
         let g:solarized_term_italics = 1
-        " let g:solarized_old_cursor_style=1
         let g:solarized_enable_extra_hi_groups = 1
         execute 'colorscheme '.s:fmColorSchemeLight
     endif
