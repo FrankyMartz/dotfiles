@@ -681,9 +681,9 @@ let g:airline#extensions#tabline#ignore_bufadd_pat = 'gundo|undotree|vimfiler|ta
 " Airline : Ale ================================================================
 let g:airline#extensions#ale#enabled=1
 
-" Airline : Base16 =============================================================
-" let g:airline_base16_improved_contrast=1
-" let g:airline#themes#base16#constant=1
+" Airline : Coc ================================================================
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Airline : CtrlSpace ==========================================================
 let g:CtrlSpaceUseTabline=0
@@ -704,17 +704,9 @@ let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#sha1_len = 10
 let g:airline#extensions#branch#displayed_head_limit = 10
 
-" Airline : Gutentags ==========================================================
-let g:airline#extensions#gutentags#enabled = 1
-
 " Airline : Hunks ==============================================================
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#hunks#non_zero_only = 0
-
-" Airline : PromptLine =========================================================
-let g:airline#extensions#promptline#snapshot_file='~/.dotfiles/bin/.shell_prompt.sh'
-let g:airline#extensions#promptline#enabled=0
-let g:airline#extensions#windowswap#enabled=1
 
 " Airline : Signify ============================================================
 let g:airline#extensions#hunks#enabled=1
@@ -735,15 +727,15 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 " let g:airline#extensions#tabline#buffer_nr_show = 1
 " let g:airline#extensions#tabline#show_close_button = 1
 
-" Airline : Tagbar =============================================================
-let g:airline#extensions#tagbar#enabled = 1
-" let g:airline#extensions#tabline#switch_buffers_and_tabs=1
-let g:airline#extensions#tabline#exclude_preview=1
-let g:airline#extensions#tabline#left_sep=''
-let g:airline#extensions#tabline#excludes = ['loclist', 'quickfix']
-
 " Airline : VirtualEnv =========================================================
 let g:airline#extensions#virtualenv#enabled = 1
+
+" Airline : Vista ==============================================================
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+call airline#parts#define_function('vista', 'NearestMethodOrFunction')
+
 
 " Airline : WhiteSpace =========================================================
 let g:airline#extensions#whitespace#enabled=1
@@ -760,7 +752,7 @@ let airline#extensions#c_like_langs=['c', 'cpp', 'cuda', 'go', 'javascript', 'ty
 let g:airline#extensions#windowswap#indicator_text='WS'
 
 " Airline : YouCompleteMe ======================================================
-let g:airline#extensions#ycm#enabled=1
+" let g:airline#extensions#ycm#enabled=1
 " }}}
 
 " Ale {{{
@@ -809,6 +801,35 @@ augroup plug_ale
     " autocmd BufWinLeave * silent! lclose
 augroup END
 "  }}}
+
+" Coc {{{
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Coc : coc-snippets
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+let g:coc_snippet_next = '<tab>'
+" }}}
 
 " DelimitMate {{{
 let delimitMate_no_esc_mapping=1    " Esc Issue Fix
@@ -1036,133 +1057,6 @@ let g:surround_{char2nr('^')} = '/^\r$/'
 let g:surround_indent = 1
 " }}}
 
-" Tagbar {{{
-let defdir='~/.nvim/deffile/'
-nmap <F9> :TagbarToggle<CR>
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
-
-let g:tagbar_type_css = {
-    \ 'ctagstype' : 'css',
-    \ 'kinds' : [
-        \ 'v:variables',
-        \ 'c:classes',
-        \ 'i:identities',
-        \ 't:tags',
-        \ 'm:medias'
-    \ ],
-    \ 'deffile' : expand(defdir) . 'css.cnf'
-\}
-
-let g:tagbar_type_less = {
-    \ 'ctagstype' : 'less',
-    \ 'kinds' : [
-        \ 'v:variable',
-        \ 'c:class',
-        \ 'i:id',
-        \ 't:tag',
-        \ 'm:media'
-    \ ],
-    \ 'deffile' : expand(defdir) . 'less.cnf'
-\ }
-
-let g:tagbar_type_scss = {
-    \ 'ctagstype' : 'scss',
-    \ 'kinds' : [
-        \ 'm:mixins',
-        \ 'v:variables',
-        \ 'c:classes',
-        \ 'i:identities',
-        \ 't:tags',
-        \ 'd:medias'
-    \ ],
-    \ 'deffile' : expand(defdir) . 'scss.cnf'
-\ }
-
-let g:tagbar_type_typescript = {
-    \ 'ctagsbin' : 'tstags',
-    \ 'ctagsargs' : '-f-',
-    \ 'ctagstype' : 'ts',
-    \ 'kinds': [
-        \ 'e:enums:0:1',
-        \ 'f:function:0:1',
-        \ 't:typealias:0:1',
-        \ 'M:Module:0:1',
-        \ 'I:import:0:1',
-        \ 'i:interface:0:1',
-        \ 'C:class:0:1',
-        \ 'm:method:0:1',
-        \ 'p:property:0:1',
-        \ 'v:variable:0:1',
-        \ 'c:const:0:1',
-    \ ],
-  \ 'sort' : 0,
-  \ 'sro' : '.',
-\ }
-
-" let g:tagbar_type_typescript = {
-    " \ 'kinds': [
-        " \ 'c:classes:0:1',
-        " \ 'n:namespaces:0:1',
-        " \ 'M:modules:0:1',
-        " \ 'f:functions:0:1',
-        " \ 'v:variables:0:1',
-        " \ 'l:lambdas:0:1',
-        " \ 'm:members:0:1',
-        " \ 'i:interfaces:0:1',
-        " \ 't:types:0:1',
-        " \ 'e:enums:0:1',
-        " \ 'i:imports:0:1',
-    " \ ],
-    " \ 'sort' : 0,
-    " \ 'deffile' : expand(defdir) . 'typescript.cnf'
-" \ }
-
-
-let g:tagbar_type_js = {
-    \ 'ctagstype' : 'js',
-    \ 'kinds' : [
-        \ 't:tag',
-        \ 'i:import',
-        \ 'v:variable',
-        \ 'a:array',
-        \ 'c:class',
-        \ 'f:function',
-        \ 'g:generator',
-        \ 'm:method',
-        \ 'p:property',
-        \ 'o:object',
-        \ 'e:export',
-    \ ],
-    \ 'deffile' : expand(defdir) . 'js.cnf'
-\ }
-" }}}
-
 " VimDevIcon {{{
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_vimfiler  =  1
@@ -1294,44 +1188,6 @@ augroup plug_go
     au FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
     au FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 augroup END
-" }}}
-
-" vim-gutentags {{{
-let g:gutentags_enabled = 1
-let g:gutentags_modules = ['ctags']
-let g:gutentags_resolve_symlinks = 1
-let g:gutentags_define_advanced_commands = 1
-let g:gutentags_project_root = ['.root']
-let g:gutentags_ctags_executable_javascript = 'ctags'
-" let g:gutentags_ctags_executable_typescript = 'tstags'
-let g:gutentags_ctags_exclude = ['*\.ts']
-
-" let g:gutentags_modules = ['ctags', 'gtags_cscope']
-" let g:gutentags_auto_add_gtags_cscope = 0
-" let g:gutentags_exclude_filetypes = ['typescript']
-" function! gutentags#build_default_job_options(module) abort
-    " let l:job_opts = {
-                " \ 'detach': 1,
-                " \'on_exit': function(
-                " \    '<SID>nvim_job_exit_wrapper',
-                " \    ['gutentags#'.a:module.'#on_job_exit']),
-                " \'on_stdout': function(
-                " \    '<SID>nvim_job_out_wrapper',
-                " \    ['gutentags#default_io_cb']),
-                " \'on_stderr': function(
-                " \    '<SID>nvim_job_out_wrapper',
-                " \    ['gutentags#default_io_cb'])
-                " \}
-    " return l:job_opts
-" endfunction
-augroup plug_gutentags
-    au!
-    au FileType gitcommit,gitrebase,startify let g:gutentags_enabled=0
-augroup END
-
-if &diff
-    let g:gutentags_enabled = 0
-endif
 " }}}
 
 " vim-javascript {{{
@@ -1504,6 +1360,15 @@ nmap <leader>gf :SignifyFold!<CR>
 let g:SignatureMarkerTextHLDynamic = 1
 " }}}
 
+" Vista {{{
+nmap <F9> :Vista!!<CR>
+let g:vista_sidebar_width = 40
+let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+" }}}
+
 " UltiSnips {{{
 let g:UltiSnipsUsePythonVersion=3
 let g:UltiSnipsExpandTrigger = '<nop>'
@@ -1521,33 +1386,6 @@ inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>
 
 " yats {{{
 let g:yats_host_keyword = 1
-" }}}
-
-" YouCompleteMe {{{
-" let g:loaded_youcompleteme = 1
-" autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
-nnoremap <leader>yjd :YcmCompleter GoTo<CR>
-nnoremap <leader>yjt :YcmCompleter GoToType<CR>
-nnoremap <leader>yjr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>ygt :YcmCompleter GetType<CR>
-nnoremap <leader>yoi :YcmCompleter OrganizeImports<CR>
-" let g:ycm_cache_omnifunc=1                            ' Potential Cause Lag
-let g:ycm_use_ultisnips_completer = 1
-let g:ycm_collect_identifiers_from_comments_and_strings=1
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_add_preview_to_completeopt=1
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_complete_in_comments=1
-let g:ycm_complete_in_strings=1
-let g:ycm_use_ultisnips_completer=1
-let g:ycm_show_diagnostics_ui=1 " Disable to use ALE
-" let g:ycm_min_num_of_chars_for_completion=3
-" let g:ycm_min_num_identifier_candidate_chars=3
-" let g:ycm_auto_trigger=0
-" pyenv
-let g:ycm_path_to_python_interpreter=g:python3_host_prog
-let g:ycm_python_binary_path=g:python3_host_prog
 " }}}
 
 "-------------------------------------------------------------------------------

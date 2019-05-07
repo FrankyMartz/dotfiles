@@ -54,7 +54,7 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
@@ -70,14 +70,23 @@ Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
 Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 
+" COC Intellisense
+Plug 'Shougo/neco-vim'
+Plug 'Shougo/neoinclude.vim'
+Plug 'yatli/coc-powershell'
+Plug 'neoclide/coc-neco'
+Plug 'jsfaint/coc-neoinclude'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'liuchengxu/vista.vim'
+
 " Window
 Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-fugitive' | Plug 'mhinz/vim-startify' | Plug 'gregsexton/gitv', {'on': ['Gitv']} | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 " Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
 " Plug 'c0r73x/neotags.nvim', { 'do': function('BuildNeotags') }
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
@@ -116,7 +125,7 @@ Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
 
 " >> CSS
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
