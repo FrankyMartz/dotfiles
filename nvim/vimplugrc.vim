@@ -14,18 +14,6 @@ function! UpdateRemote(arg)
     UpdateRemotePlugins
 endfunction
 
-" YouCompleteMe {{{
-function! BuildYCM(info)
-    " info is a dictionary with 3 fields
-    " - name:   name of plugin
-    " - status: 'installed', 'updated', or 'unchanged'
-    " - force:  set on PlugInstall! or PlugUpdate!
-    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
-        !/usr/bin/env python3 ./install.py --all
-    endif
-endfunction
-" }}}
-
 " Neotags {{{
 function! BuildNeotags(info)
     if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
@@ -54,7 +42,6 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
@@ -80,18 +67,18 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 Plug 'liuchengxu/vista.vim'
 
 " Window
-Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
-Plug 'tpope/vim-fugitive' | Plug 'mhinz/vim-startify' | Plug 'gregsexton/gitv', {'on': ['Gitv']} | Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-" Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
-" Plug 'c0r73x/neotags.nvim', { 'do': function('BuildNeotags') }
-" Plug 'ludovicchabant/vim-gutentags'
-" Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
 
 " Editing
+Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-startify'
+Plug 'gregsexton/gitv', {'on': ['Gitv']}
+Plug 'junegunn/gv.vim'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
@@ -109,7 +96,7 @@ Plug 'vim-scripts/LargeFile'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
-Plug 'w0rp/ale' ", { 'tag': 'v2.0.1' }
+Plug 'w0rp/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'vim-scripts/SyntaxComplete'
 Plug 'sheerun/vim-polyglot'
@@ -136,7 +123,6 @@ Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 
 " >> JavaScript
 Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-" Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
@@ -168,7 +154,6 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 Plug 'lifepillar/vim-solarized8'
 " Plug 'mhartington/oceanic-next'
 Plug 'chriskempson/base16-vim'
-" Plug 'joshdick/onedark.vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Devicons MUST be loaded last
