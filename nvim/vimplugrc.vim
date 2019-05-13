@@ -42,7 +42,6 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
 Plug 'mileszs/ack.vim'
@@ -101,6 +100,13 @@ Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'vim-scripts/SyntaxComplete'
 Plug 'sheerun/vim-polyglot'
 
+" Snippets
+Plug 'honza/vim-snippets'
+Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
+Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
+Plug 'mhartington/vim-angular2-snippets', { 'for': ['html', 'typeScript', 'ts', 'tsx'] }
+Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
+
 " >> VIML
 Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser', { 'for': ['vim', 'viml'] }
 
@@ -124,14 +130,11 @@ Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 
 Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
-Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
-Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'Galooshi/vim-import-js', {'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx']}
 
 " >> TypeScript
 Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
-Plug 'mhartington/vim-angular2-snippets', { 'for': ['html', 'typeScript', 'ts', 'tsx'] }
 Plug 'jason0x43/vim-js-indent', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> Markdown
@@ -141,7 +144,6 @@ Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': [
 
 " >> PHP
 Plug 'tobyS/pdv', { 'for': 'php' }
-Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 
 " >> Python
 Plug 'jmcantrell/vim-virtualenv'

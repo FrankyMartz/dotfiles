@@ -372,7 +372,6 @@ augroup END
 augroup ft_html
     au!
     au FileType html setlocal ts=2 sts=2 sw=2 expandtab
-    au FileType html UltiSnipsAddFiletypes html.css.javascript
     au FileType html setlocal foldmethod=syntax
 augroup END
 " }}}
@@ -392,9 +391,6 @@ augroup ft_javascript
     au BufNewFile,BufRead *.jsx setlocal filetype=javascript.jsx
     au BufNewFile,BufRead *.es6 setlocal filetype=javascript.jsx
     au BufNewFile,BufRead *.spec.js setlocal filetype=javascript.spec
-    au FileType javascript.jsx UltiSnipsAddFiletypes javascript.jsx.html
-    au FileType javascript.jsx UltiSnipsAddFiletypes javascript.jsx
-    au FileType javascript.spec UltiSnipsAddFiletypes javascript.javascript-jasmine
     au FileType javascript setlocal foldmethod=syntax
     " au FileType javascript setlocal foldmethod=marker foldmarker={,}
     " au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
@@ -732,6 +728,7 @@ set colorcolumn=80              " Column number to highlight
         \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
         \ 'javascript': ['standard'],
         \ 'go': ['gometalinter', 'gofmt'],
+        \ 'html': [],
     \ }
     let g:ale_fix_on_save = 0
     let g:ale_fixers = {
@@ -761,9 +758,13 @@ set colorcolumn=80              " Column number to highlight
 "  }}}
 
 " Coc {{{
-    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+    inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-h>"
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
     " Use `[c` and `]c` to navigate diagnostics
     nmap <silent> [c <Plug>(coc-diagnostic-prev)
@@ -775,17 +776,13 @@ set colorcolumn=80              " Column number to highlight
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
 
-    " Coc : coc-snippets
-    inoremap <silent><expr> <TAB>
+    " Coc : coc-snippets =======================================================
+    let g:coc_snippet_next = '<TAB>'
+    let g:coc_snippet_prev = '<S-TAB>'
+    inoremap <silent><expr> <CR>
         \ pumvisible() ? coc#_select_confirm() :
         \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-    function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-    let g:coc_snippet_next = '<tab>'
+        \ <SID>check_back_space() ? "\<TAB>" : coc#refresh()."\<CR>"
 
     augroup plug_coc
         au!
@@ -1290,21 +1287,6 @@ set colorcolumn=80              " Column number to highlight
     let g:vista_fzf_preview = ['right:50%']
     let g:vista#renderer#enable_icon = 1
     let g:vista_echo_cursor_strategy = 'both'
-" }}}
-
-" UltiSnips {{{
-    let g:UltiSnipsUsePythonVersion=3
-    let g:UltiSnipsExpandTrigger = '<nop>'
-    let g:ulti_expand_or_jump_res = 0
-    function ExpandSnippetOrCarriageReturn()
-        let snippet = UltiSnips#ExpandSnippetOrJump()
-        if g:ulti_expand_or_jump_res > 0
-            return snippet
-        else
-            return "\<CR>"
-        endif
-    endfunction
-    inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
 " }}}
 
 " yats {{{
