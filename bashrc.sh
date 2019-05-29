@@ -160,5 +160,4 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 # Mono -------------------------------------------------------------------------
 
 export MONO_GAC_PREFIX="/usr/local"
-
 export GTAGSLABEL="pygment"

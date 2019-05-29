@@ -83,6 +83,7 @@
     cob = checkout -b
     com = checkout master
     cod = checkout develop
+    cos = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -c \"git checkout \""
 
     cleanup = !sh -c 'git remote prune origin && git gc'
     cp = cherry-pick
@@ -128,6 +129,7 @@
     po = pull origin
     pom = pull origin master
     pod = pull origin develop
+    parent = "!git show-branch --current | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
 
     rb = rebase --preserve-merges --stat
     rbm = rebase --preserve-merges --stat master

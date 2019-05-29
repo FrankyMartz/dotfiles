@@ -642,6 +642,7 @@ set colorcolumn=80              " Column number to highlight
     let g:airline#extensions#ale#enabled=1
 
     " Airline : Coc ============================================================
+    let g:airline#extensions#coc#enabled = 1
     let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
     let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
@@ -759,12 +760,12 @@ set colorcolumn=80              " Column number to highlight
 
 " Coc {{{
     function! s:check_back_space() abort
-        let col = col('.') - 1
-        return !col || getline('.')[col - 1]  =~# '\s'
+        let columnPosition = col('.') - 1
+        return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
     endfunction
 
-    inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-h>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    inoremap <expr><TAB> pumvisible() ? '<C-n>' : '<TAB>'
+    inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
 
     " Use `[c` and `]c` to navigate diagnostics
     nmap <silent> [c <Plug>(coc-diagnostic-prev)
@@ -782,7 +783,7 @@ set colorcolumn=80              " Column number to highlight
     inoremap <silent><expr> <CR>
         \ pumvisible() ? coc#_select_confirm() :
         \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-        \ <SID>check_back_space() ? "\<TAB>" : coc#refresh()."\<CR>"
+        \ <SID>check_back_space() ? "\<CR>" : coc#refresh()."\<CR>"
 
     augroup plug_coc
         au!
@@ -1277,6 +1278,29 @@ set colorcolumn=80              " Column number to highlight
 
 " vim-signature {{{
     let g:SignatureMarkerTextHLDynamic = 1
+    let g:SignatureMap = {
+        \ 'Leader'             :  'm',
+        \ 'PlaceNextMark'      :  'm,',
+        \ 'ToggleMarkAtLine'   :  'm.',
+        \ 'PurgeMarksAtLine'   :  'm-',
+        \ 'DeleteMark'         :  '<Leader>dm',
+        \ 'PurgeMarks'         :  '<Leader>m<Space>',
+        \ 'PurgeMarkers'       :  '<Leader>m<Del>',
+        \ 'GotoNextLineAlpha'  :  "m']",
+        \ 'GotoPrevLineAlpha'  :  "m'[",
+        \ 'GotoNextSpotAlpha'  :  'm`]',
+        \ 'GotoPrevSpotAlpha'  :  'm`[',
+        \ 'GotoNextLineByPos'  :  "m]'",
+        \ 'GotoPrevLineByPos'  :  "m['",
+        \ 'GotoNextSpotByPos'  :  'm]`',
+        \ 'GotoPrevSpotByPos'  :  'm[`',
+        \ 'GotoNextMarker'     :  'm]-',
+        \ 'GotoPrevMarker'     :  'm[-',
+        \ 'GotoNextMarkerAny'  :  'm]=',
+        \ 'GotoPrevMarkerAny'  :  'm[=',
+        \ 'ListBufferMarks'    :  '<Leader>m/',
+        \ 'ListBufferMarkers'  :  '<Leader>m?'
+    \ }
 " }}}
 
 " Vista {{{
