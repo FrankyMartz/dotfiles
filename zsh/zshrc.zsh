@@ -6,10 +6,7 @@
 # Author:   Franky Martinez <frankymartz@gmail.com>
 ################################################################################
 
-bindkey -v
-
 precmd() { RPROMPT="" }
-
 DOTFILE_DIR="${HOME}/.dotfiles"
 
 #===============================================================================
@@ -35,6 +32,8 @@ export LANG=en_US.UTF-8
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
+# 10ms for key sequences
+KEYTIMEOUT=1
 setopt appendhistory autocd extendedglob nomatch notify
 unsetopt beep
 
