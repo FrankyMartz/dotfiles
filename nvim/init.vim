@@ -759,6 +759,7 @@ set colorcolumn=80              " Column number to highlight
 "  }}}
 
 " Coc {{{
+    let g:coc_node_path = '/usr/local/bin/node'
     function! s:check_back_space() abort
         let columnPosition = col('.') - 1
         return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
