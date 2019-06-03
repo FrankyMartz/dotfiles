@@ -582,6 +582,17 @@ noremap <silent>]og :call SetScrollBind(0)<CR>
 "-------------------------------------------------------------------------------
 " => Plug-Vim {{{
 "-------------------------------------------------------------------------------
+
+augroup plug_vim
+    au!
+    if empty(glob('~/.nvim/autoload/plug.vim'))
+        silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        au!
+        autocmd VimEnter * PlugInstall
+    endif
+augroup END
+
 source ~/.config/nvim/vimplugrc.vim
 
 "-------------------------------------------------------------------------------

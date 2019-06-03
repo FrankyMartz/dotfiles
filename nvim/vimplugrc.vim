@@ -4,37 +4,28 @@
 "
 " vim:set ft=vim et sw=2 ts=2 tw=80:
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if empty(glob('~/.nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
-endif
-
-function! UpdateRemote(arg)
-    UpdateRemotePlugins
-endfunction
-
-" Neotags {{{
-function! BuildNeotags(info)
-    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
-        !/usr/bin/env make
-        UpdateRemotePlugins
-    endif
-endfunction
-" }}}
-
 " vim-markdown-composer {{{
-function! BuildComposer(info)
-  if a:info.status !=? 'unchanged' || a:info.force
-    if has('nvim')
-      !cargo build --release
-    else
-      !cargo build --release --no-default-features --features json-rpc
-    endif
-  endif
-endfunction
+    function! BuildComposer(info)
+        if a:info.status !=? 'unchanged' || a:info.force
+            if has('nvim')
+                !/usr/bin/env cargo build --release
+            else
+                !/usr/bin/env cargo build --release --no-default-features --features json-rpc
+            endif
+        endif
+    endfunction
 " }}}
 
+" coc-fsharp {{{
+    function! BuildCocFsharp(info)
+        if executable('dotnet') && (a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force)
+            !/usr/bin/env npm install
+            !/usr/bin/env dotnet build -C Release
+        endif
+    endfunction
+" }}}
+
+let installYarnFrozenLockFile = 'yarn install --frozen-lockfile'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.nvim/bundle')
@@ -42,42 +33,59 @@ call plug#begin('~/.nvim/bundle')
 
 " General
 Plug 'tpope/vim-dispatch'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
-Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-Plug 'mileszs/ack.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'easymotion/vim-easymotion'
-Plug 'chrisbra/vim-diff-enhanced'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
-Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 
 " COC Intellisense
-Plug 'Shougo/neco-vim'
-Plug 'Shougo/neoinclude.vim'
-Plug 'yatli/coc-powershell'
-Plug 'neoclide/coc-neco'
-Plug 'jsfaint/coc-neoinclude'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim' " View and Search LSP Symbols - TagBar Alternative
+
+" COC Intellisense - Completion
+Plug 'Maxattax97/coc-ccls', {'do': installYarnFrozenLockFile}
+Plug 'Shougo/neoinclude.vim' | Plug 'jsfaint/coc-neoinclude'
+Plug 'iamcco/coc-angular', {'do': installYarnFrozenLockFile}
+Plug 'iamcco/coc-svg', {'do': installYarnFrozenLockFile}
+Plug 'iamcco/coc-vimlsp', {'do': installYarnFrozenLockFile}
+Plug 'josa42/coc-go', {'do': installYarnFrozenLockFile}
+Plug 'josa42/coc-lua', {'do': installYarnFrozenLockFile}
+Plug 'josa42/coc-sh', {'do': installYarnFrozenLockFile}
+Plug 'marlonfan/coc-phpls', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-css', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-emmet', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-highlight', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-html', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-jest', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-json', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-python', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-rls', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-snippets', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-tsserver', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-vetur', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-vimtex', {'do': installYarnFrozenLockFile}
+Plug 'neoclide/coc-yaml', {'do': installYarnFrozenLockFile}
+Plug 'yatli/coc-fsharp', {'do': function('BuildCocFsharp')}
 
 " Window
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
+Plug 'mhinz/vim-startify'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
 
 " Editing
-Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
+Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-startify'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
 Plug 'junegunn/gv.vim'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
+Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
@@ -95,6 +103,7 @@ Plug 'vim-scripts/LargeFile'
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
+Plug 'chrisbra/vim-diff-enhanced'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'vim-scripts/SyntaxComplete'
@@ -107,9 +116,6 @@ Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', '
 Plug 'mhartington/vim-angular2-snippets', { 'for': ['html', 'typeScript', 'ts', 'tsx'] }
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 
-" >> VIML
-Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser', { 'for': ['vim', 'viml'] }
-
 " >> Apache
 Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
 Plug 'vim-scripts/apachestyle', { 'for': 'log' }
@@ -118,12 +124,9 @@ Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
 
 " >> CSS
-" Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
-Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
 
 " JavaScript / TypeScript
-Plug 'jparise/vim-graphql'
 Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> JavaScript
