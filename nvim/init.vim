@@ -962,9 +962,14 @@ set colorcolumn=80              " Column number to highlight
 " }}}
 
 " Scratch {{{
+    let g:scratch_no_mappings = 1
     let g:scratch_autohide = 0
     let g:scratch_insert_autohide = 0  
     let g:scratch_filetype = 'markdown'
+    nmap <F12> <Plug>(scratch-insert-reuse)
+    nmap <S-F12> <Plug>(scratch-insert-clear)
+    vmap <F12> <Plug>(scratch-selection-reuse)
+    vmap <S-F12> <Plug>(scratch-selection-clear)
 
     function! s:set_scratch_path()
         let repoRoot = projectroot#guess()
@@ -1316,7 +1321,7 @@ set colorcolumn=80              " Column number to highlight
 " }}}
 
 " Vista {{{
-    nmap <F9> :Vista!!<CR>
+    nnoremap <F9> :Vista!!<CR>
     let g:vista_sidebar_width = 40
     let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
     let g:vista_default_executive = 'coc'

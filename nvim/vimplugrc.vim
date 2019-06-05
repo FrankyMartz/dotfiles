@@ -43,8 +43,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
 
 " COC Intellisense
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-Plug 'liuchengxu/vista.vim' " View and Search LSP Symbols - TagBar Alternative
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
+Plug 'liuchengxu/vista.vim', { 'on': 'Vista' } " View and Search LSP Symbols - TagBar Alternative
 
 " COC Intellisense - Completion
 Plug 'Maxattax97/coc-ccls', {'do': installYarnFrozenLockFile}
@@ -77,20 +77,19 @@ Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
 Plug 'mhinz/vim-startify'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } | Plug 'ivalkeen/nerdtree-execute', { 'on': 'NERDTreeToggle' }
 
 " Editing
-Plug 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'tpope/vim-fugitive'
-Plug 'gregsexton/gitv', {'on': ['Gitv']}
-Plug 'junegunn/gv.vim'
-Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
+Plug 'junegunn/gv.vim', { 'on': 'GV' }
+Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
-Plug 'godlygeek/tabular'
+Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
@@ -98,7 +97,7 @@ Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
 Plug 'matze/vim-move'
 Plug 'wellle/targets.vim'
 Plug 'https://github.com/reedes/vim-textobj-sentence'
-Plug 'mtth/scratch.vim'
+Plug 'mtth/scratch.vim', { 'on': [ 'Scratch', 'ScratchInsert', 'ScratchSelection', 'ScratchPreview' ] }
 Plug 'vim-scripts/LargeFile'
 
 " Filetype
@@ -127,13 +126,14 @@ Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
 " JavaScript / TypeScript
+Plug 'jparise/vim-graphql'
 Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> JavaScript
 Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 Plug 'Galooshi/vim-import-js', {'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx']}
 
 " >> TypeScript
@@ -159,11 +159,10 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 Plug 'lifepillar/vim-solarized8'
 " Plug 'mhartington/oceanic-next'
 Plug 'chriskempson/base16-vim'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#end()
-
