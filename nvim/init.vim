@@ -704,7 +704,7 @@ set colorcolumn=80              " Column number to highlight
 
     " Airline : Vista ==========================================================
     function! NearestMethodOrFunction() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
+        return get(b:, 'vista_nearest_method_or_function', '')
     endfunction
     let g:airline_section_y = airline#section#create_right(['vista','NearestMethodOrFunction()'])
 
@@ -962,20 +962,39 @@ set colorcolumn=80              " Column number to highlight
 " }}}
 
 " Scratch {{{
+    function! ToggleScratchBuffer(scratchType)
+        let scr_open = bufwinnr('__Scratch__')
+        if scr_open != -1
+            execute scr_open . 'close'
+        elseif  a:scratchType ==? 'insert-clear'
+            execute 'ScratchInsert!'
+        elseif a:scratchType ==? 'select-reuse'
+            execute 'ScratchSelection'
+        elseif a:scratchType ==? 'select-clear'
+            execute 'ScratchSelection!'
+        else " insert-reuse
+            execute 'ScratchInsert'
+        endif
+    endfunction
+
     let g:scratch_no_mappings = 1
     let g:scratch_autohide = 0
     let g:scratch_insert_autohide = 0  
     let g:scratch_filetype = 'markdown'
-    nmap <F12> <Plug>(scratch-insert-reuse)
-    nmap <S-F12> <Plug>(scratch-insert-clear)
-    vmap <F12> <Plug>(scratch-selection-reuse)
-    vmap <S-F12> <Plug>(scratch-selection-clear)
+    " Insert Reuse
+    nnoremap <F12> :call ToggleScratchBuffer('insert-reuse')<CR>
+    " Insert Clear
+    nnoremap <F24> :call ToggleScratchBuffer('insert-clear')<CR>
+    " Select Reuse
+    vnoremap <F12> :call ToggleScratchBuffer('select-reuse')<CR>
+    " Select Clear
+    vnoremap <F24> :call ToggleScratchBuffer('select-clear')<CR>
 
     function! s:set_scratch_path()
         let repoRoot = projectroot#guess()
         if isdirectory(repoRoot . '/.git')
-            let scratchPath = repoRoot . '/.git/scratch.vim'
-            let g:scratch_persistence_file = repoRoot . '/.git/scratch.vim'
+            let scratchPath = repoRoot . '/.git/scratch.md'
+            let g:scratch_persistence_file = repoRoot . '/.git/scratch.md'
         endif
     endfunction
 
