@@ -19,14 +19,13 @@ export XDG_DATA_HOME="$HOME/.config/nvim"
 #===============================================================================
 
 if [[ -d "${HOME}/.iterm2" ]]; then
-    PATH="${PATH}:${HOME}/.iterm2";
+    export PATH="${PATH}:${HOME}/.iterm2";
 fi
 
 if [[ -x "$(command -v brew)" ]]; then
     # GNU ----------------------------------------------------------------------
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
-    MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
-    export MANPATH;
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
 fi
 
 #===============================================================================
@@ -88,7 +87,7 @@ fi
 #===============================================================================
 # GNUpg
 #===============================================================================
-PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
+export PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
 
 #===============================================================================
 # IRC
@@ -109,7 +108,7 @@ export PATH="/usr/local/opt/openssl/bin:$PATH"
 
 # PYTHON -----------------------------------------------------------------------
 
-PATH="/usr/local/opt/python@2/bin:${PATH}"
+export PATH="/usr/local/opt/python@2/bin:${PATH}"
 # PATH="/usr/local/opt/python/libexec/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 # Auto-Complete
@@ -130,7 +129,7 @@ fi
 export GOROOT="/usr/local/opt/go/libexec";
 export GOPATH="${HOME}/go";
 # export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
-PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
+export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 # PATH="${PATH}:${HOME}/go_appengine";
 
 # RBENV ------------------------------------------------------------------------
@@ -153,7 +152,7 @@ fi
 
 # NodeJS -----------------------------------------------------------------------
 
-PATH="/Users/frankymartz/npm/bin:${PATH}"
+export PATH="/Users/frankymartz/npm/bin:${PATH}"
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 
@@ -161,3 +160,7 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 
 export MONO_GAC_PREFIX="/usr/local"
 export GTAGSLABEL="pygment"
+
+# Mono -------------------------------------------------------------------------
+export PATH="${PATH}:/Users/francisco.b.martinez/.cargo/bin"
+

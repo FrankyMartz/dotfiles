@@ -236,6 +236,7 @@ vnoremap <S-Tab> <gv
 " Split Buffers
 nnoremap <c-s> <c-w>s
 nnoremap <c-a-s> <c-w>v
+nnoremap <c-q> <c-w>q
 
 " Resize Window
 " Window (Buffer) Height
@@ -981,13 +982,9 @@ set colorcolumn=80              " Column number to highlight
     let g:scratch_autohide = 0
     let g:scratch_insert_autohide = 0  
     let g:scratch_filetype = 'markdown'
-    " Insert Reuse
     nnoremap <F12> :call ToggleScratchBuffer('insert-reuse')<CR>
-    " Insert Clear
     nnoremap <F24> :call ToggleScratchBuffer('insert-clear')<CR>
-    " Select Reuse
     vnoremap <F12> :call ToggleScratchBuffer('select-reuse')<CR>
-    " Select Clear
     vnoremap <F24> :call ToggleScratchBuffer('select-clear')<CR>
 
     function! s:set_scratch_path()
@@ -1372,9 +1369,12 @@ function! s:setColorScheme()
     else
         set background=light
         let g:airline_theme = 'solarized'
+        let g:solarized_visibility = 'high'
         let g:solarized_diffmode = 'high'
         let g:solarized_termtrans = 1
-        let g:solarized_term_italics = 1
+        let g:solarized_statusline = 'normal'
+        let g:solarized_italics = 1
+        let g:solarized_old_cursor_style = 0
         let g:solarized_enable_extra_hi_groups = 1
         execute 'colorscheme '.s:fmColorSchemeLight
     endif
