@@ -585,6 +585,8 @@ set colorcolumn=80              " Column number to highlight
 "-------------------------------------------------------------------------------
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
+let s:projectRoot = projectroot#guess()
+let s:isGitRepository = isdirectory(s:projectRoot . '/.git')
 
 " Ack {{{
 if executable('rg')
@@ -942,10 +944,8 @@ vnoremap <F12> :call ToggleScratchBuffer('ScratchSelection')<CR>
 vnoremap <F24> :call ToggleScratchBuffer('ScratchSelection!')<CR>
 
 function! s:set_scratch_path()
-  let repoRoot = projectroot#guess()
-  if isdirectory(repoRoot . '/.git')
-    let scratchPath = repoRoot . '/.git/scratch.md'
-    let g:scratch_persistence_file = repoRoot . '/.git/scratch.md'
+  if s:isGitRepository
+    let g:scratch_persistence_file = s:projectRoot . '/.git/scratch.md'
   endif
 endfunction
 
@@ -1172,17 +1172,19 @@ function! s:startify_center_header(lines) abort
 endfunction
 
 function! s:list_commits()
-  let git = 'git -C ' . getcwd()
+  let git = 'git -C ' . s:projectRoot
   let commits = systemlist(git .' log --oneline | head -n5')
   let git = 'G'. git[1:]
   return map(commits, '{"line": "  " . matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
 endfunction
 
 function! s:get_project_name()
-  let cwd = getcwd()
-  let git = 'git -C ' . cwd
+  if !s:isGitRepository
+    return '   ' . '  ' . s:projectRoot
+  endif
+  let git = 'git -C ' . s:projectRoot
   let dirname = system(git . ' rev-parse --abbrev-ref HEAD')
-  return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : cwd)
+  return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : s:projectRoot)
 endfunction
 
 let g:startify_lists = [
@@ -1191,8 +1193,23 @@ let g:startify_lists = [
   \ { 'type': 'sessions',                 'header': ['   Sessions']           },
   \ { 'type': 'bookmarks',                'header': ['   Bookmarks']          },
   \ { 'type': 'commands',                 'header': ['   Commands']           },
-  \ { 'type': function('s:list_commits'), 'header': ['   Commits']            }
 \ ]
+if s:isGitRepository
+  call add(
+    \ g:startify_lists,
+    \ { 'type': function('s:list_commits'), 'header': ['   Commits'] }
+  \ )
+endif
+
+
+" let g:startify_lists = [
+  " \ { 'type': 'files',                    'header': ['   MRU']                },
+  " \ { 'type': 'dir',                      'header': [s:get_project_name()]    },
+  " \ { 'type': 'sessions',                 'header': ['   Sessions']           },
+  " \ { 'type': 'bookmarks',                'header': ['   Bookmarks']          },
+  " \ { 'type': 'commands',                 'header': ['   Commands']           },
+  " \ { 'type': function('s:list_commits'), 'header': ['   Commits']            }
+" \ ]
 let g:startify_custom_header = [
   \ '   Web browsers are useless here.',
   \ ' ',
