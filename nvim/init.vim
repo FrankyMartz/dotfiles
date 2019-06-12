@@ -12,25 +12,32 @@
 " => General
 " => File and Backup
 " => Text, Tab and Indent
-" => Helper Functions
 " => Mapping
 " => Search
 " => FileType
 " => Window
-" => Vundle
+" => Plug-Vim
 " => Color and Font
-" => Vundle:Configuration
+" => Plug:Configuration
 " => Color Scheme
+" => Helper Functions
+" => Destroy
 "
 "===============================================================================
 "=> General {{{
 "-------------------------------------------------------------------------------
 set encoding=utf-8
 scriptencoding=utf-8
-let &shell='/usr/local/bin/zsh --login'
+let &shell='/usr/bin/env zsh --login'
 
-" syntax enable                   " Enable Syntax Highlighting
-syntax on                       " Enable Syntax Highlighting–Allow VIM override
+if has('autocmd')
+  filetype plugin indent on
+endif
+if has('syntax') && !exists('g:syntax_on')
+  syntax enable                 " Enable Syntax Highlighting
+  " syntax on                   " Enable Syntax Highlighting–Allow VIM override
+endif
+
 set autoread                    " Automatically read externally changes to file
 set autowriteall                " Automatically write to file if modified
 set history=1000                " Remember more commands and search history
@@ -63,15 +70,27 @@ set nocursorbind                " Prevent scroll bind (2 windows w/ same buffer)
 set modelines=0                 " Prevent security exploit. Disable
 set showcmd                     " Show (partial) command at bottom of buffer
 set title                       " Set window title
-set scrolloff=3                 " Number of lines to keep above/below cursor
 set ruler                       " Show line/column position number
 set number                      " Show line number in front of each line
 set cmdheight=1                 " Set command bar to 2 lines
+set complete-=i                 " Disable Included Files autocomplete Search
+set laststatus=2                " Always display the statusline in all windows
+set display+=lastline           " Show as much of lastline of text as possible
 
-" Timeout on key codes but not mappings. Make terminal nvim work sanely
+if !&scrolloff
+  set scrolloff=1               " Number of lines to keep above/below cursor
+endif
+if !&sidescrolloff
+  set sidescrolloff=5
+endif
+
+
 set notimeout
-set ttimeout
-set ttimeoutlen=10
+if !has('nvim') && &ttimeoutlen == -1
+  " Timeout on key codes but not mappings. Make terminal nvim work sanely
+  set ttimeout
+  set ttimeoutlen=100
+endif
 
 set lazyredraw
 set visualbell                  " NO bell please
@@ -86,7 +105,7 @@ set wildmode=list:longest
 set wildignore+=.hg,.git,.svn                       " Version control
 set wildignore+=*.aux,*.out,*.toc                   " LaTeX intermediate files
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg      " binary images
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest    " compiled object files
+set wildignore+=*.o,*.obj,*.exe,*.dmanifest    " compiled object files
 set wildignore+=*.spl                               " compiled spelling word lists
 set wildignore+=*.sw?                               " Vim swap files
 set wildignore+=*.DS_Store                          " OSX
@@ -122,6 +141,7 @@ let tempDir=expand('$HOME/.nvim/tmp')
 set termencoding=utf-8          " Encoding used for the terminal
 set fileformats=unix
 set fileformat=unix
+set sessionoptions-=options     " Do not save options in mksession
 
 set undofile
 set backup                                  " Enable Backups
@@ -157,6 +177,7 @@ endif
 set formatoptions=qrn1j         " Pasted Content Handling
 set autoindent                  " Always set autoindenting on
 set smartindent                 " Smart autoindenting when starting on newline
+set smarttab                    " Smart autoindent w/shiftwidth or {soft}tabstop
 set shiftround                  " Round indent to multiple of 'shiftwidth'
 set nowrap                      " Don't wrap text to textwidth
 set textwidth=80                " Max width of text to be inserted
@@ -168,7 +189,7 @@ set expandtab
 set conceallevel=1              " Enable Code Conceal
 set concealcursor="nc"          " Show concealed chars in cursorline
 
-set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+set listchars=tab:▸\ ,eol:¬,trail:…,extends:❯,precedes:❮
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -246,7 +267,11 @@ nnoremap <silent> <Leader>= :exe "vertical resize +" . (winwidth(0) * 1/8)<CR>
 nnoremap <silent> <Leader>- :exe "vertical resize -" . (winwidth(0) * 1/8)<CR>
 
 " Clear Search Results
-nnoremap <leader><space> :noh<cr>
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <leader><space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+else
+  nnoremap <silent> <leader><space> :noh<cr>
+endif
 
 " Strip all trailing whitespace in current buffer
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
@@ -274,6 +299,15 @@ nnoremap / /\v
 vnoremap / /\v
 
 set runtimepath+=/usr/local/opt/fzf
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if (
+  \ !exists('g:loaded_matchit')
+  \ && findfile('plugin/matchit.vim', &runtimepath) ==# ''
+\)
+  runtime! macros/matchit.vim
+endif
+
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -575,6 +609,9 @@ else
   let base16colorspace=256      " Access colors present in 256 colorspace
 endif
 
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+  set t_Co=16                   " Allow colorSchemes bright colors wo/force bold
+endif
 set synmaxcol=0                 " Don't highlight lines longer than
 set colorcolumn=80              " Column number to highlight
 
@@ -599,7 +636,6 @@ command Todo Ack! 'TODO\|FIXME'
 "  }}}
 
 " Airline {{{
-set laststatus=2        " Always display the statusline in all windows
 set noshowmode          " Hide default mode text
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
@@ -831,7 +867,7 @@ endif
 augroup plug_goyo
   au!
   au! User GoyoEnter nested :setlocal noshowmode scrolloff=999
-  au! User GoyoLeave nested :setlocal showmode scrolloff=5
+  au! User GoyoLeave nested :setlocal showmode scrolloff=3
 augroup END
 " }}}
 
@@ -1345,7 +1381,7 @@ nnoremap <leader>bg :ToggleBg<CR>
 "-------------------------------------------------------------------------------
 
 "-------------------------------------------------------------------------------
-" => Work Hacker Functions {{{
+" => Helper Functions {{{
 "-------------------------------------------------------------------------------
 
 " function! NcmsTag()
@@ -1360,7 +1396,7 @@ nnoremap <leader>bg :ToggleBg<CR>
 "-------------------------------------------------------------------------------
 
 "-------------------------------------------------------------------------------
-" => CLEAN UP {{{
+" => Destroy {{{
 "-------------------------------------------------------------------------------
 
 unlet tempDir
