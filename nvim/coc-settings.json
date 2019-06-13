@@ -1,0 +1,7 @@
+{
+  "suggest.noselect": false,
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "gosnippets/UltiSnips"
+  ]
+}

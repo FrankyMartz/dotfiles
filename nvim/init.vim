@@ -542,7 +542,7 @@ augroup ft_vimrc
   au FocusLost * :silent! wa
   au BufEnter * :syntax sync fromstart
   " Prevent Location List color column and numbers
-  au FileType qf setlocal nonumber colorcolumn=''
+  au FileType qf setlocal nonumber colorcolumn=
   au BufReadPre * setlocal foldmethod=indent
   " Automatically save folding
   au BufWinLeave * silent! mkview
@@ -792,6 +792,7 @@ augroup END
 
 " Coc {{{
 let g:coc_node_path = '/usr/local/bin/node'
+" let g:coc_force_debug=1
 function! s:check_back_space() abort
   let columnPosition = col('.') - 1
   return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
@@ -810,7 +811,33 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Coc : coc-snippets =======================================================
+" Coc : Extension ==============================================================
+let g:coc_global_extensions = [
+  \ 'coc-ccls',
+  \ 'coc-angular',
+  \ 'coc-svg',
+  \ 'coc-vimlsp',
+  \ 'coc-go',
+  \ 'coc-lua',
+  \ 'coc-sh',
+  \ 'coc-phpls',
+  \ 'coc-css',
+  \ 'coc-emmet',
+  \ 'coc-highlight',
+  \ 'coc-html',
+  \ 'coc-jest',
+  \ 'coc-json',
+  \ 'coc-python',
+  \ 'coc-rls',
+  \ 'coc-snippets',
+  \ 'coc-tsserver',
+  \ 'coc-vetur',
+  \ 'coc-vimtex',
+  \ 'coc-yaml',
+  \ 'coc-fsharp',
+\ ]
+
+" Coc : coc-snippets ===========================================================
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
 inoremap <silent><expr> <CR> pumvisible()
@@ -886,24 +913,16 @@ nnoremap <leader>ti :IndentLinesToggle<CR>
 " }}}
 
 " javascript-libraries-syntax {{{
+" ex. local .nvimrc
+" autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
+" autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
+" autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 1
+" autocmd BufReadPre *.js let b:javascript_lib_use_prelude = 0
+" autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 0
 let g:used_javascript_libs = join([
-  \ 'angularjs',
-  \ 'angularui',
-  \ 'angularuirouter',
-  \ 'backbone',
-  \ 'chai',
-  \ 'd3',
-  \ 'flux',
-  \ 'handlebars',
-  \ 'jasmine',
   \ 'jquery',
-  \ 'prelude',
-  \ 'ramda',
-  \ 'react',
   \ 'requirejs',
-  \ 'sugar',
   \ 'underscore',
-  \ 'vue'
 \ ], ',')
 " }}}
 
@@ -927,11 +946,13 @@ nmap <F8> :NERDTreeToggle<CR>
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeBookmarksFile = tempDir . '/NERDTreeBookmarks'
 let NERDTreeCascadeSingleChildDir = 0
+let NERDTreeCaseSensitiveSort = 1
 let NERDTreeChDirMode = 2
 let NERDTreeHijackNetrw = 0 " Startify Session Patch
+let NERDTreeQuitOnOpen = 2
 let NERDTreeMinimalUI = 1
-let NERDTreeMouseMode = 2
 let NERDTreeNaturalSort = 1
+let NERDTreeMouseMode = 2
 let NERDTreeHighlightCursorline = 1
 let NERDTreeIgnore = [
   \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
@@ -1140,15 +1161,19 @@ let g:javascript_conceal_arrow_function = '⇒'
 " }}}
 
 " vim-js-pretty-template {{{
-augroup plug_jsprettytemplate
-  au!
-  " Register tag name associated the filetype
-  au! User vim-js-pretty-template call jspretmpl#register_tag('gql','graphql')
-  au FileType javascript JsPreTmpl
-  au FileType javascript.jsx JsPreTmpl
-  au FileType typescript JsPreTmpl
-  au FileType typescript.tsx JsPreTmpl
-augroup END
+if exists('*jspretmpl#register_tag')
+  augroup plug_jsprettytemplate
+    au!
+    " Register tag name associated the filetype
+    au! User vim-js-pretty-template call jspretmpl#register_tag('gql','graphql')
+    au FileType javascript JsPreTmpl
+    au FileType javascript.jsx JsPreTmpl
+    " For leafgarland/typescript-vim users only. Please see #1 for details.
+    au FileType typescript syn clear foldBraces
+    au FileType typescript JsPreTmpl
+    au FileType typescript.tsx JsPreTmpl
+  augroup END
+endif
 " }}}
 
 " vim-jsdoc {{{
@@ -1179,7 +1204,14 @@ let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exac
 " }}}
 
 " vim-polyglot {{{
-let g:polyglot_disabled = ['javascript', 'typescript']
+let g:polyglot_disabled = [
+  \ 'jsx',
+  \ 'js',
+  \ 'javascript',
+  \ 'tsx',
+  \ 'ts',
+  \ 'typescript',
+\ ]
 " }}}
 
 " vim-startify {{{

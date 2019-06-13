@@ -152,7 +152,7 @@ fi
 
 # NodeJS -----------------------------------------------------------------------
 
-export PATH="/Users/frankymartz/npm/bin:${PATH}"
+# export PATH="/Users/frankymartz/npm/bin:${PATH}"
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 

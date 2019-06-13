@@ -39,16 +39,15 @@ endfunction
 
 " Plug : Config ============================================================ {{{
 
-let plugCocConfig = { 'do': 'yarn install --frozen-lockfile' }
 let plugNerdTreeConfig = { 'on': 'NERDTreeToggle' }
-let PlugTypeForMarkdown = { 'for': [ 'markdown', 'md' ] }
-let plugTypeForJavaScript = { 'for': [
+let plugForMarkdown = { 'for': [ 'markdown', 'md' ] }
+let plugForJavaScript = { 'for': [
     \ 'javascript',
     \ 'javascript.jsx',
     \ 'es6',
   \ ]
 \ }
-let plugTypeForJavaScriptBrowser = { 'for' : [
+let plugForJavaScriptBrowser = { 'for' : [
     \ 'xml',
     \ 'html',
     \ 'javascript',
@@ -56,13 +55,13 @@ let plugTypeForJavaScriptBrowser = { 'for' : [
     \ 'es6',
   \ ]
 \ }
-let plugTypeForTypeScript = { 'for': [
+let plugForTypeScript = { 'for': [
     \ 'typescript',
     \ 'ts',
     \ 'tsx',
   \ ]
 \ }
-let plugTypeForJavaScriptTypeScript = { 'for': [
+let plugForJavaScriptTypeScript = { 'for': [
     \ 'javascript',
     \ 'javascript.jsx',
     \ 'es6',
@@ -71,7 +70,7 @@ let plugTypeForJavaScriptTypeScript = { 'for': [
     \ 'tsx',
   \ ]
 \ }
-let plugTypeForJavaScriptTypeScriptBrowser = { 'for' : [
+let plugForJavaScriptTypeScriptBrowser = { 'for' : [
     \ 'xml',
     \ 'html',
     \ 'javascript',
@@ -111,31 +110,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
 
 " COC Intellisense : Indention indicates Dependency
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
-  Plug 'liuchengxu/vista.vim', { 'on': 'Vista' } " TagBar Alternative
-  Plug 'Maxattax97/coc-ccls', plugCocConfig
-  Plug 'Shougo/neoinclude.vim' | Plug 'jsfaint/coc-neoinclude', plugCocConfig
-  Plug 'iamcco/coc-angular', plugCocConfig
-  Plug 'iamcco/coc-svg', plugCocConfig
-  Plug 'iamcco/coc-vimlsp', plugCocConfig
-  Plug 'josa42/coc-go', plugCocConfig
-  Plug 'josa42/coc-lua', plugCocConfig
-  Plug 'josa42/coc-sh', plugCocConfig
-  Plug 'marlonfan/coc-phpls', plugCocConfig
-  Plug 'neoclide/coc-css', plugCocConfig
-  Plug 'neoclide/coc-emmet', plugCocConfig
-  Plug 'neoclide/coc-highlight', plugCocConfig
-  Plug 'neoclide/coc-html', plugCocConfig
-  Plug 'neoclide/coc-jest', plugCocConfig
-  Plug 'neoclide/coc-json', plugCocConfig
-  Plug 'neoclide/coc-python', plugCocConfig
-  Plug 'neoclide/coc-rls', plugCocConfig
-  Plug 'neoclide/coc-snippets', plugCocConfig
-  Plug 'neoclide/coc-tsserver', plugCocConfig
-  Plug 'neoclide/coc-vetur', plugCocConfig
-  Plug 'neoclide/coc-vimtex', plugCocConfig
-  Plug 'neoclide/coc-yaml', plugCocConfig
-  Plug 'yatli/coc-fsharp', { 'do': function('BuildCocFsharp') }
+Plug 'liuchengxu/vista.vim'   " TagBar Alternative
+Plug 'Shougo/neoinclude.vim'
+Plug 'jsfaint/coc-neoinclude'
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': 'yarn install --frozen-lockfile' }
 
 " Editing
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
@@ -168,14 +146,13 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
-Plug 'vim-scripts/SyntaxComplete'
 Plug 'sheerun/vim-polyglot'
 
 " Snippets
 Plug 'honza/vim-snippets'
-Plug 'epilande/vim-es2015-snippets', plugTypeForJavaScriptTypeScript
-Plug 'epilande/vim-react-snippets', plugTypeForJavaScriptTypeScript
-Plug 'mhartington/vim-angular2-snippets', plugTypeForJavaScriptTypeScriptBrowser
+Plug 'epilande/vim-es2015-snippets', plugForJavaScriptTypeScript
+Plug 'epilande/vim-react-snippets', plugForJavaScriptTypeScript
+Plug 'mhartington/vim-angular2-snippets', plugForJavaScriptTypeScriptBrowser
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 
 " >> Apache
@@ -183,31 +160,31 @@ Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
 Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 
 " >> HTML
-Plug 'tpope/vim-ragtag', plugTypeForJavaScriptBrowser
+Plug 'tpope/vim-ragtag', plugForJavaScriptBrowser
 
 " >> CSS
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
 " JavaScript / TypeScript
-Plug 'jparise/vim-graphql'
-Plug 'Quramy/vim-js-pretty-template', plugTypeForJavaScriptTypeScript
+Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
+Plug 'Quramy/vim-js-pretty-template', plugForJavaScriptTypeScript
 
 " >> JavaScript
-Plug 'othree/yajs.vim', plugTypeForJavaScript
-Plug 'othree/es.next.syntax.vim', plugTypeForJavaScript
-Plug 'heavenshell/vim-jsdoc', plugTypeForJavaScriptTypeScript
-Plug 'othree/javascript-libraries-syntax.vim', plugTypeForJavaScriptTypeScript
+Plug 'othree/yajs.vim', plugForJavaScript
+Plug 'othree/es.next.syntax.vim', plugForJavaScript
+Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
+Plug 'othree/javascript-libraries-syntax.vim', plugForJavaScriptTypeScript
 
 " >> TypeScript
-Plug 'HerringtonDarkholme/yats.vim', plugTypeForTypeScript
-Plug 'jason0x43/vim-js-indent', plugTypeForJavaScriptTypeScript
+Plug 'HerringtonDarkholme/yats.vim', plugForTypeScript
+Plug 'jason0x43/vim-js-indent', plugForJavaScriptTypeScript
 
 " >> Markdown
-Plug 'junegunn/goyo.vim', PlugTypeForMarkdown
-Plug 'ajorgensen/vim-markdown-toc', PlugTypeForMarkdown
+Plug 'junegunn/goyo.vim', plugForMarkdown
+Plug 'ajorgensen/vim-markdown-toc', plugForMarkdown
 Plug 'euclio/vim-markdown-composer', {
   \ 'do': function('BuildComposer'),
-  \ 'for': PlugTypeForMarkdown['for'],
+  \ 'for': plugForMarkdown['for'],
 \ }
 
 " >> PHP
