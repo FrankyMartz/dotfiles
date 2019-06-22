@@ -376,6 +376,13 @@ augroup ft_django
 augroup END
 " }}}
 
+" DotEnv {{{
+augroup ft_dotenv
+  au!
+  au BufRead,BufNewFile *.env setlocal filetype=sh.env
+augroup END
+" }}}
+
 " Git {{{
 augroup ft_git
   au!
@@ -758,17 +765,18 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_open_list = 'on_save'
 let g:ale_keep_list_window_open = 0
 let g:ale_linters = {
-  \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
-  \ 'javascript': ['standard'],
   \ 'go': ['gometalinter', 'gofmt'],
   \ 'html': [],
+  \ 'javascript': ['standard'],
+  \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
 \ }
 let g:ale_fix_on_save = 0
 let g:ale_fixers = {
-  \ 'typescript': ['tslint'],
-  \ 'javascript': ['standard'],
   \ 'html': [],
+  \ 'javascript': ['standard'],
+  \ 'typescript': ['tslint'],
 \ }
+let g:ale_pattern_options = {'\.env$': {'ale_enabled': 0}}
 let g:ale_go_gometalinter_options = '--fast'
 let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_sign_error = '✘'
