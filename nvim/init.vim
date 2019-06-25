@@ -768,7 +768,10 @@ let g:ale_linters = {
   \ 'go': ['gometalinter', 'gofmt'],
   \ 'html': [],
   \ 'javascript': ['standard'],
-  \ 'typescript': ['tsserver', 'tslint', 'typecheck'],
+  \ 'typescript': ['standard', 'tsserver', 'tslint', 'typecheck'],
+\ }
+let g:ale_linter_aliases = {
+\ 'typescript': ['typescript', 'javascript']
 \ }
 let g:ale_fix_on_save = 0
 let g:ale_fixers = {
@@ -785,8 +788,19 @@ let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
 let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
 let g:ale_typescript_tsserver_use_global = 1
 
+" standard uses eslint and the output format is the same
+call ale#linter#Define('typescript', {
+\   'name': 'standard',
+\   'executable': function('ale_linters#javascript#standard#GetExecutable'),
+\   'command': function('ale_linters#javascript#standard#GetCommand'),
+\   'callback': 'ale#handlers#eslint#Handle',
+\})
+
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = '  ' " ⌫ ﱥ                 
+
+
+" Ale : TypeScript =============================================================
 
 nmap <leader>ek <Plug>(ale_previous)
 nmap <leader>ej <Plug>(ale_next)
@@ -920,7 +934,7 @@ let g:indentLine_showFirstIndentLevel = 1
 nnoremap <leader>ti :IndentLinesToggle<CR>
 " }}}
 
-" javascript-libraries-syntax {{{
+" typescript-libraries-syntax {{{
 " ex. local .nvimrc
 " autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
 " autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
