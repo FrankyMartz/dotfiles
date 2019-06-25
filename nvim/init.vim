@@ -76,6 +76,8 @@ set cmdheight=1                 " Set command bar to 2 lines
 set complete-=i                 " Disable Included Files autocomplete Search
 set laststatus=2                " Always display the statusline in all windows
 set display+=lastline           " Show as much of lastline of text as possible
+set updatetime=300              " ms to update SWAP files
+set shortmess+=c                " No ins completion menu give messages
 
 if !&scrolloff
   set scrolloff=1               " Number of lines to keep above/below cursor
@@ -123,9 +125,8 @@ set cpoptions+=d    " Use tags relative to CWD
 
 let g:python_host_prog='/usr/local/bin/python2'
 let g:python3_host_prog='/usr/local/bin/python3'
-let g:node_host_prog='/usr/local/lib/node_modules/neovim/bin/cli.js'
-let g:node_host_prog=expand('$HOME/npm/lib/node_modules/neovim/bin/cli.js')
-" '/usr/local/lib/node_modules/neovim/bin/cli.js'
+" Direct Neovim to NPM 'neovim' package install
+" let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.js'
 
 " Enable Project Based Configuration
 set exrc
@@ -758,11 +759,12 @@ let g:airline#extensions#windowswap#indicator_text='WS'
 let g:ale_set_highlights = 1
 let b:ale_set_balloons = 1
 let g:ale_cache_executable_check_failures = 1
+let g:ale_completion_enabled = 1
 let g:ale_cursor_detail = 0
 let g:ale_lint_delay = 200
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
-let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 1
 let g:ale_open_list = 'on_save'
 let g:ale_keep_list_window_open = 0
@@ -861,7 +863,10 @@ let g:coc_global_extensions = [
   \ 'coc-fsharp',
 \ ]
 
-" Coc : coc-snippets ===========================================================
+" Coc : Exception : markdown ===============================================================
+let g:markdown_fenced_languages = ['css', 'js=javascript']
+
+" Coc : Exception : coc-snippets ===========================================================
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
 inoremap <silent><expr> <CR> pumvisible()

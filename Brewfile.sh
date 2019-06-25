@@ -59,6 +59,7 @@ install "homebrew/dupes/unzip";
 install "wget";
 install "rename";
 install "rsync";
+install "restic" # backups
 install "unzip";
 
 #===============================================================================

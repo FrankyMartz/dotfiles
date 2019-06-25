@@ -113,7 +113,7 @@ Plug 'dbakker/vim-projectroot'
 Plug 'liuchengxu/vista.vim'   " TagBar Alternative
 Plug 'Shougo/neoinclude.vim'
 Plug 'jsfaint/coc-neoinclude'
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': 'yarn install --frozen-lockfile' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Editing
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
