@@ -443,7 +443,7 @@ augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md        setlocal filetype=markdown
   au BufNewFile,BufRead *.markdown  setlocal filetype=markdown
-  au FileType markdown setlocal wrap linebreak nolist
+  au FileType markdown setlocal wrap linebreak nolist spell
 augroup END
 " }}}
 
@@ -497,6 +497,15 @@ augroup ft_ruby
   au!
   au BufRead,BufNewFile Capfile setlocal filetype=ruby
   au FileType ruby setlocal foldmethod=syntax
+augroup END
+" }}}
+
+" Text {{{
+augroup ft_text
+  au!
+  au BufRead,BufNewFile *.txt setlocal filetype=text
+  au FileType text setlocal spell textwidth=80 colorcolumn=1
+
 augroup END
 " }}}
 
@@ -765,7 +774,7 @@ let g:ale_lint_delay = 200
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_filetype_changed = 1
 let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_insert_leave = 0
 let g:ale_open_list = 'on_save'
 let g:ale_keep_list_window_open = 0
 let g:ale_linters = {
@@ -788,9 +797,9 @@ let g:ale_go_gometalinter_options = '--fast'
 let g:ale_javascript_eslint_options = '--no-color'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
-let g:ale_typescript_tslint_executable = '/usr/loca/bin/tslint'
-let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
-let g:ale_typescript_tsserver_use_global = 1
+" let g:ale_typescript_tslint_executable = '/usr/local/bin/tslint'
+" let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
+" let g:ale_typescript_tsserver_use_global = 1
 
 " standard uses eslint and the output format is the same
 call ale#linter#Define('typescript', {
@@ -972,18 +981,18 @@ let g:NERDToggleCheckAllLines = 1
 
 " NERDTree {{{
 nmap <F8> :NERDTreeToggle<CR>
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeBookmarksFile = tempDir . '/NERDTreeBookmarks'
-let NERDTreeCascadeSingleChildDir = 0
-let NERDTreeCaseSensitiveSort = 1
-let NERDTreeChDirMode = 2
-let NERDTreeHijackNetrw = 0 " Startify Session Patch
-let NERDTreeQuitOnOpen = 2
-let NERDTreeMinimalUI = 1
-let NERDTreeNaturalSort = 1
-let NERDTreeMouseMode = 2
-let NERDTreeHighlightCursorline = 1
-let NERDTreeIgnore = [
+let NERDTreeAutoDeleteBuffer=1
+let NERDTreeBookmarksFile=tempDir . '/NERDTreeBookmarks'
+let NERDTreeCascadeSingleChildDir=0
+let NERDTreeCaseSensitiveSort=1
+let NERDTreeChDirMode=2
+let NERDTreeHijackNetrw=0 " Startify Session Patch
+let NERDTreeQuitOnOpen=2
+let NERDTreeMinimalUI=1
+let NERDTreeNaturalSort=1
+let NERDTreeMouseMode=2
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore=[
   \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
   \ '.*.pid', 'monitor.py', '.DS_Store', '.*-fixtures-.*.json', '.*\.o$',
   \ 'db.db', 'tags', 'tags.bak', '.*\.pdf$', '.*\.mid$', '.*\.midi$',
@@ -996,18 +1005,23 @@ augroup END
 " }}}
 
 " NERDTree Git Plugin {{{
-let g:NERDTreeIndicatorMapCustom = {
-  \ 'Modified'  : '',
-  \ 'Staged'    : '',
-  \ 'Untracked' : '',
-  \ 'Renamed'   : '',
-  \ 'Unmerged'  : '',
-  \ 'Deleted'   : '',
-  \ 'Dirty'     : '',
-  \ 'Clean'     : '',
-  \ 'Ignored'   : ' ',
-  \ 'Unknown'   : ''
+let g:NERDTreeShowIgnoredStatus=1
+let g:NERDTreeIndicatorMapCustom={
+  \ 'Modified'  : '  ',
+  \ 'Staged'    : '  ',
+  \ 'Untracked' : '  ',
+  \ 'Renamed'   : '  ',
+  \ 'Unmerged'  : '  ',
+  \ 'Deleted'   : '  ',
+  \ 'Dirty'     : '  ',
+  \ 'Clean'     : '  ',
+  \ 'Ignored'   : '  ',
+  \ 'Unknown'   : '  '
 \ }
+" Redefine NerdTree Git Ignored Icon Color
+" hi def link NERDTreeGitStatusModified Tag
+hi def link NERDTreeGitStatusIgnored LineNr
+hi def link NERDTreeGitStatusDirClean Directory
 " }}}
 
 " Scratch {{{
