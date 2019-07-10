@@ -126,7 +126,7 @@ set cpoptions+=d    " Use tags relative to CWD
 let g:python_host_prog='/usr/local/bin/python2'
 let g:python3_host_prog='/usr/local/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
-" let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.js'
+let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.js'
 
 " Enable Project Based Configuration
 set exrc
@@ -645,9 +645,9 @@ let s:isGitRepository = isdirectory(s:projectRoot . '/.git')
 
 " Ack {{{
 if executable('rg')
-  let g:ackprg = 'rg --vimgrep'
+  let g:ackprg='rg --vimgrep '
 elseif executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg='ag --vimgrep '
 endif
 let g:ack_use_dispatch = 1
 command Todo Ack! 'TODO\|FIXME'
@@ -764,19 +764,19 @@ let g:airline#extensions#windowswap#indicator_text='WS'
 " }}}
 
 " Ale {{{
-let g:ale_set_highlights = 1
-let b:ale_set_balloons = 1
-let g:ale_cache_executable_check_failures = 1
-let g:ale_completion_enabled = 1
-let g:ale_cursor_detail = 0
-let g:ale_lint_delay = 200
-let g:ale_lint_on_enter = 1
-let g:ale_lint_on_filetype_changed = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_open_list = 'on_save'
-let g:ale_keep_list_window_open = 0
-let g:ale_linters = {
+let g:ale_set_highlights=1
+let b:ale_set_balloons=1
+let g:ale_cache_executable_check_failures=1
+let g:ale_completion_enabled=1
+let g:ale_cursor_detail=0
+let g:ale_lint_delay=200
+let g:ale_lint_on_enter=1
+let g:ale_lint_on_filetype_changed=1
+let g:ale_lint_on_text_changed=0
+let g:ale_lint_on_insert_leave=0
+let g:ale_open_list='on_save'
+let g:ale_keep_list_window_open=0
+let g:ale_linters={
   \ 'go': ['gometalinter', 'gofmt'],
   \ 'html': [],
   \ 'javascript': ['standard'],
@@ -785,17 +785,17 @@ let g:ale_linters = {
 let g:ale_linter_aliases = {
 \ 'typescript': ['typescript', 'javascript']
 \ }
-let g:ale_fix_on_save = 0
-let g:ale_fixers = {
+let g:ale_fix_on_save=0
+let g:ale_fixers={
   \ 'html': [],
   \ 'javascript': ['standard'],
   \ 'typescript': ['tslint'],
 \ }
-let g:ale_pattern_options = {'\.env$': {'ale_enabled': 0}}
-let g:ale_go_gometalinter_options = '--fast'
-let g:ale_javascript_eslint_options = '--no-color'
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = ''
+let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
+let g:ale_go_gometalinter_options='--fast'
+let g:ale_javascript_eslint_options='--no-color'
+let g:ale_sign_error='✘'
+let g:ale_sign_warning=''
 " let g:ale_typescript_tslint_executable = '/usr/local/bin/tslint'
 " let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
 " let g:ale_typescript_tsserver_use_global = 1
@@ -808,8 +808,8 @@ call ale#linter#Define('typescript', {
 \   'callback': 'ale#handlers#eslint#Handle',
 \})
 
-let g:ale_virtualtext_cursor = 1
-let g:ale_virtualtext_prefix = '  ' " ⌫ ﱥ                 
+let g:ale_virtualtext_cursor=1
+let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ                 
 
 
 " Ale : TypeScript =============================================================

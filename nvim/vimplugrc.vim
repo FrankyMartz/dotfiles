@@ -116,7 +116,7 @@ Plug 'jsfaint/coc-neoinclude'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Editing
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+Plug 'mileszs/ack.vim'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'

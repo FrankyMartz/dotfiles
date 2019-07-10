@@ -64,5 +64,3 @@ PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
 
 eval "$(direnv hook bash)"
 
-
-export PATH="$HOME/.cargo/bin:$PATH"

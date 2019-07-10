@@ -162,5 +162,5 @@ export MONO_GAC_PREFIX="/usr/local"
 export GTAGSLABEL="pygment"
 
 # Mono -------------------------------------------------------------------------
-export PATH="${PATH}:/Users/francisco.b.martinez/.cargo/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 
