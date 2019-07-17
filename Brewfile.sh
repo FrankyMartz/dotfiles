@@ -142,10 +142,8 @@ install "nodenv/nodenv/nodenv-default-packages";
 
 # Languege: Python -------------------------------------------------------------
 install "python";
-install "pipenv";
 install "pyenv";
-install "pyenv-virtualenvwrapper";
-install "pipenv"
+install "pipenv";
 
 # Languege: Ruby ---------------------------------------------------------------
 install "ruby";

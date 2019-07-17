@@ -1,13 +1,13 @@
 {
+  "coc.preferences.diagnostic.displayByAle": true,
+  "coc.preferences.suggest.enablePreview": true,
   "codeLens.enable": true,
   "diagnostic.displayByAle": true,
-  "coc.preferences.diagnostic.displayByAle": true,
-  "suggest.noselect": false,
   "snippets.ultisnips.directories": [
     "UltiSnips",
     "gosnippets/UltiSnips"
   ],
   "suggest.echodocSupport": true,
   "suggest.enablePreview": true,
-  "coc.preferences.suggest.enablePreview": true
+  "suggest.noselect": false
 }

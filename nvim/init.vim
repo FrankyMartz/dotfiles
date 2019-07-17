@@ -284,6 +284,10 @@ if exists(':tnoremap')  " Neovim
   tnoremap <Leader>e <C-\><C-n>
 endif
 
+nnoremap <silent> <Leader>1 :call LoadComponentTypeFile('.ts')<CR>
+nnoremap <silent> <Leader>2 :call LoadComponentTypeFile('.scss')<CR>
+nnoremap <silent> <Leader>3 :call LoadComponentTypeFile('.html')<CR>
+
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
@@ -422,7 +426,6 @@ augroup ft_javascript
   au BufNewFile,BufRead *.jsx     setlocal filetype=javascript.jsx
   au BufNewFile,BufRead *.es6     setlocal filetype=javascript.jsx
   au BufNewFile,BufRead *.spec.js setlocal filetype=javascript.spec
-  au FileType javascript setlocal cocu="" foldmethod=syntax
   " au FileType javascript setlocal foldmethod=marker foldmarker={,}
   " au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
   " au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -1464,6 +1467,19 @@ nnoremap <leader>bg :ToggleBg<CR>
     " return ' data-ncms-uuid="' . randId . '"'
 " endfunction
 " nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
+
+function! LoadComponentTypeFile(fileType) abort
+  let fileName=expand('%:r')
+  " Check if Component. Ignore Case
+  if fileName =~? '\.component$' && type(a:fileType) == v:t_string
+      execute 'find ' . fileName . a:fileType
+      echo expand('%')
+  else
+    echohl WarningMsg
+    echo 'File Does NOT match Component Name Scheme. (component.{html,ts,scss})'
+    echohl None
+  endif
+endfunction
 
 "-------------------------------------------------------------------------------
 " }}}
