@@ -149,12 +149,12 @@ set sessionoptions-=options     " Do not save options in mksession
 set undofile
 set backup                                  " Enable Backups
 "set noswapfile                             " It's 2014 NeoVim
-let &backupskip = '/tmp/*,/private/tmp/*'
-let &undodir = tempDir . '/undo//'          " Undo files
-let &backupdir = tempDir . '/backup//'      " Backup files
-let &viewdir = tempDir . '/view//'          " View files
-let &directory = tempDir . '/swap//'        " Swap files
-let &tags = './tags,tags'
+let &backupskip='/tmp/*,/private/tmp/*'
+let &undodir=tempDir . '/undo//'          " Undo files
+let &backupdir=tempDir . '/backup//'      " Backup files
+let &viewdir=tempDir . '/view//'          " View files
+let &directory=tempDir . '/swap//'        " Swap files
+let &tags='./tags,tags'
 
 " Create directories if they do not exist
 if !isdirectory(expand(&undodir))
@@ -223,9 +223,9 @@ nmap <leader>hh :tabprevious<CR>
 nmap <leader>ll :tabnext<CR>
 
 " " Copy to clipboard
-vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
+vnoremap <leader>y "+y
+nnoremap <leader>Y "+yg_
+nnoremap <leader>y "+y
 
 " " Paste from clipboard
 nnoremap <leader>p "+p
@@ -508,7 +508,6 @@ augroup ft_text
   au!
   au BufRead,BufNewFile *.txt setlocal filetype=text
   au FileType text setlocal spell textwidth=80 colorcolumn=1
-
 augroup END
 " }}}
 
@@ -609,7 +608,7 @@ augroup plug_vim
   au!
   if empty(glob('~/.nvim/autoload/plug.vim'))
     silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     au!
     autocmd VimEnter * PlugInstall
   endif
@@ -652,7 +651,7 @@ if executable('rg')
 elseif executable('ag')
   let g:ackprg='ag --vimgrep '
 endif
-let g:ack_use_dispatch = 1
+let g:ack_use_dispatch=1
 command Todo Ack! 'TODO\|FIXME'
 "  }}}
 
@@ -668,70 +667,70 @@ let g:airline_skip_empty_sections=1
 let g:airline_highlighting_cache=1
 let g:airline_powerline_fonts=1
 let g:airline_exclude_preview=1
-let g:airline#extensions#default#section_truncate_width = {
+let g:airline#extensions#default#section_truncate_width={
   \ 'b': 140,
   \ 'x': 140,
 \ }
-let g:airline#extensions#tabline#ignore_bufadd_pat = 'gundo|undotree|vimfiler|tagbar|nerd_tree|startify'
+let g:airline#extensions#tabline#ignore_bufadd_pat='gundo|undotree|vimfiler|tagbar|nerd_tree|startify'
 
 " Airline : Ale ================================================================
 let g:airline#extensions#ale#enabled=1
 
 " Airline : Coc ================================================================
-let g:airline#extensions#coc#enabled = 1
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+let g:airline#extensions#coc#enabled=1
+let g:airline_section_error='%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning='%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Airline : CtrlSpace ==========================================================
 let g:CtrlSpaceUseTabline=0
 let g:airline#extensions#ctrlspace#enabled=1
-let g:airline#extensions#ctrlp#show_adjacent_modes = 1
+let g:airline#extensions#ctrlp#show_adjacent_modes=1
 let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
 
 " Airline : CursorMode =========================================================
-let g:airline#extensions#cursormode#enabled = 1
+let g:airline#extensions#cursormode#enabled=1
 
 " Airline : Fugitive ===========================================================
-let g:airline#extensions#fugitiveline#enabled = 1
+let g:airline#extensions#fugitiveline#enabled=1
 
 " Airline : Git ================================================================
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#branch#format = 1
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#branch#sha1_len = 10
-let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#branch#format=1
+let g:airline#extensions#branch#empty_message=''
+let g:airline#extensions#branch#sha1_len=10
+let g:airline#extensions#branch#displayed_head_limit=10
 
 " Airline : Gutentags ==========================================================
-let g:airline#extensions#gutentags#enabled = 1
+let g:airline#extensions#gutentags#enabled=1
 
 " Airline : Hunks ==============================================================
-let g:airline#extensions#hunks#enabled = 1
-let g:airline#extensions#hunks#non_zero_only = 0
+let g:airline#extensions#hunks#enabled=1
+let g:airline#extensions#hunks#non_zero_only=0
 
 " Airline : Signify ============================================================
-let g:airline#extensions#hunks#enabled = 1
-let g:airline#extensions#hunks#non_zero_only = 0
-let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
+let g:airline#extensions#hunks#enabled=1
+let g:airline#extensions#hunks#non_zero_only=0
+let g:airline#extensions#hunks#hunk_symbols=['+', '~', '-']
 
 " Airline : TabLine ============================================================
-let g:airline#extensions#tabline#enabled = 1  " Auto display all buffers
-let g:airline#extensions#tabline#buffers_label = 'buffer'
-let g:airline#extensions#tabline#tabs_label = 'tab'
-let g:airline#extensions#tabline#current_first = 1
-let g:airline#extensions#tabline#show_tabs = 1
-let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#enabled=1  " Auto display all buffers
+let g:airline#extensions#tabline#buffers_label='buffer'
+let g:airline#extensions#tabline#tabs_label='tab'
+let g:airline#extensions#tabline#current_first=1
+let g:airline#extensions#tabline#show_tabs=1
+let g:airline#extensions#tabline#show_splits=1
 let g:airline#extensions#tabline#buffer_min_count=1
-let g:airline#extensions#tabline#fnamecollapse = 1
+let g:airline#extensions#tabline#fnamecollapse=1
 let g:airline#extensions#tabline#formatter='unique_tail'
 
 " Airline : VirtualEnv =========================================================
-let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#virtualenv#enabled=1
 
 " Airline : Vista ==============================================================
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
-let g:airline_section_y = airline#section#create_right([
+let g:airline_section_y=airline#section#create_right([
   \ 'vista',
   \ 'NearestMethodOrFunction()'
 \ ])
@@ -805,11 +804,11 @@ let g:ale_sign_warning=''
 
 " standard uses eslint and the output format is the same
 call ale#linter#Define('typescript', {
-\   'name': 'standard',
-\   'executable': function('ale_linters#javascript#standard#GetExecutable'),
-\   'command': function('ale_linters#javascript#standard#GetCommand'),
-\   'callback': 'ale#handlers#eslint#Handle',
-\})
+  \ 'name': 'standard',
+  \ 'executable': function('ale_linters#javascript#standard#GetExecutable'),
+  \ 'command': function('ale_linters#javascript#standard#GetCommand'),
+  \ 'callback': 'ale#handlers#eslint#Handle',
+\ })
 
 let g:ale_virtualtext_cursor=1
 let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ                 
@@ -849,14 +848,13 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Coc : Extension ==============================================================
-let g:coc_global_extensions = [
+let g:coc_global_extensions=[
   \ 'coc-ccls',
   \ 'coc-angular',
   \ 'coc-svg',
   \ 'coc-vimlsp',
   \ 'coc-go',
   \ 'coc-lua',
-  \ 'coc-sh',
   \ 'coc-phpls',
   \ 'coc-css',
   \ 'coc-emmet',
@@ -875,11 +873,11 @@ let g:coc_global_extensions = [
 \ ]
 
 " Coc : Exception : markdown ===============================================================
-let g:markdown_fenced_languages = ['css', 'js=javascript']
+let g:markdown_fenced_languages=['css', 'js=javascript']
 
 " Coc : Exception : coc-snippets ===========================================================
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
+let g:coc_snippet_next='<TAB>'
+let g:coc_snippet_prev='<S-TAB>'
 inoremap <silent><expr> <CR> pumvisible()
   \ ? coc#_select_confirm()
   \ : coc#expandableOrJumpable()
@@ -897,22 +895,22 @@ let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 " }}}
 
 " EditorConfig {{{
-  let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+let g:EditorConfig_exclude_patterns=['fugitive://.*']
 " }}}
 
 " Far {{{
-  let g:far#source = 'rgnvim'
+let g:far#source='rgnvim'
 " }}}
 
 " Fugitive {{{
-  nnoremap <leader>? :Gstatus<cr>
+nnoremap <leader>? :Gstatus<cr>
 " }}}
 
 " FZF {{{
 if executable('fzf')
   nmap <c-t> :FZF<cr>
-  let g:fzf_history_dir = '~/.nvim/tmp/fzf-history//'
-  let g:fzf_colors = {
+  let g:fzf_history_dir='~/.nvim/tmp/fzf-history//'
+  let g:fzf_colors={
     \ 'fg':      ['fg', 'Normal'],
     \ 'bg':      ['bg', 'Normal'],
     \ 'hl':      ['fg', 'Comment'],
@@ -939,7 +937,7 @@ augroup END
 " }}}
 
 " Gundo {{{
-  nnoremap <F7> :MundoToggle<CR>
+nnoremap <F7> :MundoToggle<CR>
 " }}}
 
 " indentLine {{{
@@ -959,7 +957,7 @@ nnoremap <leader>ti :IndentLinesToggle<CR>
 " autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 1
 " autocmd BufReadPre *.js let b:javascript_lib_use_prelude = 0
 " autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 0
-let g:used_javascript_libs = join([
+let g:used_javascript_libs=join([
   \ 'jquery',
   \ 'requirejs',
   \ 'underscore',
@@ -969,16 +967,16 @@ let g:used_javascript_libs = join([
 " NERDCommenter {{{
 let g:NERDMenuMode=0
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
-let g:NERDCompactSexyComs = 1 " Use compact syntax for multi-line comments
+let g:NERDCompactSexyComs=1 " Use compact syntax for multi-line comments
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
+let g:NERDCommentEmptyLines=1
 
 " Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
+let g:NERDTrimTrailingWhitespace=1
 
 " Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines = 1
+let g:NERDToggleCheckAllLines=1
 " }}}
 
 " NERDTree {{{
@@ -1028,7 +1026,7 @@ hi def link NERDTreeGitStatusDirClean Directory
 
 " Scratch {{{
 function! ToggleScratchBuffer(scratchType)
-  let scr_open = bufwinnr('__Scratch__')
+  let scr_open=bufwinnr('__Scratch__')
   if scr_open != -1
     execute scr_open . 'close'
   else
@@ -1036,10 +1034,10 @@ function! ToggleScratchBuffer(scratchType)
   endif
 endfunction
 
-let g:scratch_no_mappings = 1
-let g:scratch_autohide = 0
-let g:scratch_insert_autohide = 0  
-let g:scratch_filetype = 'markdown'
+let g:scratch_no_mappings=1
+let g:scratch_autohide=0
+let g:scratch_insert_autohide=0  
+let g:scratch_filetype='markdown'
 nnoremap <F12> :call ToggleScratchBuffer('ScratchInsert')<CR>
 nnoremap <F24> :call ToggleScratchBuffer('ScratchInsert!')<CR>
 vnoremap <F12> :call ToggleScratchBuffer('ScratchSelection')<CR>
@@ -1057,62 +1055,62 @@ augroup END
 " }}}
 
 " Surround {{{
-let g:surround_{char2nr('-')} = '<% \r %>'
-let g:surround_{char2nr('=')} = '<%= \r %>'
-let g:surround_{char2nr('8')} = '/* \r */'
-let g:surround_{char2nr('s')} = ' \r '
-let g:surround_{char2nr('^')} = '/^\r$/'
-let g:surround_indent = 1
+let g:surround_{char2nr('-')}='<% \r %>'
+let g:surround_{char2nr('=')}='<%= \r %>'
+let g:surround_{char2nr('8')}='/* \r */'
+let g:surround_{char2nr('s')}=' \r '
+let g:surround_{char2nr('^')}='/^\r$/'
+let g:surround_indent=1
 " }}}
 
 " VimDevIcon {{{
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_vimfiler  =  1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:DevIconsEnableFoldersOpenClose = 1
-let g:DevIconsEnableFolderPatternMatching = 1
-let g:DevIconsEnableFolderExtensionPatternMatching = 0
-let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches = 1
+let g:webdevicons_enable=1
+let g:webdevicons_enable_vimfiler=1
+let g:WebDevIconsUnicodeGlyphDoubleWidth=1
+let g:WebDevIconsUnicodeDecorateFolderNodes=1
+let g:DevIconsEnableFoldersOpenClose=1
+let g:DevIconsEnableFolderPatternMatching=1
+let g:DevIconsEnableFolderExtensionPatternMatching=0
+let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
-" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules'] = '' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$'] = '' "  
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.\%(ts\|js\|es6\|jsx\)$'] = ' '
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.\%(ts\|js\|es6\|jsx\)$'] = 'ﰩ'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
+" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$']='' "  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.\%(ts\|js\|es6\|jsx\)$']=' '
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.\%(ts\|js\|es6\|jsx\)$']='ﰩ'
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.\%(ts\|js\|es6\|jsx\)$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$']=''
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$']=''
 "    簾               ﰩ    
 "    ﯤ          
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
 " TODO: Validate REGEX in Assignment
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json']=''
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$'] = '慎'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$']='慎'
 
 " vimDevIcon: NERDTree
-let g:webdevicons_enable_nerdtree = 1
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
-let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:webdevicons_enable_nerdtree=1
+let g:webdevicons_conceal_nerdtree_brackets=1
+let g:WebDevIconsNerdTreeAfterGlyphPadding=' '
+let g:WebDevIconsNerdTreeBeforeGlyphPadding=''
+let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
 " vimDevIcon: Airline
-let g:webdevicons_enable_airline_tabline = 1
-let g:webdevicons_enable_airline_statusline = 1
+let g:webdevicons_enable_airline_tabline=1
+let g:webdevicons_enable_airline_statusline=1
 " vimDevIcon: CtrlP
-let g:webdevicons_enable_ctrlp = 1
-let g:webdevicons_enable_flagship_statusline = 1
+let g:webdevicons_enable_ctrlp=1
+let g:webdevicons_enable_flagship_statusline=1
 " }}}
 
 " vim-delve {{{
-let g:delve_backend = 'native'
-let g:delve_cache_path = expand('~/.nvim/tmp/vim-delve//')
+let g:delve_backend='native'
+let g:delve_cache_path=expand('~/.nvim/tmp/vim-delve//')
 if !isdirectory(g:delve_cache_path)
   call mkdir(g:delve_cache_path, 'p')
 endif
@@ -1126,53 +1124,53 @@ endif
 " }}}
 
 " vim-ctrlspace {{{
-let g:CtrlSpaceCacheDir = tempDir.'/ctrlspacecache'
+let g:CtrlSpaceCacheDir=tempDir.'/ctrlspacecache'
 if !isdirectory(g:CtrlSpaceCacheDir)
   call mkdir(g:CtrlSpaceCacheDir, 'p')
 endif
-let g:CtrlSpaceDefaultMappingKey = '<c-space> '
-let g:CtrlSpaceUseArrowsInTerm = 1
-let g:CtrlSpaceUseMouseAndArrowsInTerm = 1
-let g:CtrlSpaceLoadLastWorkspaceOnStart = 0
-let g:CtrlSpaceSaveWorkspaceOnSwitch = 1
-let g:CtrlSpaceSaveWorkspaceOnExit = 1
-let g:CtrlSpaceHeight = 10
+let g:CtrlSpaceDefaultMappingKey='<c-space> '
+let g:CtrlSpaceUseArrowsInTerm=1
+let g:CtrlSpaceUseMouseAndArrowsInTerm=1
+let g:CtrlSpaceLoadLastWorkspaceOnStart=0
+let g:CtrlSpaceSaveWorkspaceOnSwitch=1
+let g:CtrlSpaceSaveWorkspaceOnExit=1
+let g:CtrlSpaceHeight=10
 if executable('rg')
-  let g:CtrlSpaceGlobCommand = 'rg --hidden --vimgrep --files'
+  let g:CtrlSpaceGlobCommand='rg --hidden --vimgrep --files'
 elseif executable('ag')
-  let g:CtrlSpaceGlobCommand = '/usr/bin/env ag -l --hidden --vimgrep -g ""'
+  let g:CtrlSpaceGlobCommand='/usr/bin/env ag -l --hidden --vimgrep -g ""'
 endif
 " }}}
 
 " vim-go {{{
 " Setting
-let g:go_test_show_name = 1
-let g:go_autodetect_gopath = 1
-let g:go_fmt_command = 'goimports'
-let g:go_term_mode = 'split'
-let g:go_textobj_include_function_doc = 1
+let g:go_test_show_name=1
+let g:go_autodetect_gopath=1
+let g:go_fmt_command='goimports'
+let g:go_term_mode='split'
+let g:go_textobj_include_function_doc=1
 " Syntax Highlight
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_variable_assignments = 1
-let g:go_highlight_variable_declarations = 1
+let g:go_highlight_types=1
+let g:go_highlight_fields=1
+let g:go_highlight_methods=1
+let g:go_highlight_functions=1
+let g:go_highlight_operators=1
+let g:go_highlight_extra_types=1
+let g:go_highlight_generate_tags=1
+let g:go_highlight_build_constraints=1
+let g:go_highlight_variable_assignments=1
+let g:go_highlight_variable_declarations=1
 
-let g:go_highlight_space_tab_error = 1
-let g:go_highlight_chan_whitespace_error = 1
-let g:go_highlight_array_whitespace_error = 1
+let g:go_highlight_space_tab_error=1
+let g:go_highlight_chan_whitespace_error=1
+let g:go_highlight_array_whitespace_error=1
 " Shortcuts
 if isdirectory(expand('$GOPATH/src/github.com/golang/lint/misc/vim'))
   set runtimepath+=$GOPATH/src/github.com/golang/lint/misc/vim
 endif
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
-  let l:file = expand('%')
+  let l:file=expand('%')
   if l:file =~# '^\f\+_test\.go$'
     call go#test#Test(0, 1)
   elseif l:file =~# '^\f\+\.go$'
@@ -1190,19 +1188,19 @@ augroup END
 " }}}
 
 " vim-javascript {{{
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_ngdoc = 1
-let g:javascript_plugin_flow = 1
-let g:javascript_conceal_function       = 'ƒ'
-let g:javascript_conceal_null           = 'ø'
-let g:javascript_conceal_this           = '@'
-let g:javascript_conceal_return         = '⇚'
-let g:javascript_conceal_undefined      = '¿'
-let g:javascript_conceal_NaN            = 'ℕ'
-let g:javascript_conceal_prototype      = '¶'
-let g:javascript_conceal_static         = '•'
-let g:javascript_conceal_super          = 'Ω'
-let g:javascript_conceal_arrow_function = '⇒'
+let g:javascript_plugin_jsdoc=1
+let g:javascript_plugin_ngdoc=1
+let g:javascript_plugin_flow=1
+let g:javascript_conceal_function='ƒ'
+let g:javascript_conceal_null='ø'
+let g:javascript_conceal_this='@'
+let g:javascript_conceal_return='⇚'
+let g:javascript_conceal_undefined='¿'
+let g:javascript_conceal_NaN='ℕ'
+let g:javascript_conceal_prototype='¶'
+let g:javascript_conceal_static='•'
+let g:javascript_conceal_super='Ω'
+let g:javascript_conceal_arrow_function='⇒'
 " }}}
 
 " vim-js-pretty-template {{{
@@ -1223,33 +1221,33 @@ endif
 
 " vim-jsdoc {{{
 nmap <leader>jsd :JsDoc<CR>
-let g:jsdoc_additional_descriptions = 1
-let g:jsdoc_input_description = 1
-let g:jsdoc_allow_input_prompt = 1
-let g:jsdoc_access_descriptions = 1
-let g:jsdoc_underscore_private = 1
-let g:jsdoc_param_description_separator = ' - '
-let g:jsdoc_enable_es6 = 1
+let g:jsdoc_additional_descriptions=1
+let g:jsdoc_input_description=1
+let g:jsdoc_allow_input_prompt=1
+let g:jsdoc_access_descriptions=1
+let g:jsdoc_underscore_private=1
+let g:jsdoc_param_description_separator=' - '
+let g:jsdoc_enable_es6=1
 " }}}
 
 " vim-jsx {{{
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+let g:jsx_ext_required=0 " Allow JSX in normal JS files
 " }}}
 
 " vim-move {{{
-let g:move_key_modifier = 'C-A'
+let g:move_key_modifier='C-A'
 " }}}
 
 " vim-multiple-cursors {{{
-let g:multi_cursor_exit_from_visual_mode = 0
+let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-nerdtree-syntax-highlight {{{
-let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact match
 " }}}
 
 " vim-polyglot {{{
-let g:polyglot_disabled = [
+let g:polyglot_disabled=[
   \ 'jsx',
   \ 'js',
   \ 'javascript',
@@ -1260,11 +1258,11 @@ let g:polyglot_disabled = [
 " }}}
 
 " vim-startify {{{
-let g:startify_use_env = 1
-let g:startify_change_to_dir = 0
-let g:startify_change_to_vcs_root = 1
-let g:startify_padding_left = 3
-let g:startify_skiplist = [
+let g:startify_use_env=1
+let g:startify_change_to_dir=0
+let g:startify_change_to_vcs_root=1
+let g:startify_padding_left=3
+let g:startify_skiplist=[
   \ 'COMMIT_EDITMSG',
   \ escape(fnamemodify(resolve($VIMRUNTIME), ':p'), '\') .'doc',
   \ 'bundle/.*/doc',
@@ -1276,18 +1274,18 @@ function! StartifyEntryFormat()
 endfunction
 
 function! s:startify_center_header(lines) abort
-  let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
-  let centered_lines = map(copy(a:lines),
-        \ 'repeat(" ", (longest_line / 5)) . v:val')
+  let longest_line=max(map(copy(a:lines), 'strwidth(v:val)'))
+  let centered_lines=map(copy(a:lines),
+    \ 'repeat(" ", (longest_line / 5)) . v:val')
   " \ 'repeat(" ", (&columns / 2) + longest_line + (longest_line / 10)) . v:val')
   " \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
   return centered_lines
 endfunction
 
 function! s:list_commits()
-  let git = 'git -C ' . s:projectRoot
-  let commits = systemlist(git .' log --oneline | head -n5')
-  let git = 'G'. git[1:]
+  let git='git -C ' . s:projectRoot
+  let commits=systemlist(git .' log --oneline | head -n5')
+  let git='G'. git[1:]
   return map(commits, '{"line": "  " . matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
 endfunction
 
@@ -1295,17 +1293,17 @@ function! s:get_project_name()
   if !s:isGitRepository
     return '   ' . '  ' . s:projectRoot
   endif
-  let git = 'git -C ' . s:projectRoot
-  let dirname = system(git . ' rev-parse --abbrev-ref HEAD')
+  let git='git -C ' . s:projectRoot
+  let dirname=system(git . ' rev-parse --abbrev-ref HEAD')
   return '   ' . (strchars(dirname) > 0 ? ('  ' .substitute(dirname, '[[:cntrl:]]', '', 'g')) : s:projectRoot)
 endfunction
 
-let g:startify_lists = [
-  \ { 'type': 'files',                    'header': ['   MRU']                },
-  \ { 'type': 'dir',                      'header': [s:get_project_name()]    },
-  \ { 'type': 'sessions',                 'header': ['   Sessions']           },
-  \ { 'type': 'bookmarks',                'header': ['   Bookmarks']          },
-  \ { 'type': 'commands',                 'header': ['   Commands']           },
+let g:startify_lists=[
+  \ { 'type': 'files',      'header': ['   MRU']              },
+  \ { 'type': 'dir',        'header': [s:get_project_name()]  },
+  \ { 'type': 'sessions',   'header': ['   Sessions']         },
+  \ { 'type': 'bookmarks',  'header': ['   Bookmarks']        },
+  \ { 'type': 'commands',   'header': ['   Commands']         },
 \ ]
 if s:isGitRepository
   call add(
@@ -1316,14 +1314,14 @@ endif
 
 
 " let g:startify_lists = [
-  " \ { 'type': 'files',                    'header': ['   MRU']                },
-  " \ { 'type': 'dir',                      'header': [s:get_project_name()]    },
-  " \ { 'type': 'sessions',                 'header': ['   Sessions']           },
-  " \ { 'type': 'bookmarks',                'header': ['   Bookmarks']          },
-  " \ { 'type': 'commands',                 'header': ['   Commands']           },
-  " \ { 'type': function('s:list_commits'), 'header': ['   Commits']            }
+  " \ { 'type': 'files',                    'header': ['   MRU']              },
+  " \ { 'type': 'dir',                      'header': [s:get_project_name()]  },
+  " \ { 'type': 'sessions',                 'header': ['   Sessions']         },
+  " \ { 'type': 'bookmarks',                'header': ['   Bookmarks']        },
+  " \ { 'type': 'commands',                 'header': ['   Commands']         },
+  " \ { 'type': function('s:list_commits'), 'header': ['   Commits']          }
 " \ ]
-let g:startify_custom_header = [
+let g:startify_custom_header=[
   \ '   Web browsers are useless here.',
   \ ' ',
   \ ' ',
@@ -1357,15 +1355,15 @@ augroup END
 " }}}
 
 " vim-signify {{{
-let g:signify_realtime = 1 " autocmd User Fugitive SignifyRefresh
-let g:signify_update_on_bufenter = 1
-let g:signify_update_on_focusgained = 1
-let g:signify_vcs_list = ['git', 'hg']
-let g:signify_sign_add               = '+'
-let g:signify_sign_delete            = '-'
-let g:signify_sign_delete_first_line = '‾'
-let g:signify_sign_change            = '~'
-let g:signify_sign_changedelete      = '*'
+let g:signify_realtime=1 " autocmd User Fugitive SignifyRefresh
+let g:signify_update_on_bufenter=1
+let g:signify_update_on_focusgained=1
+let g:signify_vcs_list=['git', 'hg']
+let g:signify_sign_add='+'
+let g:signify_sign_delete='-'
+let g:signify_sign_delete_first_line='‾'
+let g:signify_sign_change='~'
+let g:signify_sign_changedelete='*'
 nmap <leader>gj <plug>(signify-next-hunk)<CR>
 nmap <leader>gk <plug>(signify-prev-hunk)<CR>
 nmap <leader>gd :SignifyDiff!<CR>
@@ -1373,44 +1371,44 @@ nmap <leader>gf :SignifyFold!<CR>
 " }}}
 
 " vim-signature {{{
-let g:SignatureMarkerTextHLDynamic = 1
-let g:SignatureMap = {
-  \ 'Leader'             :  'm',
-  \ 'PlaceNextMark'      :  'm,',
-  \ 'ToggleMarkAtLine'   :  'm.',
-  \ 'PurgeMarksAtLine'   :  'm-',
-  \ 'DeleteMark'         :  '<Leader>dm',
-  \ 'PurgeMarks'         :  '<Leader>m<Space>',
-  \ 'PurgeMarkers'       :  '<Leader>m<Del>',
-  \ 'GotoNextLineAlpha'  :  "m']",
-  \ 'GotoPrevLineAlpha'  :  "m'[",
-  \ 'GotoNextSpotAlpha'  :  'm`]',
-  \ 'GotoPrevSpotAlpha'  :  'm`[',
-  \ 'GotoNextLineByPos'  :  "m]'",
-  \ 'GotoPrevLineByPos'  :  "m['",
-  \ 'GotoNextSpotByPos'  :  'm]`',
-  \ 'GotoPrevSpotByPos'  :  'm[`',
-  \ 'GotoNextMarker'     :  'm]-',
-  \ 'GotoPrevMarker'     :  'm[-',
-  \ 'GotoNextMarkerAny'  :  'm]=',
-  \ 'GotoPrevMarkerAny'  :  'm[=',
-  \ 'ListBufferMarks'    :  '<Leader>m/',
-  \ 'ListBufferMarkers'  :  '<Leader>m?'
+let g:SignatureMarkerTextHLDynamic=1
+let g:SignatureMap={
+  \ 'Leader'            : 'm',
+  \ 'PlaceNextMark'     : 'm,',
+  \ 'ToggleMarkAtLine'  : 'm.',
+  \ 'PurgeMarksAtLine'  : 'm-',
+  \ 'DeleteMark'        : '<Leader>dm',
+  \ 'PurgeMarks'        : '<Leader>m<Space>',
+  \ 'PurgeMarkers'      : '<Leader>m<Del>',
+  \ 'GotoNextLineAlpha' : "m']",
+  \ 'GotoPrevLineAlpha' : "m'[",
+  \ 'GotoNextSpotAlpha' : 'm`]',
+  \ 'GotoPrevSpotAlpha' : 'm`[',
+  \ 'GotoNextLineByPos' : "m]'",
+  \ 'GotoPrevLineByPos' : "m['",
+  \ 'GotoNextSpotByPos' : 'm]`',
+  \ 'GotoPrevSpotByPos' : 'm[`',
+  \ 'GotoNextMarker'    : 'm]-',
+  \ 'GotoPrevMarker'    : 'm[-',
+  \ 'GotoNextMarkerAny' : 'm]=',
+  \ 'GotoPrevMarkerAny' : 'm[=',
+  \ 'ListBufferMarks'   : '<Leader>m/',
+  \ 'ListBufferMarkers' : '<Leader>m?'
 \ }
 " }}}
 
 " Vista {{{
 nnoremap <F9> :Vista!!<CR>
-let g:vista_sidebar_width = 40
-let g:vista_icon_indent = ['╰─▸ ', '├─▸ ']
-let g:vista_default_executive = 'coc'
-let g:vista_fzf_preview = ['right:50%']
-let g:vista#renderer#enable_icon = 1
-let g:vista_echo_cursor_strategy = 'both'
+let g:vista_sidebar_width=40
+let g:vista_icon_indent=['╰─▸ ', '├─▸ ']
+let g:vista_default_executive='coc'
+let g:vista_fzf_preview=['right:50%']
+let g:vista#renderer#enable_icon=1
+let g:vista_echo_cursor_strategy='both'
 " }}}
 
 " yats {{{
-let g:yats_host_keyword = 1
+let g:yats_host_keyword=1
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1421,30 +1419,30 @@ let g:yats_host_keyword = 1
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let s:colorSchemeLight = 'solarized8'
-let s:colorSchemeDark = 'base16-materia'
+let s:colorSchemeLight='solarized8'
+let s:colorSchemeDark='base16-materia'
 
 " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
 if $ITERM_PROFILE =~? 'Night'
-  let &background = 'dark'
+  let &background='dark'
   exe 'colorscheme ' . s:colorSchemeDark
 else
-  let &background = 'light'
-  let g:airline_theme = 'solarized'
-  " let g:solarized_visibility = 'high'
-  let g:solarized_diffmode = 'high'
-  let g:solarized_termtrans = 1
-  let g:solarized_statusline = 'normal'
-  let g:solarized_italics = 1
-  let g:solarized_old_cursor_style = 0
-  let g:solarized_enable_extra_hi_groups = 1
+  let &background='light'
+  let g:airline_theme='solarized'
+  " let g:solarized_visibility='high'
+  let g:solarized_diffmode='high'
+  let g:solarized_termtrans=1
+  let g:solarized_statusline='normal'
+  let g:solarized_italics=1
+  let g:solarized_old_cursor_style=0
+  let g:solarized_enable_extra_hi_groups=1
   exe 'colorscheme ' . s:colorSchemeLight
 endif
 
 function! s:ToggleBackground()
-  let fmShade = &background =~? 'dark' ? 'light' : 'dark'
-  let fmColorScheme = fmShade =~?'dark' ? s:colorSchemeDark : s:colorSchemeLight
-  let &background = fmShade
+  let fmShade=&background =~? 'dark' ? 'light' : 'dark'
+  let fmColorScheme=fmShade =~?'dark' ? s:colorSchemeDark : s:colorSchemeLight
+  let &background=fmShade
   exe 'colorscheme ' . fmColorScheme
   unlet fmShade
   unlet fmColorScheme

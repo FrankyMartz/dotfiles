@@ -141,9 +141,10 @@ install "nodenv-package-json-engine";
 install "nodenv/nodenv/nodenv-default-packages";
 
 # Languege: Python -------------------------------------------------------------
-install "python";
-install "pyenv";
+# install "mypy" # Python Types: Install via PIP
 install "pipenv";
+install "pyenv";
+install "python";
 
 # Languege: Ruby ---------------------------------------------------------------
 install "ruby";

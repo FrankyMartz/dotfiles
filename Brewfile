@@ -66,6 +66,7 @@ brew "mercurial"
 brew "mongodb", restart_service: true
 brew "mono"
 brew "msgpack"
+brew "mypy"
 brew "mysql"
 brew "unibilium"
 brew "neovim"

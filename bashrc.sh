@@ -26,6 +26,7 @@ if [[ -x "$(command -v brew)" ]]; then
   # GNU ------------------------------------------------------------------------
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
+  export PATH="/usr/local/opt/curl/bin:$PATH"
 fi
 
 #===============================================================================
@@ -137,12 +138,6 @@ if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
   export PATH="$(gem environment gemdir)/bin:${PATH}"
 fi
 
-# RBENV
-if [[ -x "$(command -v rbenv)" ]]; then
-  # Enable shims and autocompletion add to your profile
-  eval "$(rbenv init -)"
-fi
-
 # PHP --------------------------------------------------------------------------
 
 #PATH="${PATH}:${HOME}/.composer/vendor/bin"
@@ -158,6 +153,11 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 export MONO_GAC_PREFIX="/usr/local"
 export GTAGSLABEL="pygment"
 
-# Mono -------------------------------------------------------------------------
+# Rust -------------------------------------------------------------------------
+
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# ASDF -------------------------------------------------------------------------
+
+# source "$(brew --prefix asdf)/asdf.sh"
+# source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"

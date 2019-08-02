@@ -14,7 +14,7 @@ date +"(%a) %b %d, %Y [%Z] %r";
 # GLOBALS
 #===============================================================================
 readonly _PWD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
-readonly _BIN="${PWD}/bin";
+readonly _BIN="${_PWD}/bin";
 
 # Utility ----------------------------------------------------------------------
 source "./utility/console.sh";
