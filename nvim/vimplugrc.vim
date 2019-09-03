@@ -101,7 +101,6 @@ Plug 'wesQ3/vim-windowswap'
 " General
 Plug 'tpope/vim-dispatch'
 Plug 'kshenoy/vim-signature'
-Plug 'easymotion/vim-easymotion'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
@@ -117,6 +116,8 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Editing
 Plug 'mileszs/ack.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'bkad/CamelCaseMotion'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
 Plug 'rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'
@@ -170,10 +171,10 @@ Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
 Plug 'Quramy/vim-js-pretty-template', plugForJavaScriptTypeScript
 
 " >> JavaScript
-Plug 'othree/yajs.vim', plugForJavaScript
-Plug 'othree/es.next.syntax.vim', plugForJavaScript
+" Plug 'othree/yajs.vim', plugForJavaScript
+" Plug 'othree/es.next.syntax.vim', plugForJavaScript
 Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
-Plug 'othree/javascript-libraries-syntax.vim', plugForJavaScriptTypeScript
+" Plug 'othree/javascript-libraries-syntax.vim', plugForJavaScriptTypeScript
 
 " >> TypeScript
 Plug 'HerringtonDarkholme/yats.vim', plugForTypeScript
@@ -189,9 +190,6 @@ Plug 'euclio/vim-markdown-composer', {
 
 " >> PHP
 Plug 'tobyS/pdv', { 'for': 'php' }
-
-" >> Python
-Plug 'jmcantrell/vim-virtualenv'
 
 " >> GoLang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }

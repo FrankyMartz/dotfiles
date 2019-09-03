@@ -284,9 +284,9 @@ if exists(':tnoremap')  " Neovim
   tnoremap <Leader>e <C-\><C-n>
 endif
 
-nnoremap <silent> <Leader>1 :call LoadComponentTypeFile('.ts')<CR>
-nnoremap <silent> <Leader>2 :call LoadComponentTypeFile('.scss')<CR>
-nnoremap <silent> <Leader>3 :call LoadComponentTypeFile('.html')<CR>
+nnoremap <silent> <Leader>1 :call s:LoadComponentTypeFile('.ts')<CR>
+nnoremap <silent> <Leader>2 :call s:LoadComponentTypeFile('.scss')<CR>
+nnoremap <silent> <Leader>3 :call s:LoadComponentTypeFile('.html')<CR>
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -383,6 +383,13 @@ augroup ft_django
 augroup END
 " }}}
 
+" Docker {{{
+augroup ft_dotenv
+  au!
+  au BufRead,BufNewFile *.Dockerfile setlocal filetype=Dockerfile
+augroup END
+" }}}
+
 " DotEnv {{{
 augroup ft_dotenv
   au!
@@ -422,9 +429,9 @@ augroup END
 " JavaScript {{{
 augroup ft_javascript
   au!
-  au BufNewFile,BufRead *.js      setlocal filetype=javascript.jsx
+  au BufNewFile,BufRead *.js      setlocal filetype=javascript
   au BufNewFile,BufRead *.jsx     setlocal filetype=javascript.jsx
-  au BufNewFile,BufRead *.es6     setlocal filetype=javascript.jsx
+  au BufNewFile,BufRead *.es6     setlocal filetype=javascript
   au BufNewFile,BufRead *.spec.js setlocal filetype=javascript.spec
   " au FileType javascript setlocal foldmethod=marker foldmarker={,}
   " au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
@@ -826,6 +833,15 @@ augroup plug_ale
 augroup END
 "  }}}
 
+" CamelCaseMotion {{{
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
+" }}}
+
 " Coc {{{
 let g:coc_node_path = '/usr/local/bin/node'
 " let g:coc_force_debug=1
@@ -849,27 +865,28 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Coc : Extension ==============================================================
 let g:coc_global_extensions=[
-  \ 'coc-ccls',
   \ 'coc-angular',
-  \ 'coc-svg',
-  \ 'coc-vimlsp',
-  \ 'coc-go',
-  \ 'coc-lua',
-  \ 'coc-phpls',
+  \ 'coc-ccls',
   \ 'coc-css',
   \ 'coc-emmet',
+  \ 'coc-fsharp',
+  \ 'coc-go',
   \ 'coc-highlight',
   \ 'coc-html',
   \ 'coc-jest',
   \ 'coc-json',
+  \ 'coc-lua',
+  \ 'coc-omnisharp',
+  \ 'coc-phpls',
   \ 'coc-python',
   \ 'coc-rls',
   \ 'coc-snippets',
+  \ 'coc-svg',
   \ 'coc-tsserver',
   \ 'coc-vetur',
+  \ 'coc-vimlsp',
   \ 'coc-vimtex',
   \ 'coc-yaml',
-  \ 'coc-fsharp',
 \ ]
 
 " Coc : Exception : markdown ===============================================================
@@ -966,17 +983,16 @@ let g:used_javascript_libs=join([
 
 " NERDCommenter {{{
 let g:NERDMenuMode=0
-let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
-let g:NERDCompactSexyComs=1 " Use compact syntax for multi-line comments
+let g:NERDSpaceDelims=1       " Add spaces after comment delimiters by default
+let g:NERDCompactSexyComs=0   " Use compact syntax for multi-line comments
+let g:NERDRemoveExtraSpaces=1
+let g:NERDTrimTrailingWhitespace=1
+let g:NERDToggleCheckAllLines=1
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines=1
 
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace=1
-
 " Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines=1
 " }}}
 
 " NERDTree {{{
@@ -1093,6 +1109,12 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.js
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json']=''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$']='慎'
+
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*Dockerfile\%(\..*\)*']=''
+
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.dockerignore']=''
+<
 
 " vimDevIcon: NERDTree
 let g:webdevicons_enable_nerdtree=1
@@ -1247,14 +1269,57 @@ let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact 
 " }}}
 
 " vim-polyglot {{{
+" \ 'jsx',
+" \ 'js',
+" \ 'javascript',
 let g:polyglot_disabled=[
-  \ 'jsx',
-  \ 'js',
-  \ 'javascript',
   \ 'tsx',
   \ 'ts',
   \ 'typescript',
 \ ]
+" }}}
+
+" vim-signature {{{
+let g:SignatureMarkerTextHLDynamic=1
+let g:SignatureMap={
+  \ 'Leader'            : 'm',
+  \ 'PlaceNextMark'     : 'm,',
+  \ 'ToggleMarkAtLine'  : 'm.',
+  \ 'PurgeMarksAtLine'  : 'm-',
+  \ 'DeleteMark'        : '<Leader>dm',
+  \ 'PurgeMarks'        : '<Leader>m<Space>',
+  \ 'PurgeMarkers'      : '<Leader>m<Del>',
+  \ 'GotoNextLineAlpha' : "m']",
+  \ 'GotoPrevLineAlpha' : "m'[",
+  \ 'GotoNextSpotAlpha' : 'm`]',
+  \ 'GotoPrevSpotAlpha' : 'm`[',
+  \ 'GotoNextLineByPos' : "m]'",
+  \ 'GotoPrevLineByPos' : "m['",
+  \ 'GotoNextSpotByPos' : 'm]`',
+  \ 'GotoPrevSpotByPos' : 'm[`',
+  \ 'GotoNextMarker'    : 'm]-',
+  \ 'GotoPrevMarker'    : 'm[-',
+  \ 'GotoNextMarkerAny' : 'm]=',
+  \ 'GotoPrevMarkerAny' : 'm[=',
+  \ 'ListBufferMarks'   : '<Leader>m/',
+  \ 'ListBufferMarkers' : '<Leader>m?'
+\ }
+" }}}
+
+" vim-signify {{{
+let g:signify_realtime=1 " autocmd User Fugitive SignifyRefresh
+let g:signify_update_on_bufenter=1
+let g:signify_update_on_focusgained=1
+let g:signify_vcs_list=['git', 'hg']
+let g:signify_sign_add='+'
+let g:signify_sign_delete='-'
+let g:signify_sign_delete_first_line='‾'
+let g:signify_sign_change='~'
+let g:signify_sign_changedelete='*'
+nmap <leader>gj <plug>(signify-next-hunk)<CR>
+nmap <leader>gk <plug>(signify-prev-hunk)<CR>
+nmap <leader>gd :SignifyDiff!<CR>
+nmap <leader>gf :SignifyFold!<CR>
 " }}}
 
 " vim-startify {{{
@@ -1354,49 +1419,6 @@ augroup plug_startify
 augroup END
 " }}}
 
-" vim-signify {{{
-let g:signify_realtime=1 " autocmd User Fugitive SignifyRefresh
-let g:signify_update_on_bufenter=1
-let g:signify_update_on_focusgained=1
-let g:signify_vcs_list=['git', 'hg']
-let g:signify_sign_add='+'
-let g:signify_sign_delete='-'
-let g:signify_sign_delete_first_line='‾'
-let g:signify_sign_change='~'
-let g:signify_sign_changedelete='*'
-nmap <leader>gj <plug>(signify-next-hunk)<CR>
-nmap <leader>gk <plug>(signify-prev-hunk)<CR>
-nmap <leader>gd :SignifyDiff!<CR>
-nmap <leader>gf :SignifyFold!<CR>
-" }}}
-
-" vim-signature {{{
-let g:SignatureMarkerTextHLDynamic=1
-let g:SignatureMap={
-  \ 'Leader'            : 'm',
-  \ 'PlaceNextMark'     : 'm,',
-  \ 'ToggleMarkAtLine'  : 'm.',
-  \ 'PurgeMarksAtLine'  : 'm-',
-  \ 'DeleteMark'        : '<Leader>dm',
-  \ 'PurgeMarks'        : '<Leader>m<Space>',
-  \ 'PurgeMarkers'      : '<Leader>m<Del>',
-  \ 'GotoNextLineAlpha' : "m']",
-  \ 'GotoPrevLineAlpha' : "m'[",
-  \ 'GotoNextSpotAlpha' : 'm`]',
-  \ 'GotoPrevSpotAlpha' : 'm`[',
-  \ 'GotoNextLineByPos' : "m]'",
-  \ 'GotoPrevLineByPos' : "m['",
-  \ 'GotoNextSpotByPos' : 'm]`',
-  \ 'GotoPrevSpotByPos' : 'm[`',
-  \ 'GotoNextMarker'    : 'm]-',
-  \ 'GotoPrevMarker'    : 'm[-',
-  \ 'GotoNextMarkerAny' : 'm]=',
-  \ 'GotoPrevMarkerAny' : 'm[=',
-  \ 'ListBufferMarks'   : '<Leader>m/',
-  \ 'ListBufferMarkers' : '<Leader>m?'
-\ }
-" }}}
-
 " Vista {{{
 nnoremap <F9> :Vista!!<CR>
 let g:vista_sidebar_width=40
@@ -1466,7 +1488,7 @@ nnoremap <leader>bg :ToggleBg<CR>
 " endfunction
 " nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
 
-function! LoadComponentTypeFile(fileType) abort
+function! s:LoadComponentTypeFile(fileType) abort
   let fileName=expand('%:r')
   " Check if Component. Ignore Case
   if fileName =~? '\.component$' && type(a:fileType) == v:t_string
@@ -1478,6 +1500,22 @@ function! LoadComponentTypeFile(fileType) abort
     echohl None
   endif
 endfunction
+
+" Manage DOS EOL files
+function! s:ConvertDosFileEOL(toDOS) abort
+  update " Save any Changes
+  " Edit file again, using dos fileformat ('fileformats' ignored)
+  execute 'edit ++ff=dos'
+  if a:toDOS
+    setlocal fileformat=dos
+  else
+    setlocal fileformat=unix " Buffer will use LF-only EOL when written
+  endif
+  write
+endfunction
+
+command! DosToUnix :call s:ConvertDosFileEOL(1)
+command! UnixToDos :call s:ConvertDosFileEOL(0)
 
 "-------------------------------------------------------------------------------
 " }}}

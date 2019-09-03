@@ -104,3 +104,4 @@ brew "drone/drone/drone"
 brew "nodenv/nodenv/nodenv-default-packages"
 brew "nodenv/nodenv/nodenv-package-json-engine"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
+brew cask install dotnet-sdk

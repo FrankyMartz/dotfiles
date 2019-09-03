@@ -176,6 +176,7 @@ install "mono";
 # install "selenium-server-standalone";
 # install "mongodb";
 # install "redis";
+cask install "dotnet-sdk"
 
 #===============================================================================
 # Homebrew: Finish
