@@ -981,6 +981,12 @@ let g:used_javascript_libs=join([
 \ ], ',')
 " }}}
 
+" markdown-preview.nvim {{{
+let g:mkdp_auto_start=1
+let g:mkdp_auto_close=1
+let g:mkdp_refresh_slow=1
+" }}}
+
 " NERDCommenter {{{
 let g:NERDMenuMode=0
 let g:NERDSpaceDelims=1       " Add spaces after comment delimiters by default

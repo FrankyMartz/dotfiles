@@ -183,10 +183,11 @@ Plug 'jason0x43/vim-js-indent', plugForJavaScriptTypeScript
 " >> Markdown
 Plug 'junegunn/goyo.vim', plugForMarkdown
 Plug 'ajorgensen/vim-markdown-toc', plugForMarkdown
-Plug 'euclio/vim-markdown-composer', {
-  \ 'do': function('BuildComposer'),
-  \ 'for': plugForMarkdown['for'],
-\ }
+" Plug 'euclio/vim-markdown-composer', {
+  " \ 'do': function('BuildComposer'),
+  " \ 'for': plugForMarkdown['for'],
+" \ }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
 
 " >> PHP
 Plug 'tobyS/pdv', { 'for': 'php' }
