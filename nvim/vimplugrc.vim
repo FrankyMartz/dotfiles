@@ -99,9 +99,8 @@ Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
 
 " General
-Plug 'tpope/vim-dispatch'
 Plug 'kshenoy/vim-signature'
-Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
+Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
@@ -112,7 +111,7 @@ Plug 'dbakker/vim-projectroot'
 Plug 'liuchengxu/vista.vim'   " TagBar Alternative
 Plug 'Shougo/neoinclude.vim'
 Plug 'jsfaint/coc-neoinclude'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }
 
 " Editing
 Plug 'mileszs/ack.vim'
@@ -145,9 +144,10 @@ Plug 'mtth/scratch.vim', {
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
+" Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
 
 " Snippets
 Plug 'honza/vim-snippets'
@@ -168,25 +168,14 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
 " JavaScript / TypeScript
 Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
-Plug 'Quramy/vim-js-pretty-template', plugForJavaScriptTypeScript
 
 " >> JavaScript
-" Plug 'othree/yajs.vim', plugForJavaScript
-" Plug 'othree/es.next.syntax.vim', plugForJavaScript
 Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
-" Plug 'othree/javascript-libraries-syntax.vim', plugForJavaScriptTypeScript
-
-" >> TypeScript
-Plug 'HerringtonDarkholme/yats.vim', plugForTypeScript
-Plug 'jason0x43/vim-js-indent', plugForJavaScriptTypeScript
+" Plug 'Quramy/vim-js-pretty-template', plugForJavaScript
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', plugForMarkdown
 Plug 'ajorgensen/vim-markdown-toc', plugForMarkdown
-" Plug 'euclio/vim-markdown-composer', {
-  " \ 'do': function('BuildComposer'),
-  " \ 'for': plugForMarkdown['for'],
-" \ }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
 
 " >> PHP
@@ -198,9 +187,11 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'
-" Plug 'mhartington/oceanic-next'
 Plug 'chriskempson/base16-vim'
+" Plug 'icymind/NeoSolarized'
+
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
+
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'

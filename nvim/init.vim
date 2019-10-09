@@ -72,7 +72,7 @@ set showcmd                     " Show (partial) command at bottom of buffer
 set title                       " Set window title
 set ruler                       " Show line/column position number
 set number                      " Show line number in front of each line
-set cmdheight=1                 " Set command bar to 2 lines
+set cmdheight=1                 " Set command bar to 1 line
 set complete-=i                 " Disable Included Files autocomplete Search
 set laststatus=2                " Always display the statusline in all windows
 set display+=lastline           " Show as much of lastline of text as possible
@@ -131,44 +131,6 @@ let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.
 " Enable Project Based Configuration
 set exrc
 set secure
-
-"-------------------------------------------------------------------------------
-" }}}
-"-------------------------------------------------------------------------------
-
-"-------------------------------------------------------------------------------
-" => File and Backup {{{
-"-------------------------------------------------------------------------------
-let tempDir=expand('$HOME/.nvim/tmp')
-
-set termencoding=utf-8          " Encoding used for the terminal
-set fileformats=unix
-set fileformat=unix
-set sessionoptions-=options     " Do not save options in mksession
-
-set undofile
-set backup                                  " Enable Backups
-"set noswapfile                             " It's 2014 NeoVim
-let &backupskip='/tmp/*,/private/tmp/*'
-let &undodir=tempDir . '/undo//'          " Undo files
-let &backupdir=tempDir . '/backup//'      " Backup files
-let &viewdir=tempDir . '/view//'          " View files
-let &directory=tempDir . '/swap//'        " Swap files
-let &tags='./tags,tags'
-
-" Create directories if they do not exist
-if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), 'p')
-endif
-if !isdirectory(expand(&backupdir))
-  call mkdir(expand(&backupdir), 'p')
-endif
-if !isdirectory(expand(&viewdir))
-  call mkdir(expand(&viewdir), 'p')
-endif
-if !isdirectory(expand(&directory))
-  call mkdir(expand(&directory), 'p')
-endif
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -277,7 +239,7 @@ else
 endif
 
 " Strip all trailing whitespace in current buffer
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+" nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " Terminal Commands
 if exists(':tnoremap')  " Neovim
@@ -567,7 +529,7 @@ augroup ft_vimrc
   " Disable Line Numbers in Terminal
   au TermOpen * setlocal nonumber norelativenumber
   " Save when losing focus
-  au FocusLost * :silent! wa
+  " au FocusLost * :silent! wa
   au BufEnter * :syntax sync fromstart
   " Prevent Location List color column and numbers
   au FileType qf setlocal nonumber colorcolumn=
@@ -622,6 +584,104 @@ augroup plug_vim
 augroup END
 source ~/.config/nvim/vimplugrc.vim
 
+let s:dotfileRoot=expand('$HOME/.dotfiles/nvim/tmp')
+let s:projectRoot=projectroot#guess()
+let s:isGitRepository=isdirectory(s:projectRoot . '/.git')
+
+"-------------------------------------------------------------------------------
+" }}}
+"-------------------------------------------------------------------------------
+
+"-------------------------------------------------------------------------------
+" => Helper Functions {{{
+"-------------------------------------------------------------------------------
+
+" function! NcmsTag()
+    " let randId = system('openssl rand -base64 24')
+    " let randId = substitute(randId, '\n$', '', '')
+    " return ' data-ncms-uuid="' . randId . '"'
+" endfunction
+" nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
+
+function! s:getNeovimTempDir()
+  if s:isGitRepository
+    let gitNvimDir=expand(s:projectRoot . '/.git/nvim//')
+    if !isdirectory(gitNvimDir)
+      call mkdir(gitNvimDir, 'p')
+    endif
+    return gitNvimDir
+  endif
+  return s:dotfileRoot
+endfunction
+
+function! s:LoadComponentTypeFile(fileType) abort
+  let fileName=expand('%:r')
+  " Check if Component. Ignore Case
+  if fileName =~? '\.component$' && type(a:fileType) == v:t_string
+      execute 'find ' . fileName . a:fileType
+      echo expand('%')
+  else
+    echohl WarningMsg
+    echo 'File Does NOT match Component Name Scheme. (component.{html,ts,scss})'
+    echohl None
+  endif
+endfunction
+
+" Manage DOS EOL files
+function! s:ConvertDosFileEOL(toDOS) abort
+  update " Save any Changes
+  " Edit file again, using dos fileformat ('fileformats' ignored)
+  execute 'edit ++ff=dos'
+  if a:toDOS
+    setlocal fileformat=dos
+  else
+    setlocal fileformat=unix " Buffer will use LF-only EOL when written
+  endif
+  write
+endfunction
+
+command! DosToUnix :call s:ConvertDosFileEOL(0)
+command! UnixToDos :call s:ConvertDosFileEOL(1)
+
+"-------------------------------------------------------------------------------
+" }}}
+"-------------------------------------------------------------------------------
+
+"-------------------------------------------------------------------------------
+" => File and Backup {{{
+"-------------------------------------------------------------------------------
+let s:tempDir=s:getNeovimTempDir()
+
+set termencoding=utf-8          " Encoding used for the terminal
+set fileformats=unix
+set fileformat=unix
+set sessionoptions-=options     " Do not save options in mksession
+
+set undofile
+set backup                                  " Enable Backups
+
+"set noswapfile                             " It's 2014 NeoVim
+let &backupskip='/tmp/*,/private/tmp/*'
+let &undodir=expand(s:tempDir . '/undo//')          " Undo files
+let &backupdir=expand(s:tempDir . '/backup//')      " Backup files
+let &viewdir=expand(s:tempDir . '/view//')          " View files
+let &directory=expand(s:tempDir . '/swap//')        " Swap files
+let &tags='./tags,tags'
+
+" Create directories if they do not exist
+if !isdirectory(&undodir)
+  call mkdir(&undodir, 'p')
+endif
+if !isdirectory(&backupdir)
+  call mkdir(&backupdir, 'p')
+endif
+if !isdirectory(&viewdir)
+  call mkdir(&viewdir, 'p')
+endif
+if !isdirectory(&directory)
+  call mkdir(&directory, 'p')
+endif
+
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
@@ -649,16 +709,13 @@ set colorcolumn=80              " Column number to highlight
 "-------------------------------------------------------------------------------
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
-let s:projectRoot = projectroot#guess()
-let s:isGitRepository = isdirectory(s:projectRoot . '/.git')
-
 " Ack {{{
 if executable('rg')
   let g:ackprg='rg --vimgrep '
 elseif executable('ag')
   let g:ackprg='ag --vimgrep '
 endif
-let g:ack_use_dispatch=1
+" let g:ack_use_dispatch=1
 command Todo Ack! 'TODO\|FIXME'
 "  }}}
 
@@ -773,43 +830,54 @@ let g:airline#extensions#windowswap#indicator_text='WS'
 " }}}
 
 " Ale {{{
-let g:ale_set_highlights=1
-let b:ale_set_balloons=1
 let g:ale_cache_executable_check_failures=1
-let g:ale_completion_enabled=1
+let g:ale_change_sign_column_color=0
+let g:ale_close_preview_on_insert=1
 let g:ale_cursor_detail=0
-let g:ale_lint_delay=200
-let g:ale_lint_on_enter=1
-let g:ale_lint_on_filetype_changed=1
-let g:ale_lint_on_text_changed=0
-let g:ale_lint_on_insert_leave=0
-let g:ale_open_list='on_save'
+let g:ale_completion_enabled=0
+
+let g:ale_disable_lsp=1 " Push from coc.nvim
+" let g:ale_lint_delay=500
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_enter=1
+" let g:ale_lint_on_insert_leave=0
+" let g:ale_lint_on_filetype_changed=1
+let g:ale_open_list=1
 let g:ale_keep_list_window_open=0
+
+" let g:ale_echo_delay=50
+
+let g:ale_sign_error='✘'
+let g:ale_sign_warning=''
+let g:ale_sign_highlight_linenrs=1
+let g:ale_sign_column_always=1
+
+let g:ale_virtualtext_cursor=1
+let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ                 
+" let g:ale_virtualtext_delay=50
+
+let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
+let g:ale_go_gometalinter_options='--fast'
+let g:ale_javascript_eslint_options='--no-color'
+
 let g:ale_linters={
   \ 'go': ['gometalinter', 'gofmt'],
   \ 'html': [],
   \ 'javascript': ['standard'],
-  \ 'typescript': ['standard', 'tsserver', 'tslint', 'typecheck'],
+  \ 'typescript': ['standard'],
 \ }
-let g:ale_linter_aliases = {
-\ 'typescript': ['typescript', 'javascript']
-\ }
-let g:ale_fix_on_save=0
-let g:ale_fixers={
-  \ 'html': [],
-  \ 'javascript': ['standard'],
-  \ 'typescript': ['tslint'],
-\ }
-let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
-let g:ale_go_gometalinter_options='--fast'
-let g:ale_javascript_eslint_options='--no-color'
-let g:ale_sign_error='✘'
-let g:ale_sign_warning=''
-" let g:ale_typescript_tslint_executable = '/usr/local/bin/tslint'
-" let g:ale_typescript_tsserver_executable = '/usr/local/bin/tsserver'
-" let g:ale_typescript_tsserver_use_global = 1
+
+let g:ale_fix_on_save=1
+let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
+let g:ale_fixers={}
 
 " standard uses eslint and the output format is the same
+call ale#linter#Define('javascript', {
+  \ 'name': 'standard',
+  \ 'executable': function('ale_linters#javascript#standard#GetExecutable'),
+  \ 'command': function('ale_linters#javascript#standard#GetCommand'),
+  \ 'callback': 'ale#handlers#eslint#Handle',
+\ })
 call ale#linter#Define('typescript', {
   \ 'name': 'standard',
   \ 'executable': function('ale_linters#javascript#standard#GetExecutable'),
@@ -817,32 +885,20 @@ call ale#linter#Define('typescript', {
   \ 'callback': 'ale#handlers#eslint#Handle',
 \ })
 
-let g:ale_virtualtext_cursor=1
-let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ                 
-
-
-" Ale : TypeScript =============================================================
-
+" nmap <leader>t :ALELint<cr>
 nmap <leader>ek <Plug>(ale_previous)
 nmap <leader>ej <Plug>(ale_next)
+
+" Ale : TypeScript =============================================================
 
 augroup plug_ale
   autocmd!
   autocmd QuitPre * if empty(&buftype) | lclose | endif
-  " autocmd BufWinLeave * silent! lclose
 augroup END
 "  }}}
 
-" CamelCaseMotion {{{
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-sunmap w
-sunmap b
-sunmap e
-" }}}
-
 " Coc {{{
+let g:coc_force_debug=0 " Make sure COC uses compiled code
 let g:coc_node_path = '/usr/local/bin/node'
 " let g:coc_force_debug=1
 function! s:check_back_space() abort
@@ -850,8 +906,8 @@ function! s:check_back_space() abort
   return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
 endfunction
 
-inoremap <expr><TAB> pumvisible() ? '<C-n>' : '<TAB>'
-inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
+" inoremap <expr><TAB> pumvisible() ? '<C-n>' : '<TAB>'
+" inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
 
 " Use `[c` and `]c` to navigate diagnostics
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
@@ -868,19 +924,21 @@ let g:coc_global_extensions=[
   \ 'coc-angular',
   \ 'coc-ccls',
   \ 'coc-css',
-  \ 'coc-emmet',
   \ 'coc-fsharp',
   \ 'coc-go',
   \ 'coc-highlight',
   \ 'coc-html',
-  \ 'coc-jest',
   \ 'coc-json',
+  \ 'coc-lit-html',
   \ 'coc-lua',
   \ 'coc-omnisharp',
   \ 'coc-phpls',
   \ 'coc-python',
   \ 'coc-rls',
   \ 'coc-snippets',
+  \ 'coc-sql',
+  \ 'coc-styled-components',
+  \ 'coc-svelte',
   \ 'coc-svg',
   \ 'coc-tsserver',
   \ 'coc-vetur',
@@ -895,16 +953,28 @@ let g:markdown_fenced_languages=['css', 'js=javascript']
 " Coc : Exception : coc-snippets ===========================================================
 let g:coc_snippet_next='<TAB>'
 let g:coc_snippet_prev='<S-TAB>'
-inoremap <silent><expr> <CR> pumvisible()
-  \ ? coc#_select_confirm()
-  \ : coc#expandableOrJumpable()
-    \ ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
-    \ : <SID>check_back_space() ? "\<CR>" : coc#refresh()."\<CR>"
+" inoremap <silent><expr> <CR> pumvisible()
+  " \ ? coc#_select_confirm()
+  " \ : coc#expandableOrJumpable()
+    " \ ? '\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>'
+    " \ : <SID>check_back_space() ? '\<CR>' : coc#refresh()."\<CR>"
+"
 
-augroup plug_coc
-  au!
-  au! CompleteDone * if pumvisible() == 0 | pclose | endif
-augroup END
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" use `complete_info` if your vim support it, like:
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" augroup plug_coc
+  " au!
+  " au! CompleteDone * if pumvisible() == 0 | pclose | endif
+" augroup END
 " }}}
 
 " DelimitMate {{{
@@ -913,6 +983,7 @@ let delimitMate_no_esc_mapping=1    " Esc Issue Fix
 
 " EditorConfig {{{
 let g:EditorConfig_exclude_patterns=['fugitive://.*']
+let g:EditorConfig_disable_rules = ['trim_trailing_whitespace']
 " }}}
 
 " Far {{{
@@ -967,7 +1038,7 @@ let g:indentLine_showFirstIndentLevel = 1
 nnoremap <leader>ti :IndentLinesToggle<CR>
 " }}}
 
-" typescript-libraries-syntax {{{
+" javascript-libraries-syntax {{{
 " ex. local .nvimrc
 " autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
 " autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
@@ -1004,7 +1075,7 @@ let g:NERDCommentEmptyLines=1
 " NERDTree {{{
 nmap <F8> :NERDTreeToggle<CR>
 let NERDTreeAutoDeleteBuffer=1
-let NERDTreeBookmarksFile=tempDir . '/NERDTreeBookmarks'
+let NERDTreeBookmarksFile=s:tempDir.'/NERDTreeBookmarks'
 let NERDTreeCascadeSingleChildDir=0
 let NERDTreeCaseSensitiveSort=1
 let NERDTreeChDirMode=2
@@ -1067,7 +1138,7 @@ vnoremap <F24> :call ToggleScratchBuffer('ScratchSelection!')<CR>
 
 function! s:set_scratch_path()
   if s:isGitRepository
-    let g:scratch_persistence_file = s:projectRoot . '/.git/scratch.md'
+    let g:scratch_persistence_file=s:tempDir.'/scratch.md'
   endif
 endfunction
 
@@ -1094,6 +1165,10 @@ let g:DevIconsEnableFoldersOpenClose=1
 let g:DevIconsEnableFolderPatternMatching=1
 let g:DevIconsEnableFolderExtensionPatternMatching=0
 let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
+
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols={}
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['mjs']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['cjs']=''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
@@ -1152,7 +1227,7 @@ endif
 " }}}
 
 " vim-ctrlspace {{{
-let g:CtrlSpaceCacheDir=tempDir.'/ctrlspacecache'
+let g:CtrlSpaceCacheDir=expand(s:tempDir . '/ctrlspacecache//')
 if !isdirectory(g:CtrlSpaceCacheDir)
   call mkdir(g:CtrlSpaceCacheDir, 'p')
 endif
@@ -1231,22 +1306,6 @@ let g:javascript_conceal_super='Ω'
 let g:javascript_conceal_arrow_function='⇒'
 " }}}
 
-" vim-js-pretty-template {{{
-if exists('*jspretmpl#register_tag')
-  augroup plug_jsprettytemplate
-    au!
-    " Register tag name associated the filetype
-    au! User vim-js-pretty-template call jspretmpl#register_tag('gql','graphql')
-    au FileType javascript JsPreTmpl
-    au FileType javascript.jsx JsPreTmpl
-    " For leafgarland/typescript-vim users only. Please see #1 for details.
-    au FileType typescript syn clear foldBraces
-    au FileType typescript JsPreTmpl
-    au FileType typescript.tsx JsPreTmpl
-  augroup END
-endif
-" }}}
-
 " vim-jsdoc {{{
 nmap <leader>jsd :JsDoc<CR>
 let g:jsdoc_additional_descriptions=1
@@ -1275,14 +1334,9 @@ let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact 
 " }}}
 
 " vim-polyglot {{{
-" \ 'jsx',
-" \ 'js',
-" \ 'javascript',
-let g:polyglot_disabled=[
-  \ 'tsx',
-  \ 'ts',
-  \ 'typescript',
-\ ]
+" let g:polyglot_disabled=[
+  " \ 'csv',
+" \ ]
 " }}}
 
 " vim-signature {{{
@@ -1436,7 +1490,7 @@ let g:vista_echo_cursor_strategy='both'
 " }}}
 
 " yats {{{
-let g:yats_host_keyword=1
+" let g:yats_host_keyword=1
 " }}}
 
 "-------------------------------------------------------------------------------
@@ -1450,20 +1504,22 @@ let g:yats_host_keyword=1
 let s:colorSchemeLight='solarized8'
 let s:colorSchemeDark='base16-materia'
 
+" let g:airline_theme='solarized'
+let g:solarized_visibility='normal'
+let g:solarized_diffmode='high'
+let g:solarized_termtrans=0
+let g:solarized_statusline='normal'
+let g:solarized_italics=1
+let g:solarized_old_cursor_style=1
+let g:solarized_enable_extra_hi_groups=1
+
+
 " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
 if $ITERM_PROFILE =~? 'Night'
   let &background='dark'
   exe 'colorscheme ' . s:colorSchemeDark
 else
   let &background='light'
-  let g:airline_theme='solarized'
-  " let g:solarized_visibility='high'
-  let g:solarized_diffmode='high'
-  let g:solarized_termtrans=1
-  let g:solarized_statusline='normal'
-  let g:solarized_italics=1
-  let g:solarized_old_cursor_style=0
-  let g:solarized_enable_extra_hi_groups=1
   exe 'colorscheme ' . s:colorSchemeLight
 endif
 
@@ -1484,54 +1540,10 @@ nnoremap <leader>bg :ToggleBg<CR>
 "-------------------------------------------------------------------------------
 
 "-------------------------------------------------------------------------------
-" => Helper Functions {{{
-"-------------------------------------------------------------------------------
-
-" function! NcmsTag()
-    " let randId = system('openssl rand -base64 24')
-    " let randId = substitute(randId, '\n$', '', '')
-    " return ' data-ncms-uuid="' . randId . '"'
-" endfunction
-" nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
-
-function! s:LoadComponentTypeFile(fileType) abort
-  let fileName=expand('%:r')
-  " Check if Component. Ignore Case
-  if fileName =~? '\.component$' && type(a:fileType) == v:t_string
-      execute 'find ' . fileName . a:fileType
-      echo expand('%')
-  else
-    echohl WarningMsg
-    echo 'File Does NOT match Component Name Scheme. (component.{html,ts,scss})'
-    echohl None
-  endif
-endfunction
-
-" Manage DOS EOL files
-function! s:ConvertDosFileEOL(toDOS) abort
-  update " Save any Changes
-  " Edit file again, using dos fileformat ('fileformats' ignored)
-  execute 'edit ++ff=dos'
-  if a:toDOS
-    setlocal fileformat=dos
-  else
-    setlocal fileformat=unix " Buffer will use LF-only EOL when written
-  endif
-  write
-endfunction
-
-command! DosToUnix :call s:ConvertDosFileEOL(1)
-command! UnixToDos :call s:ConvertDosFileEOL(0)
-
-"-------------------------------------------------------------------------------
-" }}}
-"-------------------------------------------------------------------------------
-
-"-------------------------------------------------------------------------------
 " => Destroy {{{
 "-------------------------------------------------------------------------------
 
-unlet tempDir
+" unlet s:tempDir
 
 "-------------------------------------------------------------------------------
 " }}}

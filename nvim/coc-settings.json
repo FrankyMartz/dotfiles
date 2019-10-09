@@ -1,13 +1,21 @@
 {
-  "coc.preferences.diagnostic.displayByAle": true,
-  "coc.preferences.suggest.enablePreview": true,
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.formatOnSaveFiletypes": [],
+
   "codeLens.enable": true,
+  "suggest.enablePreview": true,
+  "suggest.noselect": false,
+
+  "diagnostic.enable": true,
   "diagnostic.displayByAle": true,
+  "diagnostic.virtualText": false,
+
   "snippets.ultisnips.directories": [
     "UltiSnips",
     "gosnippets/UltiSnips"
   ],
-  "suggest.echodocSupport": true,
-  "suggest.enablePreview": true,
-  "suggest.noselect": false
+
+  "tsserver.formatOnType": false,
+  "tsserver.implicitProjectConfig.checkJs": true,
+  "tsserver.implicitProjectConfig.experimentalDecorators": true
 }

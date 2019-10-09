@@ -110,13 +110,18 @@ export IRCSERVER="http://chat.freenode.net";
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 
 #===============================================================================
+# Tools
+#===============================================================================
+
+export PATH="/usr/local/mysql/bin/:$PATH"
+#===============================================================================
 # LANGUAGES
 #===============================================================================
 
 # PYTHON -----------------------------------------------------------------------
 
 # Observe Python Tools
-export PATH="/usr/local/opt/python@2/bin:${PATH}"
+# export PATH="/usr/local/opt/python@2/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 
 # PYENV
