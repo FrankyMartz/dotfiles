@@ -898,6 +898,7 @@ augroup END
 "  }}}
 
 " Coc {{{
+" let g:coc_enabled=0
 let g:coc_force_debug=0 " Make sure COC uses compiled code
 let g:coc_node_path = '/usr/local/bin/node'
 " let g:coc_force_debug=1
@@ -936,7 +937,6 @@ let g:coc_global_extensions=[
   \ 'coc-python',
   \ 'coc-rls',
   \ 'coc-snippets',
-  \ 'coc-sql',
   \ 'coc-styled-components',
   \ 'coc-svelte',
   \ 'coc-svg',

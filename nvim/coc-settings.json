@@ -17,5 +17,8 @@
 
   "tsserver.formatOnType": false,
   "tsserver.implicitProjectConfig.checkJs": true,
-  "tsserver.implicitProjectConfig.experimentalDecorators": true
+  "tsserver.implicitProjectConfig.experimentalDecorators": true,
+
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false
 }
