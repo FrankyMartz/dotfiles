@@ -127,7 +127,7 @@ Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
-Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
+Plug 'brooth/far.vim'
 Plug 'matze/vim-move'
 Plug 'wellle/targets.vim'
 Plug 'reedes/vim-textobj-sentence'

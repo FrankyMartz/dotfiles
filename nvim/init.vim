@@ -246,6 +246,10 @@ if exists(':tnoremap')  " Neovim
   tnoremap <Leader>e <C-\><C-n>
 endif
 
+" Location List - Open/Close
+noremap <silent><leader>eo :lopen<cr>
+noremap <silent><leader>ec :lclose<cr>
+
 nnoremap <silent> <Leader>1 :call s:LoadComponentTypeFile('.ts')<CR>
 nnoremap <silent> <Leader>2 :call s:LoadComponentTypeFile('.scss')<CR>
 nnoremap <silent> <Leader>3 :call s:LoadComponentTypeFile('.html')<CR>
@@ -764,9 +768,6 @@ let g:airline#extensions#branch#empty_message=''
 let g:airline#extensions#branch#sha1_len=10
 let g:airline#extensions#branch#displayed_head_limit=10
 
-" Airline : Gutentags ==========================================================
-let g:airline#extensions#gutentags#enabled=1
-
 " Airline : Hunks ==============================================================
 let g:airline#extensions#hunks#enabled=1
 let g:airline#extensions#hunks#non_zero_only=0
@@ -785,20 +786,13 @@ let g:airline#extensions#tabline#show_tabs=1
 let g:airline#extensions#tabline#show_splits=1
 let g:airline#extensions#tabline#buffer_min_count=1
 let g:airline#extensions#tabline#fnamecollapse=1
-let g:airline#extensions#tabline#formatter='unique_tail'
+let g:airline#extensions#tabline#formatter='unique_tail_improved'
 
 " Airline : VirtualEnv =========================================================
 let g:airline#extensions#virtualenv#enabled=1
 
 " Airline : Vista ==============================================================
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-let g:airline_section_y=airline#section#create_right([
-  \ 'vista',
-  \ 'NearestMethodOrFunction()'
-\ ])
-
+let g:airline#extensions#vista#enabled = 1
 
 " Airline : WhiteSpace =====================================================
 let g:airline#extensions#whitespace#enabled=1
@@ -831,19 +825,18 @@ let g:airline#extensions#windowswap#indicator_text='WS'
 
 " Ale {{{
 let g:ale_cache_executable_check_failures=1
-let g:ale_change_sign_column_color=0
-let g:ale_close_preview_on_insert=1
 let g:ale_cursor_detail=0
 let g:ale_completion_enabled=0
 
-let g:ale_disable_lsp=1 " Push from coc.nvim
+" let g:ale_disable_lsp=1 " Push from coc.nvim
+" let g:ale_lint_on_save=1
 " let g:ale_lint_delay=500
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_lint_on_enter=1
 " let g:ale_lint_on_insert_leave=0
 " let g:ale_lint_on_filetype_changed=1
-let g:ale_open_list=1
-let g:ale_keep_list_window_open=0
+" let g:ale_open_list=1
+" let g:ale_keep_list_window_open=0
 
 " let g:ale_echo_delay=50
 
@@ -857,8 +850,8 @@ let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ          
 " let g:ale_virtualtext_delay=50
 
 let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
-let g:ale_go_gometalinter_options='--fast'
-let g:ale_javascript_eslint_options='--no-color'
+" let g:ale_go_gometalinter_options='--fast'
+" let g:ale_javascript_eslint_options='--no-color'
 
 let g:ale_linters={
   \ 'go': ['gometalinter', 'gofmt'],
@@ -867,10 +860,11 @@ let g:ale_linters={
   \ 'typescript': ['standard'],
 \ }
 
-let g:ale_fix_on_save=1
+let g:ale_fix_on_save=0
 let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
 let g:ale_fixers={}
 
+" ALE : LINTER : STANDARD
 " standard uses eslint and the output format is the same
 call ale#linter#Define('javascript', {
   \ 'name': 'standard',
@@ -885,9 +879,41 @@ call ale#linter#Define('typescript', {
   \ 'callback': 'ale#handlers#eslint#Handle',
 \ })
 
+" ALE : LINTER : SQL-LINT
+" ale_linters/sql/sqllint.vim
+" Author: Joe Reynolds <joereynolds952@gmail.com>
+" Description: sql-lint for SQL files
+
+function! AleLinterSqlLint(buffer, lines) abort
+    " Matches patterns like the following:
+    "
+    " stdin:1 [ER_NO_DB_ERROR] No database selected
+    let l:pattern = '\v^[^:]+:(\d+) (.*)'
+    let l:output = []
+
+    for l:match in ale#util#GetMatches(a:lines, l:pattern)
+    " echom l:match[0]
+        call add(l:output, {
+        \   'lnum': l:match[1] + 0,
+        \   'col': l:match[2] + 0,
+        \   'type': l:match[3][0],
+        \   'text': l:match[0],
+        \})
+    endfor
+
+    return l:output
+endfunction
+
+call ale#linter#Define('sql', {
+\   'name': 'sqllint',
+\   'executable': 'sql-lint',
+\   'command': 'sql-lint',
+\   'callback': 'AleLinterSqlLint',
+\})
+
 " nmap <leader>t :ALELint<cr>
-nmap <leader>ek <Plug>(ale_previous)
-nmap <leader>ej <Plug>(ale_next)
+noremap <silent><leader>ek <Plug>(ale_previous)
+noremap <silent><leader>ej <Plug>(ale_next)
 
 " Ale : TypeScript =============================================================
 
