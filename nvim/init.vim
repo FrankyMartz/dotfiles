@@ -643,9 +643,18 @@ function! s:ConvertDosFileEOL(toDOS) abort
   endif
   write
 endfunction
-
+" Create commands for Buffer utilization
 command! DosToUnix :call s:ConvertDosFileEOL(0)
 command! UnixToDos :call s:ConvertDosFileEOL(1)
+
+function! s:VerifyOnBattery()
+  if has('macunix')
+    return match(system('pmset -g batt'), "Now drawing from 'Battery Power'") != -1
+  elseif has('unix')
+    return readfile('/sys/class/power_supply/AC/online') == ['0']
+  endif
+  return 0
+endfunction
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -912,8 +921,8 @@ call ale#linter#Define('sql', {
 \})
 
 " nmap <leader>t :ALELint<cr>
-noremap <silent><leader>ek <Plug>(ale_previous)
-noremap <silent><leader>ej <Plug>(ale_next)
+noremap <silent><leader>ek :ALEPrevious<cr>
+noremap <silent><leader>ej :ALENext<cr>
 
 " Ale : TypeScript =============================================================
 
@@ -1532,11 +1541,11 @@ let s:colorSchemeDark='base16-materia'
 
 " let g:airline_theme='solarized'
 let g:solarized_visibility='normal'
-let g:solarized_diffmode='high'
+let g:solarized_diffmode='normal'
 let g:solarized_termtrans=0
 let g:solarized_statusline='normal'
 let g:solarized_italics=1
-let g:solarized_old_cursor_style=1
+let g:solarized_old_cursor_style=0
 let g:solarized_enable_extra_hi_groups=1
 
 
