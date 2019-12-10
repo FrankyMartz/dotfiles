@@ -247,8 +247,8 @@ if exists(':tnoremap')  " Neovim
 endif
 
 " Location List - Open/Close
-noremap <silent><leader>eo :lopen<cr>
-noremap <silent><leader>ec :lclose<cr>
+" noremap <silent><leader>eo :lopen<cr>
+" noremap <silent><leader>ec :lclose<cr>
 
 nnoremap <silent> <Leader>1 :call s:LoadComponentTypeFile('.ts')<CR>
 nnoremap <silent> <Leader>2 :call s:LoadComponentTypeFile('.scss')<CR>
@@ -656,6 +656,8 @@ function! s:VerifyOnBattery()
   return 0
 endfunction
 
+command! FormatJSON %!python3 -m json.tool
+
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
@@ -873,21 +875,6 @@ let g:ale_fix_on_save=0
 let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
 let g:ale_fixers={}
 
-" ALE : LINTER : STANDARD
-" standard uses eslint and the output format is the same
-call ale#linter#Define('javascript', {
-  \ 'name': 'standard',
-  \ 'executable': function('ale_linters#javascript#standard#GetExecutable'),
-  \ 'command': function('ale_linters#javascript#standard#GetCommand'),
-  \ 'callback': 'ale#handlers#eslint#Handle',
-\ })
-call ale#linter#Define('typescript', {
-  \ 'name': 'standard',
-  \ 'executable': function('ale_linters#javascript#standard#GetExecutable'),
-  \ 'command': function('ale_linters#javascript#standard#GetCommand'),
-  \ 'callback': 'ale#handlers#eslint#Handle',
-\ })
-
 " ALE : LINTER : SQL-LINT
 " ale_linters/sql/sqllint.vim
 " Author: Joe Reynolds <joereynolds952@gmail.com>
@@ -1085,6 +1072,11 @@ let g:used_javascript_libs=join([
   \ 'requirejs',
   \ 'underscore',
 \ ], ',')
+" }}}
+
+" ListToggle {{{
+let g:lt_location_list_toggle_map = '<leader>ee'
+let g:lt_quickfix_list_toggle_map = '<leader>qq'
 " }}}
 
 " markdown-preview.nvim {{{

@@ -106,6 +106,7 @@ Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
+Plug 'Valloric/ListToggle'
 
 " COC Intellisense : Indention indicates Dependency
 Plug 'liuchengxu/vista.vim'   " TagBar Alternative
