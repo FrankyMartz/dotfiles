@@ -1,0 +1,24 @@
+{
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.formatOnSaveFiletypes": [],
+
+  "codeLens.enable": true,
+  "suggest.enablePreview": true,
+  "suggest.noselect": false,
+
+  "diagnostic.enable": true,
+  "diagnostic.displayByAle": true,
+  "diagnostic.virtualText": true,
+
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "gosnippets/UltiSnips"
+  ],
+
+  "tsserver.formatOnType": false,
+  "tsserver.implicitProjectConfig.checkJs": true,
+  "tsserver.implicitProjectConfig.experimentalDecorators": true,
+
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false
+}

@@ -1,155 +1,182 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"===============================================================================
 " Vim-Plug Configuration
 " Author Franky Martinez <frankymartz@gmail.com>
 "
 " vim:set ft=vim et sw=2 ts=2 tw=80:
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if empty(glob('~/.nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
-endif
+"===============================================================================
 
-function! UpdateRemote(arg)
-    UpdateRemotePlugins
-endfunction
+call plug#begin('~/.nvim/bundle')
 
-" YouCompleteMe {{{
-function! BuildYCM(info)
-    " info is a dictionary with 3 fields
-    " - name:   name of plugin
-    " - status: 'installed', 'updated', or 'unchanged'
-    " - force:  set on PlugInstall! or PlugUpdate!
-    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
-        !/usr/bin/env python3 ./install.py --all
-    endif
-endfunction
-" }}}
+" Plug : Helper ============================================================ {{{
 
-" Neotags {{{
-function! BuildNeotags(info)
-    if a:info.status ==? 'installed'|| a:info.status ==? 'updated' || a:info.force
-        !/usr/bin/env make
-        UpdateRemotePlugins
-    endif
-endfunction
-" }}}
+" Helper : vim-markdown-composer
 
-" vim-markdown-composer {{{
 function! BuildComposer(info)
   if a:info.status !=? 'unchanged' || a:info.force
     if has('nvim')
-      !cargo build --release
+      !/usr/bin/env cargo build --release
     else
-      !cargo build --release --no-default-features --features json-rpc
+      !/usr/bin/env cargo build --release --no-default-features --features json-rpc
     endif
   endif
 endfunction
+
+" Helper : coc-fsharp
+
+function! BuildCocFsharp(info)
+  let shouldBuildCocFsharp = executable('dotnet') && (
+    \ a:info.status ==? 'installed'||
+    \ a:info.status ==? 'updated' ||
+    \ a:info.force
+  \)
+  if shouldBuildCocFsharp
+    !/usr/bin/env npm install
+    !/usr/bin/env dotnet build -C Release
+  endif
+endfunction
+
+"  }}}
+
+" Plug : Config ============================================================ {{{
+
+let plugNerdTreeConfig = { 'on': 'NERDTreeToggle' }
+let plugForMarkdown = { 'for': [ 'markdown', 'md' ] }
+let plugForJavaScript = { 'for': [
+    \ 'javascript',
+    \ 'javascript.jsx',
+    \ 'es6',
+  \ ]
+\ }
+let plugForJavaScriptBrowser = { 'for' : [
+    \ 'xml',
+    \ 'html',
+    \ 'javascript',
+    \ 'javascript.jsx',
+    \ 'es6',
+  \ ]
+\ }
+let plugForTypeScript = { 'for': [
+    \ 'typescript',
+    \ 'ts',
+    \ 'tsx',
+  \ ]
+\ }
+let plugForJavaScriptTypeScript = { 'for': [
+    \ 'javascript',
+    \ 'javascript.jsx',
+    \ 'es6',
+    \ 'typescript',
+    \ 'ts',
+    \ 'tsx',
+  \ ]
+\ }
+let plugForJavaScriptTypeScriptBrowser = { 'for' : [
+    \ 'xml',
+    \ 'html',
+    \ 'javascript',
+    \ 'javascript.jsx',
+    \ 'es6',
+    \ 'typescript',
+    \ 'ts',
+    \ 'tsx',
+  \ ]
+\ }
+
 " }}}
 
+" Plug : List ============================================================== {{{
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.nvim/bundle')
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Window
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+  Plug 'mhinz/vim-startify'
+  Plug 'junegunn/gv.vim', { 'on': 'GV' }
+Plug 'scrooloose/nerdtree', plugNerdTreeConfig
+  Plug 'Xuyuanp/nerdtree-git-plugin', plugNerdTreeConfig
+  Plug 'ivalkeen/nerdtree-execute', plugNerdTreeConfig
+Plug 'mhinz/vim-signify'
+Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'wesQ3/vim-windowswap'
 
 " General
-Plug 'tpope/vim-dispatch'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ivalkeen/nerdtree-execute'
-Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
-Plug 'mileszs/ack.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'easymotion/vim-easymotion'
-Plug 'chrisbra/vim-diff-enhanced'
-Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' } 
+Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'dbakker/vim-projectroot'
-Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
+Plug 'Valloric/ListToggle'
 
-" Window
-Plug 'https://github.com/rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
-Plug 'tpope/vim-fugitive' | Plug 'mhinz/vim-startify' | Plug 'gregsexton/gitv', {'on': ['Gitv']} | Plug 'junegunn/gv.vim'
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-" Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
-" Plug 'c0r73x/neotags.nvim', { 'do': function('BuildNeotags') }
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-signify'
-Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'wesQ3/vim-windowswap'
+" COC Intellisense : Indention indicates Dependency
+Plug 'liuchengxu/vista.vim'   " TagBar Alternative
+Plug 'Shougo/neoinclude.vim'
+Plug 'jsfaint/coc-neoinclude'
+Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }
 
 " Editing
+Plug 'mileszs/ack.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'bkad/CamelCaseMotion'
+Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
+Plug 'rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
-Plug 'godlygeek/tabular'
+Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
-Plug 'brooth/far.vim', { 'on': [ 'Far', 'F' ] }
+Plug 'brooth/far.vim'
 Plug 'matze/vim-move'
 Plug 'wellle/targets.vim'
-Plug 'https://github.com/reedes/vim-textobj-sentence'
-Plug 'mtth/scratch.vim'
+Plug 'reedes/vim-textobj-sentence'
 Plug 'vim-scripts/LargeFile'
+Plug 'mtth/scratch.vim', {
+  \ 'on': [
+    \ 'Scratch',
+    \ 'ScratchInsert',
+    \ 'ScratchSelection',
+    \ 'ScratchPreview'
+  \ ]
+\ }
 
 " Filetype
 Plug 'editorconfig/editorconfig-vim'
-Plug 'w0rp/ale' ", { 'tag': 'v2.0.1' }
+Plug 'chrisbra/vim-diff-enhanced'
+Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
-Plug 'vim-scripts/SyntaxComplete'
 Plug 'sheerun/vim-polyglot'
+Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
 
-" >> VIML
-Plug 'syngan/vim-vimlint' | Plug 'ynkdir/vim-vimlparser', { 'for': ['vim', 'viml'] }
+" Snippets
+Plug 'honza/vim-snippets'
+Plug 'epilande/vim-es2015-snippets', plugForJavaScriptTypeScript
+Plug 'epilande/vim-react-snippets', plugForJavaScriptTypeScript
+Plug 'mhartington/vim-angular2-snippets', plugForJavaScriptTypeScriptBrowser
+Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
 
 " >> Apache
 Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
 Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 
 " >> HTML
-Plug 'tpope/vim-ragtag', { 'for': ['html', 'xml', 'javascript.jsx'] }
+Plug 'tpope/vim-ragtag', plugForJavaScriptBrowser
 
 " >> CSS
-Plug 'ap/vim-css-color'
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
-Plug 'gcorne/vim-sass-lint', { 'for': ['sass', 'scss'] }
-
-" JavaScript / TypeScript
-Plug 'jparise/vim-graphql'
-Plug 'Quramy/vim-js-pretty-template', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
 
 " >> JavaScript
-Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-" Plug 'marijnh/tern_for_vim', { 'do': 'npm install', 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
-Plug 'epilande/vim-es2015-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
-Plug 'epilande/vim-react-snippets', { 'for': [ 'javascript', 'javascript.jsx', 'es6' ] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx', 'es6'] }
-Plug 'Galooshi/vim-import-js', {'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx']}
-
-" >> TypeScript
-Plug 'HerringtonDarkholme/yats.vim', { 'for': ['typescript', 'ts', 'tsx'] }
-Plug 'mhartington/vim-angular2-snippets', { 'for': ['html', 'typeScript', 'ts', 'tsx'] }
-Plug 'jason0x43/vim-js-indent', { 'for': ['javascript', 'javascript.jsx', 'es6', 'typescript', 'ts', 'tsx'] }
+Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
 
 " >> Markdown
-Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'md'] }
-Plug 'ajorgensen/vim-markdown-toc', { 'for': ['markdown', 'md'] }
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer'), 'for': ['markdown', 'md'] }
+Plug 'junegunn/goyo.vim', plugForMarkdown
+Plug 'ajorgensen/vim-markdown-toc', plugForMarkdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
 
 " >> PHP
 Plug 'tobyS/pdv', { 'for': 'php' }
-Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
-
-" >> Python
-Plug 'jmcantrell/vim-virtualenv'
 
 " >> GoLang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
@@ -157,14 +184,15 @@ Plug 'sebdah/vim-delve', { 'for': 'go' }
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'
-" Plug 'mhartington/oceanic-next'
 Plug 'chriskempson/base16-vim'
-" Plug 'joshdick/onedark.vim'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'icymind/NeoSolarized'
+
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
+
 
 " Devicons MUST be loaded last
 Plug 'ryanoasis/vim-devicons'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#end()
+" ========================================================================== }}}
 
+call plug#end()

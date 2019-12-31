@@ -59,6 +59,7 @@ install "homebrew/dupes/unzip";
 install "wget";
 install "rename";
 install "rsync";
+install "restic" # backups
 install "unzip";
 
 #===============================================================================
@@ -140,11 +141,10 @@ install "nodenv-package-json-engine";
 install "nodenv/nodenv/nodenv-default-packages";
 
 # Languege: Python -------------------------------------------------------------
-install "python";
+# install "mypy" # Python Types: Install via PIP
 install "pipenv";
 install "pyenv";
-install "pyenv-virtualenvwrapper";
-install "pipenv"
+install "python";
 
 # Languege: Ruby ---------------------------------------------------------------
 install "ruby";
@@ -176,6 +176,7 @@ install "mono";
 # install "selenium-server-standalone";
 # install "mongodb";
 # install "redis";
+cask install "dotnet-sdk"
 
 #===============================================================================
 # Homebrew: Finish

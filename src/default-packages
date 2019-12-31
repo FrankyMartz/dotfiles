@@ -1,7 +1,4 @@
-@angular/cli
-@vue/cli
 csslint
-ember-cli
 eslint
 eslint-plugin-typescript
 htmlhint
@@ -14,8 +11,5 @@ rollup
 standard
 svgo
 trash-cli
-tslint
-tslint-config-standard
-tstags
 typescript
-typescript-eslint-parser
+write-good

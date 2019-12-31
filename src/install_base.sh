@@ -20,7 +20,8 @@ __configBase(){
     # Install: Base Shell Configuration
     #---------------------------------------------------------------------------
 
-    ln -fs "${_BASH}/bashrc.sh" "$(HOME)/.bashrc";
+    ln -fs "${_BASH}/bashrc.sh" "${HOME}/.bashrc";
+    ln -fs "${_PWD}/asdfrc.sh" "${HOME}/.asdfrc"
 
     #---------------------------------------------------------------------------
     # Install: Homebrew
