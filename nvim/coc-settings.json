@@ -8,7 +8,7 @@
 
   "diagnostic.enable": true,
   "diagnostic.displayByAle": true,
-  "diagnostic.virtualText": false,
+  "diagnostic.virtualText": true,
 
   "snippets.ultisnips.directories": [
     "UltiSnips",

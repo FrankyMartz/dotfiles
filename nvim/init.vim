@@ -724,14 +724,16 @@ set colorcolumn=80              " Column number to highlight
 "-------------------------------------------------------------------------------
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
-" Ack {{{
+" Ack {{
+"
 if executable('rg')
   let g:ackprg='rg --vimgrep '
+  command Todo Rg TODO|FIXME|XXXX|NOTE|BUG|CHANGED|OPTIMIZE
 elseif executable('ag')
   let g:ackprg='ag --vimgrep '
 endif
+" command Todo Ack 'TODO|FIXME|XXXX|NOTE|BUG|CHANGED|OPTIMIZE'
 " let g:ack_use_dispatch=1
-command Todo Ack! 'TODO\|FIXME'
 "  }}}
 
 " Airline {{{

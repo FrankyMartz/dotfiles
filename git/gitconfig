@@ -6,221 +6,218 @@
 # Version:  0.1.0
 ################################################################################
 [user]
-    name = Franky Martinez
-    email = FrankyMartz@gmail.com
-	; signingkey = A32BDCE6FF5DD64C
+  name = Franky Martinez
+  email = FrankyMartz@gmail.com
+  signingKey = F9BC32852AF03AC8
 
 [core]
     ; pager = less
-    pager = cat
-    excludesfile = ~/.gitignore_global
-    editor = nvim
-    ignorecase = false
+  pager = cat
+  excludesfile = ~/.gitignore_global
+  editor = nvim
+  ignorecase = false
 
 [merge]
-    tool = vimdiff
+  tool = vimdiff
 
 [mergetool]
-    prompt = true
-    keepBackup = false
+  prompt = true
+  keepBackup = false
 
 [mergetool "vimdiff"]
-    cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
+  cmd = "nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'"
 
 [mergetool "fugitive"]
-	cmd = "nvim -f -c \"Gdiff\" $MERGED"
+  cmd = "nvim -f -c \"Gdiff\" $MERGED"
 
 [mergetool "splice"]
-    cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
-    trustExitCode = true
+  cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+  trustExitCode = true
 
 [diff]
-    tool = vimdiff
-	algorithm = histogram
+  tool = vimdiff
+  algorithm = histogram
 
 [difftool]
-    prompt = false
+  prompt = false
 
 [alias]
-    aa = add --all
-    apa = add --patch
-    au = add --update
-    av = add --verbose
-    ap = apply
+  aa = add --all
+  apa = add --patch
+  au = add --update
+  av = add --verbose
+  ap = apply
 
-    br = branch -vv
-    bra = branch -vv --all
-    bred = branch --edit-description
-    brd = branch -d
-    brD = branch -D
-    brl = blame -b -w
-    brnm = branch --no-merged
-    brr = branch --remote
+  br = branch -vv
+  bra = branch -vv --all
+  bred = branch --edit-description
+  brd = branch -d
+  brD = branch -D
+  brl = blame -b -w
+  brnm = branch --no-merged
+  brr = branch --remote
 
-    bs = bisect
-    bsb = bisect bad
-    bsg = bisect good
-    bsr = bisect reset
-    bss = bisect start
+  bs = bisect
+  bsb = bisect bad
+  bsg = bisect good
+  bsr = bisect reset
+  bss = bisect start
 
-    c = commit --verbose
-    ca = commit --amend
-    caa = commit --amend --all
-    ce =  commit --amend --no-edit
-    cw = commit --amend --only
-    cva = commit --verbose --amend
-    cvc = commit --verbose
-    cf = commit --fixup
-    cs = commit --squash
-    ces = commit --edit --squash
+  c = commit --verbose
+  ca = commit --verbose --amend
+  caa = commit --verbose --amend --all
+  cae =  commit --verbose --amend --no-edit
+  caw = commit --verbose --amend --only
+  cf = commit --verbose --fixup
+  cs = commit --verbose --squash
+  cse = commit --verbose --edit --squash
 
-    cf = config --list
-    cl = clone --recurse-submodules
-    clean = clean -fd
-    pristine = !sh -c 'git reset --hard && git clean -dfx'
+  cf = config --list
+  cl = clone --recurse-submodules
+  clean = clean -fd
+  pristine = !sh -c 'git reset --hard && git clean -dfx'
 
-    co = checkout
-    cob = checkout -b
-    com = checkout master
-    cod = checkout develop
-    cos = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -c \"git checkout \""
+  s = switch
+  sc = switch -c
+  sm = switch master
+  sd = switch develop
+  ss = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -c \"git switch \""
 
-    cleanup = !sh -c 'git remote prune origin && git gc'
-    cp = cherry-pick
-    credit = shortlog -sn
+  cleanup = !sh -c 'git remote prune origin && git gc'
+  cp = cherry-pick
+  credit = shortlog -sn
 
-    dic = diff --cached
-    dicw = diff --cached --color-words=.
-    dicg = diff --cached -G
-    dics = diff --cached --stat
-    dicw = diff --cached --color-words
-    dih = diff HEAD~
-    dihw = diff HEAD~ --color-words=.
-    dihg = diff HEAD~ -G
-    dihs = diff HEAD~ --stat
-    dihw = diff HEAD~ --color-words
+  di = diff
+  diw = diff --color-words=.
+  dig = diff -G
+  dis = diff --stat
+  dic = diff --cached
+  dicw = diff --cached --color-words=.
+  dicg = diff --cached -G
+  dics = diff --cached --stat
+  dicw = diff --cached --color-words
+  dih = diff HEAD~
+  dihw = diff HEAD~ --color-words=.
+  dihg = diff HEAD~ -G
+  dihs = diff HEAD~ --stat
+  dihw = diff HEAD~ --color-words
 
-    ; diw = diff --color-words
-    di = diff
-    diw = diff --color-words=.
-    dig = diff -G
-    dis = diff --stat
 
-    dlog = log --pretty=full --color
+  dlog = log --pretty=full --color
 
-    f = fetch --prune
-    fa = fetch --all --prune
-    fo = fetch origin -prune
+  f = fetch --prune
+  fa = fetch --all --prune
+  fo = fetch origin -prune
 
-    gr = log --graph --format=compact # graph
-    gra = log --graph --format=compact --all # graph all
-    grad = log --graph --format=detail --all # graph all in detail
-    gral = log --graph --format=line --all # graph all line
-    grd = log --graph --format=detail # graph detail
-    grl = log --graph --format=line # graph line
-    grm = log --merges --format=line
-    grp = grep -C 1
+  gr = log --graph --format=compact # graph
+  gra = log --graph --format=compact --all # graph all
+  grad = log --graph --format=detail --all # graph all in detail
+  gral = log --graph --format=line --all # graph all line
+  grd = log --graph --format=detail # graph detail
+  grl = log --graph --format=line # graph line
+  grm = log --merges --format=line
+  grp = grep -C 1
 
-    ls = ls-tree -r --name-only
-    pop-commit = reset --soft HEAD~1
-    remotes = remote -v
+  ls = ls-tree -r --name-only
+  pop-commit = reset --soft HEAD~1
+  remotes = remote -v
 
-    p = pull
-    po = pull origin
-    pom = pull origin master
-    pod = pull origin develop
-    parent = "!git show-branch --current | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
+  p = pull
+  po = pull origin
+  pom = pull origin master
+  pod = pull origin develop
+  parent = "!git show-branch --current | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
 
-    rb = rebase --preserve-merges --stat
-    rbm = rebase --preserve-merges --stat master
-    rbd = rebase --preserve-merges --stat develop
-    rba = rebase --abort
-    rbc = rebase --continue
-    rbs = rebase --skip
-    rbi = rebase -i
+  rb = rebase --preserve-merges --stat
+  rbm = rebase --preserve-merges --stat master
+  rbd = rebase --preserve-merges --stat develop
+  rba = rebase --abort
+  rbc = rebase --continue
+  rbs = rebase --skip
+  rbi = rebase -i
 
-    st = status -sb
+  st = status -sb
 
-    sta = stash save
-    staa = stash apply
-    stac = stash clear
-    stad = stash drop
-    stal = stash list
-    stap = stash pop
-    stas = stash show --text
-    stall = stash --all
+  sta = stash save
+  staa = stash apply
+  stac = stash clear
+  stad = stash drop
+  stal = stash list
+  stap = stash pop
+  stas = stash show --text
+  stall = stash --all
 
-    tags = tag -l
-    tar = !sh -c "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
-    targz = !sh -c "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
-    update-submodules = submodule update --init --recursive
-    upgrade-submodules = submodule update --init --remote
-    zip = !sh -c "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
+  tags = tag -l
+  tar = !sh -c "tar() { git archive --format tar --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; tar"
+  targz = !sh -c "targz() { git archive --format tar.gz --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; targz"
+  update-submodules = submodule update --init --recursive
+  upgrade-submodules = submodule update --init --remote
+  zip = !sh -c "zip() { git archive --format zip --prefix=\"${PWD##*/}/\" HEAD -o ${1}; }; zip"
 
 [credential]
-    helper = osxkeychain
+  helper = osxkeychain
 
 [color]
-    branch = auto
+  branch = auto
     ; diff = auto
-    interactive = auto
-    status = auto
-    ui = auto
-    grep = auto
+  interactive = auto
+  status = auto
+  ui = auto
+  grep = auto
 
 [color "diff"]
-    meta = yellow bold
-    commit = green bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
-    whitespace = red reverse
+  meta = yellow bold
+  commit = green bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 
 [color "diff-highlight"]
-    oldNormal = "red bold"
-    oldHighlight = "red bold 52"
-    newNormal = "green bold"
-    newHighlight = "green bold 22"
+  oldNormal = "red bold"
+  oldHighlight = "red bold 52"
+  newNormal = "green bold"
+  newHighlight = "green bold 22"
 
 [pretty]
-    line = "%C(auto)%h%d %s %C(yellow)by %C(blue)%an %C(green)%ar"
-    compact = "%C(auto)%h %s %C(green)%ar%n %C(auto)%d%n"
-    detail = "%C(auto)%h %s%n  %C(yellow)by %C(blue)%an %C(magenta)<%ae> [%G?] %C(green)%ar%n %C(auto)%d%n"
-    classic = "%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n"
+  line = "%C(auto)%h%d %s %C(yellow)by %C(blue)%an %C(green)%ar"
+  compact = "%C(auto)%h %s %C(green)%ar%n %C(auto)%d%n"
+  detail = "%C(auto)%h %s%n  %C(yellow)by %C(blue)%an %C(magenta)<%ae> [%G?] %C(green)%ar%n %C(auto)%d%n"
+  classic = "%C(red)%h%C(reset) - %C(dim green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(black)<%an>%C(reset)%n"
 
 [push]
-    default = simple
-	followTags = true
+  default = simple
+  followTags = true
 
 [grep]
-    lineNumber = true
+  lineNumber = true
 
 [filter "media"]
-    clean = git media clean %f
-    smudge = git media smudge %f
-    required = true
+  clean = git media clean %f
+  smudge = git media smudge %f
+  required = true
 
 ;[branch]
     ;autosetuprebase = always
 
 # Allow local customizations in the .gitconfig_local file
 [include]
-    path = ~/.gitconfig_local
+  path = ~/.gitconfig_local
 
 [filter "lfs"]
-    clean = git lfs clean %f
-    smudge = git lfs smudge %f
-    required = true
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
 
 [http]
-    cookiefile = /Users/FMD/.gitcookies
+  cookiefile = /Users/FMD/.gitcookies
 
 [pager]
-    diff = diff-so-fancy | less --tabs=4 -RFX
-    show = diff-so-fancy | less --tabs=4 -RFX
+  diff = diff-so-fancy | less --tabs=4 -RFX
+  show = diff-so-fancy | less --tabs=4 -RFX
 
-; [commit]
-    ; gpgsign = true
+[gpg]
+  program = gpg
 
-; [gpg]
-	; program = gpg2
+[commit]
+	gpgsign = true

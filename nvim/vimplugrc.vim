@@ -148,7 +148,7 @@ Plug 'chrisbra/vim-diff-enhanced'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
 Plug 'sheerun/vim-polyglot'
-" Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
+Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
 
 " Snippets
 Plug 'honza/vim-snippets'
@@ -167,12 +167,8 @@ Plug 'tpope/vim-ragtag', plugForJavaScriptBrowser
 " >> CSS
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
-" JavaScript / TypeScript
-Plug 'jparise/vim-graphql', { 'for': ['gql', 'graphql'] }
-
 " >> JavaScript
 Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
-" Plug 'Quramy/vim-js-pretty-template', plugForJavaScript
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', plugForMarkdown

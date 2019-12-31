@@ -45,6 +45,8 @@ fi
 # else
   # eval "$(gpg-agent --daemon ~/.gnupg/.gpg-agent-info)"
 # fi
+GPG_TTY="$(tty)"
+export GPG_TTY
 
 #===============================================================================
 # NEOVIM
@@ -67,11 +69,12 @@ fi
   # fd --type f --hidden --follow --exclude .git
 # END
 # );
-export FZF_DEFAULT_COMMAND=$(cat <<-END
+FZF_DEFAULT_COMMAND=$(cat <<-END
   rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null ||
   fd --type f --hidden --follow --exclude .git
 END
 );
+export FZF_DEFAULT_COMMAND
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}";
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'";
 
@@ -146,7 +149,8 @@ export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
-  export PATH="$(gem environment gemdir)/bin:${PATH}"
+  PATH="$(gem environment gemdir)/bin:${PATH}"
+  export PATH
 fi
 
 # PHP --------------------------------------------------------------------------
