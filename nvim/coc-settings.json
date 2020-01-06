@@ -1,6 +1,5 @@
 {
-  "coc.preferences.formatOnType": false,
-  "coc.preferences.formatOnSaveFiletypes": [],
+  "coc.preferences.formatOnType": true,
 
   "codeLens.enable": true,
   "suggest.enablePreview": true,
@@ -10,15 +9,17 @@
   "diagnostic.displayByAle": true,
   "diagnostic.virtualText": true,
 
+  "snippets.snippets.author": "Franky Martinez",
   "snippets.ultisnips.directories": [
     "UltiSnips",
     "gosnippets/UltiSnips"
   ],
 
-  "tsserver.formatOnType": false,
   "tsserver.implicitProjectConfig.checkJs": true,
   "tsserver.implicitProjectConfig.experimentalDecorators": true,
 
   "typescript.suggest.autoImports": false,
-  "javascript.suggest.autoImports": false
+
+  "javascript.suggest.autoImports": false,
+  "javascript.showUnused": true
 }

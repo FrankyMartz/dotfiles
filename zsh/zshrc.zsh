@@ -52,15 +52,18 @@ export BOOKMARKS_FILE="${DOTFILE_DIR}/bin/zsh_cd_bookmarks";
 ZSH_AUTOSUGGEST_USE_ASYNC=true;
 
 # SpaceShip-Prompt -------------------------------------------------------------
+ZSH_THEME="spaceship"
 
 SPACESHIP_PROMPT_ADD_NEWLINE=true
 # SPACESHIP_PROMPT_SEPARATE_LINE=false
+SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
 
 SPACESHIP_CHAR_SYMBOL="";          #       
 SPACESHIP_CHAR_SUFFIX=" ";          # 
 SPACESHIP_DIR_LOCK_SYMBOL=""       #   
 
 SPACESHIP_TIME_SHOW=true
+SPACESHIP_TIME_PREFIX="%{%B%F{yellow}%} %{%b%f%}" # 
 # SPACESHIP_TIME_12HR=true
 
 SPACESHIP_EXIT_CODE_SHOW=true
@@ -108,7 +111,7 @@ SPACESHIP_VI_MODE_INSERT="卑";      #  卑    
 SPACESHIP_VI_MODE_NORMAL="喝";      #  喝        
 SPACESHIP_VI_MODE_COLOR="cyan";
 
-spaceship_vi_mode_enable
+# spaceship_vi_mode_enable
 
 #===============================================================================
 # Alias

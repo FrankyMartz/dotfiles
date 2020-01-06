@@ -107,7 +107,7 @@ set wildmode=list:longest
 set wildignore+=.hg,.git,.svn                       " Version control
 set wildignore+=*.aux,*.out,*.toc                   " LaTeX intermediate files
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg      " binary images
-set wildignore+=*.o,*.obj,*.exe,*.dmanifest    " compiled object files
+set wildignore+=*.o,*.obj,*.exe,*.dmanifest         " compiled object files
 set wildignore+=*.spl                               " compiled spelling word lists
 set wildignore+=*.sw?                               " Vim swap files
 set wildignore+=*.DS_Store                          " OSX
@@ -145,6 +145,7 @@ set smartindent                 " Smart autoindenting when starting on newline
 set smarttab                    " Smart autoindent w/shiftwidth or {soft}tabstop
 set shiftround                  " Round indent to multiple of 'shiftwidth'
 set nowrap                      " Don't wrap text to textwidth
+set linebreak                   " Don't break words in two if wrap is enabled
 set textwidth=80                " Max width of text to be inserted
 set tabstop=2                   " Number of spaces a <tab> equals
 set wrapmargin=0
@@ -724,17 +725,14 @@ set colorcolumn=80              " Column number to highlight
 "-------------------------------------------------------------------------------
 " => Plug:Configuration {{{
 "-------------------------------------------------------------------------------
-" Ack {{
-"
+" Ack {{{
 if executable('rg')
   let g:ackprg='rg --vimgrep '
   command Todo Rg TODO|FIXME|XXXX|NOTE|BUG|CHANGED|OPTIMIZE
 elseif executable('ag')
   let g:ackprg='ag --vimgrep '
 endif
-" command Todo Ack 'TODO|FIXME|XXXX|NOTE|BUG|CHANGED|OPTIMIZE'
-" let g:ack_use_dispatch=1
-"  }}}
+" }}}
 
 " Airline {{{
 set noshowmode          " Hide default mode text
@@ -1516,10 +1514,6 @@ let g:vista_default_executive='coc'
 let g:vista_fzf_preview=['right:50%']
 let g:vista#renderer#enable_icon=1
 let g:vista_echo_cursor_strategy='both'
-" }}}
-
-" yats {{{
-" let g:yats_host_keyword=1
 " }}}
 
 "-------------------------------------------------------------------------------

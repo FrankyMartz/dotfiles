@@ -44,10 +44,6 @@ __configNVIM(){
 
     #---------------------------------------------------------------------------
     dLog "${BLUE}Configuring Neovim...DONE"
-
-    while read line; do
-      #statements
-    done
 }
 
 __configNVIM
