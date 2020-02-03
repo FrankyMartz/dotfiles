@@ -134,8 +134,7 @@ set secure
 
 "-------------------------------------------------------------------------------
 " }}}
-"-------------------------------------------------------------------------------
-
+"------------------------------------------------------------------------------- 
 "-------------------------------------------------------------------------------
 " => Text, Tab and Indent {{{
 "-------------------------------------------------------------------------------
@@ -985,13 +984,14 @@ let g:coc_snippet_prev='<S-TAB>'
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ pumvisible() ? '<C-n>' :
+      \ <SID>check_back_space() ? '<TAB>' :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
 
+inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<C-g>u<CR>'
 " use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> complete_info()["selected"] != '-1' ? '\<C-y>' : '\<C-g>u\<CR>'
 
 " augroup plug_coc
   " au!
@@ -1196,6 +1196,8 @@ let g:WebDevIconsUnicodeDecorateFolderNodesExactMatches=1
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols={}
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['mjs']=''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['cjs']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['csv'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['tsv'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
@@ -1206,10 +1208,13 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.\%
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$']=''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$']=''
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$']=''
-"    簾               ﰩ    
-"    ﯤ          
+
+" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$']=''
+" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$']=''
+
+"    簾               ﰩ          襁  
+"    ﯤ            
+
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
 " TODO: Validate REGEX in Assignment
@@ -1222,6 +1227,11 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*Dockerfile\%(
 
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.dockerignore']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.git']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['node_modules']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitconfig']=''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitignore']=''
+
 <
 
 " vimDevIcon: NERDTree

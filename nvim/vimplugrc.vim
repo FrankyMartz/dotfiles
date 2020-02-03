@@ -112,7 +112,8 @@ Plug 'Valloric/ListToggle'
 Plug 'liuchengxu/vista.vim'   " TagBar Alternative
 Plug 'Shougo/neoinclude.vim'
 Plug 'jsfaint/coc-neoinclude'
-Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Editing
 Plug 'mileszs/ack.vim'

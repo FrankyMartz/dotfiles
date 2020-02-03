@@ -121,6 +121,11 @@ export PATH="/usr/local/mysql/bin/:$PATH"
 # LANGUAGES
 #===============================================================================
 
+# C++ --------------------------------------------------------------------------
+
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
+
 # PYTHON -----------------------------------------------------------------------
 
 # Observe Python Tools

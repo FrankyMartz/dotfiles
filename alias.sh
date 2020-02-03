@@ -19,7 +19,8 @@ function __GET_LESS_THEME () {
         echo "solarized-dark";
     fi
 }
-export LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
+LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
+export LESSOPEN
 # export LESS=" -R";
 alias less='less -m -N -g -i -J --line-numbers --underline-special';
 alias more='less';
@@ -27,7 +28,7 @@ alias more='less';
 alias g='git';
 
 # Use "highlight" in place of "cat"
-alias cat="highlight $1 --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
+alias cat="$(command -v highlight) $1 --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
 
 alias la='ls -lAFh --color --group-directories-first'; # color-mode
 alias lad='ls -dlAh --color */'; # color-mode
@@ -44,11 +45,12 @@ alias PP='git st | pe | fzf -m | xargs git add && clear && printf "\e[3J" && git
 # alias pass-keygen="openssl rand -base64";
 function genpw () {
     local LENGTH=25
-    if [ ! -z "$1" ] && [ $1 -gt 1 ]; then
+    if [ -n "$1" ] && [ "$1" -gt 1 ]; then
         LENGTH=$1
     fi
-    local NUMBYTES=`echo $LENGTH | awk '{print int($1*1.16)+1}'`
-    openssl rand -base64 $NUMBYTES | tr -d "=+/" | cut -c1-$LENGTH
+    local NUMBYTES
+    NUMBYTES=$(echo "$LENGTH" | awk '{print int($1*1.16)+1}')
+    openssl rand -base64 "$NUMBYTES" | tr -d "=+/" | cut -c 1-"$LENGTH"
 }
 
 #===============================================================================
