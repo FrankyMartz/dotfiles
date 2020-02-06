@@ -889,10 +889,10 @@ function! AleLinterSqlLint(buffer, lines) abort
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
     " echom l:match[0]
         call add(l:output, {
-        \   'lnum': l:match[1] + 0,
-        \   'col': l:match[2] + 0,
-        \   'type': l:match[3][0],
-        \   'text': l:match[0],
+          \ 'lnum': l:match[1] + 0,
+          \ 'col': l:match[2] + 0,
+          \ 'type': l:match[3][0],
+          \ 'text': l:match[0],
         \})
     endfor
 
@@ -900,10 +900,10 @@ function! AleLinterSqlLint(buffer, lines) abort
 endfunction
 
 call ale#linter#Define('sql', {
-\   'name': 'sqllint',
-\   'executable': 'sql-lint',
-\   'command': 'sql-lint',
-\   'callback': 'AleLinterSqlLint',
+  \ 'name': 'sqllint',
+  \ 'executable': 'sql-lint',
+  \ 'command': 'sql-lint',
+  \ 'callback': 'AleLinterSqlLint',
 \})
 
 " nmap <leader>t :ALELint<cr>

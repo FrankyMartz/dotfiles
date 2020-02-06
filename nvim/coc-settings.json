@@ -9,9 +9,20 @@
   "diagnostic.displayByAle": true,
   "diagnostic.virtualText": true,
 
+  "snippets.snippets.author": "Franky Martinez",
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
   "snippets.ultisnips.directories": [
     "UltiSnips",
-    "gosnippets/UltiSnips"
+    "gosnippets/UltiSnips",
+    "honza/vim-snippets",
+    "epilande/vim-es2015-snippets",
+    "epilande/vim-react-snippets",
+    "mhartington/vim-angular2-snippets",
+    "markwu/vim-laravel4-snippets"
   ],
 
   "tsserver.implicitProjectConfig.checkJs": true,
@@ -20,6 +31,7 @@
   "typescript.suggest.autoImports": false,
 
   "javascript.suggest.autoImports": false,
+  "javascript.suggest.enabled": false,
   "javascript.showUnused": true,
 
   "languageserver": {
