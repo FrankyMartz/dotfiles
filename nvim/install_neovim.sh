@@ -10,7 +10,7 @@
 ################################################################################
 
 # Check Neovim installed and exists
-if [[ ! -x $(which nvim) ]]; then
+if [[ ! -x $(command -v nvim) ]]; then
     error "Neovim not available. (Install or Add to \$PATH)"
 fi
 
