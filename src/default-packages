@@ -1,13 +1,12 @@
 csslint
 eslint
-eslint-plugin-typescript
+gqlint
 htmlhint
 js-yaml
 jsctags
 jsonlint
 livedown
 markdownlint-cli
-rollup
 standard
 svgo
 trash-cli

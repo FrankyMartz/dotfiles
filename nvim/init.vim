@@ -835,8 +835,8 @@ let g:airline#extensions#windowswap#indicator_text='WS'
 
 " Ale {{{
 let g:ale_cache_executable_check_failures=1
-let g:ale_cursor_detail=0
-let g:ale_completion_enabled=0
+let g:ale_cursor_detail=0 " Use (coc.nvim) codelens
+let g:ale_completion_enabled=0 " Use coc.nvim autocomplete
 
 " let g:ale_disable_lsp=1 " Push from coc.nvim
 " let g:ale_lint_on_save=1
@@ -871,8 +871,8 @@ let g:ale_linters={
 \ }
 
 let g:ale_fix_on_save=0
-let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
-let g:ale_fixers={}
+" let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
+" let g:ale_fixers={}
 
 " ALE : LINTER : SQL-LINT
 " ale_linters/sql/sqllint.vim
@@ -1198,6 +1198,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['mjs']=''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['cjs']=''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['csv'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['tsv'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['graphql'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
@@ -1213,7 +1214,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$']=''
 
 "    簾               ﰩ          襁  
-"    ﯤ            
+"    ﯤ            
 
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
