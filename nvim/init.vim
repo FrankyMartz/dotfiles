@@ -1202,12 +1202,12 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['graphql'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*spec\.\%(ts\|js\|es6\|jsx\)$']='' "  
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*module\.\%(ts\|js\|es6\|jsx\)$']=' '
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*service\.\%(ts\|js\|es6\|jsx\)$']='ﰩ'
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*component\.\%(ts\|js\|es6\|jsx\)$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+d\.\%(ts\|js\|es6\|jsx\)$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*data\.\%(ts\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\)*\.spec\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.module\.\%(ts\|tsx\|js\|es6\|jsx\)$']=' '
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.service\.\%(ts\|tsx\|js\|es6\|jsx\)$']='ﰩ'
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.component\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+\.d\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.data\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
 
 
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$']=''
