@@ -14,7 +14,7 @@ export LANG=en_US.UTF-8
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin";
 export XDG_CONFIG_HOME="${HOME}/.config";
-export XDG_DATA_HOME="$HOME/.config/nvim"
+export XDG_DATA_HOME="${HOME}/.config/nvim"
 
 #===============================================================================
 # Foundation
@@ -28,7 +28,7 @@ if [[ -x "$(command -v brew)" ]]; then
   # GNU ------------------------------------------------------------------------
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
-  export PATH="/usr/local/opt/curl/bin:$PATH"
+  export PATH="/usr/local/opt/curl/bin:${PATH}"
 fi
 
 #===============================================================================
@@ -110,13 +110,13 @@ export IRCSERVER="http://chat.freenode.net";
 # OpenSSL
 #===============================================================================
 
-export PATH="/usr/local/opt/openssl/bin:$PATH"
+export PATH="/usr/local/opt/openssl/bin:${PATH}"
 
 #===============================================================================
 # Tools
 #===============================================================================
 
-export PATH="/usr/local/mysql/bin/:$PATH"
+export PATH="/usr/local/mysql/bin/:${PATH}"
 #===============================================================================
 # LANGUAGES
 #===============================================================================
@@ -151,7 +151,7 @@ export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 # RUBY -------------------------------------------------------------------------
 
 ## Use Homebrew Ruby
-export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="/usr/local/opt/ruby/bin:${PATH}"
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
   PATH="$(gem environment gemdir)/bin:${PATH}"
@@ -165,6 +165,7 @@ fi
 # NodeJS -----------------------------------------------------------------------
 
 # export PATH="/Users/frankymartz/npm/bin:${PATH}"
+export NODE_BUILD_DEFINITIONS="/usr/local/opt/node-build-update-defs/share/node-build"
 export NODENV_ROOT="/usr/local/var/nodenv"
 [[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
 
@@ -175,9 +176,13 @@ export GTAGSLABEL="pygment"
 
 # Rust -------------------------------------------------------------------------
 
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="${HOME}/.cargo/bin:${PATH}"
 
 # ASDF -------------------------------------------------------------------------
 
 # source "$(brew --prefix asdf)/asdf.sh"
 # source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"
+
+
+# .NET Core SDK Tools ----------------------------------------------------------
+export PATH="${PATH}:/Users/frankymartz/.dotnet/tools"

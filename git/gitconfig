@@ -11,6 +11,7 @@
   signingKey = F9BC32852AF03AC8
 
 [core]
+  autocrlf = false
     ; pager = less
   pager = cat
   excludesfile = ~/.gitignore_global
@@ -107,7 +108,7 @@
 
   f = fetch --prune
   fa = fetch --all --prune
-  fo = fetch origin -prune
+  fo = fetch origin --prune
 
   gr = log --graph --format=compact # graph
   gra = log --graph --format=compact --all # graph all
@@ -127,6 +128,9 @@
   pom = pull origin master
   pod = pull origin develop
   parent = "!git show-branch --current | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
+
+  # BaseTwo Pull
+  puff = pull --ff --ff-only  # Instead of `pull`. Avoids creating a merge branch on `pull`
 
   rb = rebase --preserve-merges --stat
   rbm = rebase --preserve-merges --stat master
@@ -199,6 +203,8 @@
 
 ;[branch]
     ;autosetuprebase = always
+[branch "master"]
+  mergeoptions = --no-ff  # ensures that all merges into master create a merge commit
 
 # Allow local customizations in the .gitconfig_local file
 [include]

@@ -135,6 +135,7 @@ set secure
 "-------------------------------------------------------------------------------
 " }}}
 "------------------------------------------------------------------------------- 
+
 "-------------------------------------------------------------------------------
 " => Text, Tab and Indent {{{
 "-------------------------------------------------------------------------------
@@ -488,7 +489,7 @@ augroup END
 augroup ft_typescript
   au!
   au BufRead,BufNewFile *.ts  setlocal filetype=typescript
-  au BufRead,BufNewFile *.tsx setlocal filetype=typescript
+  au BufRead,BufNewFile *.tsx setlocal filetype=typescriptreact
   au FileType typescript setlocal cocu="" foldmethod=syntax
 augroup END
 " }}}
@@ -865,9 +866,12 @@ let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
 
 let g:ale_linters={
   \ 'go': ['gometalinter', 'gofmt'],
-  \ 'html': [],
+  \ 'html': ['stylelint', 'htmlhint', 'tidy'],
   \ 'javascript': ['standard'],
-  \ 'typescript': ['standard'],
+  \ 'javascriptreact': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'typescriptreact': ['eslint'],
+  \ 'css': ['stylelint'],
 \ }
 
 let g:ale_fix_on_save=0
@@ -981,6 +985,7 @@ let g:coc_snippet_prev='<S-TAB>'
     " \ : <SID>check_back_space() ? '\<CR>' : coc#refresh()."\<CR>"
 "
 
+inoremap <C-c> <Esc><Esc>
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -989,14 +994,98 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
 
-inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<C-g>u<CR>'
+" inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<C-g>u<CR>'
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if has('patch8.1.1068')
+  " Use `complete_info` if your (Neo)Vim version supports it.
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Symbol renaming.
+nmap <leader>mv <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
 " use `complete_info` if your vim support it, like:
 " inoremap <expr> <cr> complete_info()["selected"] != '-1' ? '\<C-y>' : '\<C-g>u\<CR>'
 
-" augroup plug_coc
-  " au!
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current line.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Introduce function text object
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <TAB> for selections ranges.
+" NOTE: Requires 'textDocument/selectionRange' support from the language server.
+" coc-tsserver, coc-python are the examples of servers that support it.
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mappings using CoCList:
+" Show all diagnostics.
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+augroup plug_coc
+  au!
   " au! CompleteDone * if pumvisible() == 0 | pclose | endif
-" augroup END
+  " Highlight the symbol and its references when holding the cursor.
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup END
 " }}}
 
 " DelimitMate {{{
@@ -1080,9 +1169,10 @@ let g:lt_quickfix_list_toggle_map = '<leader>qq'
 " }}}
 
 " markdown-preview.nvim {{{
-let g:mkdp_auto_start=1
+let g:mkdp_auto_start=0
 let g:mkdp_auto_close=1
-let g:mkdp_refresh_slow=1
+let g:mkdp_refresh_slow=0
+nnoremap <C-p> :MarkdownPreview<cr>
 " }}}
 
 " NERDCommenter {{{
@@ -1202,11 +1292,11 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['graphql'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\)*\.spec\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\)*\.\%(spec\|test\)\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "  
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.module\.\%(ts\|tsx\|js\|es6\|jsx\)$']=' '
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.service\.\%(ts\|tsx\|js\|es6\|jsx\)$']='ﰩ'
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.component\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)\+\.d\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.d\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.data\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
 
 
@@ -1328,6 +1418,12 @@ augroup plug_go
 augroup END
 " }}}
 
+" GraphQL{{{
+augroup plug_graphql
+  au BufNewFile,BufRead *.prisma setfiletype graphql
+augroup END
+" }}}
+
 " vim-javascript {{{
 let g:javascript_plugin_jsdoc=1
 let g:javascript_plugin_ngdoc=1
@@ -1373,8 +1469,10 @@ let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact 
 
 " vim-polyglot {{{
 " let g:polyglot_disabled=[
-  " \ 'csv',
+  " \ 'typescript',
+  " \ 'typescriptreact',
 " \ ]
+" \ 'csv',
 " }}}
 
 " vim-signature {{{
@@ -1517,16 +1615,20 @@ augroup plug_startify
 augroup END
 " }}}
 
+" YATS {{{
+let g:yats_host_keyword=1
+set re=2
+" }}}
+
 " Vista {{{
 nnoremap <F9> :Vista!!<CR>
 let g:vista_sidebar_width=40
-let g:vista_icon_indent=['╰─▸ ', '├─▸ ']
+let g:vista_icon_indent= ['┗━ ', '┣━ ']
 let g:vista_default_executive='coc'
 let g:vista_fzf_preview=['right:50%']
 let g:vista#renderer#enable_icon=1
 let g:vista_echo_cursor_strategy='both'
 " }}}
-
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------

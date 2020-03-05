@@ -6,38 +6,75 @@
 # Version:  0.1.0
 ################################################################################
 #===============================================================================
-# Compiled Source
+# Compiled Source / Build Files
 #===============================================================================
 *.com
 *.class
 *.dll
 *.exe
 *.o
+*.orig  # Merge files
 *.so
 *.pyc
 *.pyo
 
+# NPM debugging log files.
+npm-debug.log
+node_modules
+
+# Office temporary files.
+~$*
+
+## ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+## MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+## NuGet Packages
+*.nupkg
+### The packages folder can be ignored because of Package Restore
+**/packages/*
+### except build/, which is used as an MSBuild target.
+!**/packages/build/
+
+# SQL Server files
+*.mdf
+*.ldf
 
 #===============================================================================
-# Editing Tools and IDE's
+# IDE
 #===============================================================================
-tags
-tags.lock
-tags.temp
-*.swp
-*.swo
-*.bak
-*~
-GTAGS
-GRTAGS
-GPATH
-CS_SESSION
+# JetBrains
+/**/.idea
+
+# Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*/**/.vs/
+.vscode/
 
 #===============================================================================
 # Logs and Database
 #===============================================================================
 *.log
-
 
 #===============================================================================
 # OS Generated Files
@@ -55,6 +92,17 @@ Thumbs.db
 #===============================================================================
 # Neovim/VIM
 #===============================================================================
+tags
+tags.lock
+tags.temp
+*.swp
+*.swo
+*.bak
+*~
+GTAGS
+GRTAGS
+GPATH
+CS_SESSION
 
 .nvimrc
 .vimrc
@@ -64,7 +112,6 @@ Thumbs.db
 #===============================================================================
 # DIRENV - Environment
 #===============================================================================
-
 .direnv
 .envrc
 .env
@@ -73,7 +120,6 @@ Thumbs.db
 #===============================================================================
 # OPTIONAL
 #===============================================================================
-
 .node-version
 .tern-port
 

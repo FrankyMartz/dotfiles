@@ -14,6 +14,7 @@ __configGit(){
 
     [[ -L ~/.gitconfig ]] || ln -bfs "${_GIT}/gitconfig" "${HOME}/.gitconfig"
     [[ -L ~/.gitignore_global ]] || ln -bfs "${_GIT}/gitignore_global" "${HOME}/.gitignore_global"
+    [[ -L ~/.gitattributes ]] || ln -bfs "${_GIT}/gitattributes" "${HOME}/.gitattributes"
 
     dLog "${BLUE}Git Configuration...DONE"
 }

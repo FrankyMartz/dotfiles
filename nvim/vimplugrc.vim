@@ -148,7 +148,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'dense-analysis/ale'
 Plug 'tpope/vim-dotenv', { 'for': ['env', 'Procfile'] }
-Plug 'sheerun/vim-polyglot'
 Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
 
 " Snippets
@@ -163,7 +162,7 @@ Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
 Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 
 " >> HTML
-Plug 'tpope/vim-ragtag', plugForJavaScriptBrowser
+Plug 'tpope/vim-ragtag'
 
 " >> CSS
 Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
@@ -183,6 +182,9 @@ Plug 'tobyS/pdv', { 'for': 'php' }
 " >> GoLang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'sebdah/vim-delve', { 'for': 'go' }
+
+" Make Sure Polyglot Highlighting/Indent takes precedence
+Plug 'sheerun/vim-polyglot'
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'
