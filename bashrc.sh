@@ -130,6 +130,7 @@ export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # Observe Python Tools
 # export PATH="/usr/local/opt/python@2/bin:${PATH}"
+export PATH="${HOME}/Library/Python/2.7/bin:${PATH}"
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 
 # PYENV
@@ -173,6 +174,11 @@ export NODENV_ROOT="/usr/local/var/nodenv"
 
 export MONO_GAC_PREFIX="/usr/local"
 export GTAGSLABEL="pygment"
+export PATH="${PATH}:/usr/local/share/dotnet"
+
+# .NET Core SDK Tools ----------------------------------------------------------
+
+export PATH="$PATH:${HOME}/.dotnet/tools"
 
 # Rust -------------------------------------------------------------------------
 
@@ -182,7 +188,3 @@ export PATH="${HOME}/.cargo/bin:${PATH}"
 
 # source "$(brew --prefix asdf)/asdf.sh"
 # source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"
-
-
-# .NET Core SDK Tools ----------------------------------------------------------
-export PATH="${PATH}:/Users/frankymartz/.dotnet/tools"

@@ -1,5 +1,6 @@
 {
   "coc.preferences.formatOnType": true,
+  "coc.preferences.extensionUpdateCheck": "never",
 
   "codeLens.enable": true,
   "suggest.enablePreview": true,
@@ -11,8 +12,8 @@
 
   "snippets.snippets.author": "Franky Martinez",
   "snippets.extends": {
-    "javascriptreact": ["javascript"],
-    "typescriptreact": ["javascript"],
+    "javascriptreact": ["javascript", "html", "css"],
+    "typescriptreact": ["javascript", "html", "css"],
     "typescript": ["javascript"]
   },
   "snippets.ultisnips.directories": [
@@ -56,6 +57,11 @@
         "highlight": { "enabled" : true },
         "emitInactiveRegions" : true
       }
-    }
+    },
+    "sql": {
+      "command": "sql-language-server",
+      "args" : ["up", "--method", "stdio"],
+      "filetypes": ["sql", "mysql"]
+     }
   }
 }

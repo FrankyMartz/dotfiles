@@ -16,9 +16,14 @@ DOTFILE_DIR="${HOME}/.dotfiles"
 export LANG=en_US.UTF-8
 
 # shellcheck source=/dev/null
-[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
-[[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc";
+# [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
+[[ -f "${DOTFILE_DIR}/bashrc.sh" ]] && source "${DOTFILE_DIR}/bashrc.sh";
 
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  autoload -Uz compinit
+  compinit
+fi
 
 # iTerm Integration ------------------------------------------------------------
 # shellcheck source=/dev/null

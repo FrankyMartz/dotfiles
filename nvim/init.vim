@@ -28,7 +28,7 @@
 "-------------------------------------------------------------------------------
 set encoding=utf-8
 scriptencoding=utf-8
-let &shell='/usr/bin/env zsh --login'
+" let &shell='/usr/bin/env zsh --login'
 
 if has('autocmd')
   filetype plugin indent on
@@ -79,6 +79,9 @@ set display+=lastline           " Show as much of lastline of text as possible
 set updatetime=300              " ms to update SWAP files
 set shortmess+=c                " No ins completion menu give messages
 
+set regexpengine=0              " [0, automatic], [1, oldengine], [2 NFA engine]
+set maxmempattern=5000          " Max Mem (in KB) allowed for pattern matching
+
 if !&scrolloff
   set scrolloff=1               " Number of lines to keep above/below cursor
 endif
@@ -123,7 +126,7 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
-let g:python_host_prog='/usr/local/bin/python2'
+let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/local/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
 let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.js'
@@ -214,8 +217,8 @@ inoremap OO <esc>O
 inoremap CC <esc>cc
 
 " Easy Single Line Indent
-nnoremap <Tab> >>_
-nnoremap <S-Tab> <<_
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 
@@ -657,7 +660,7 @@ function! s:VerifyOnBattery()
   return 0
 endfunction
 
-command! FormatJSON %!python3 -m json.tool
+command! FormatJSON :%!python -m json.tool
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -767,7 +770,7 @@ let g:airline#extensions#ctrlp#show_adjacent_modes=1
 let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
 
 " Airline : CursorMode =========================================================
-let g:airline#extensions#cursormode#enabled=1
+" let g:airline#extensions#cursormode#enabled=1
 
 " Airline : Fugitive ===========================================================
 let g:airline#extensions#fugitiveline#enabled=1
@@ -913,6 +916,8 @@ call ale#linter#Define('sql', {
 " nmap <leader>t :ALELint<cr>
 noremap <silent><leader>ek :ALEPrevious<cr>
 noremap <silent><leader>ej :ALENext<cr>
+noremap <silent><leader>et :ALELint<cr>
+noremap <silent><leader>er :ALEReset<cr>
 
 " Ale : TypeScript =============================================================
 
@@ -946,10 +951,15 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Coc : Extension ==============================================================
+" \ 'coc-ccls',
 let g:coc_global_extensions=[
+  \ 'coc-actions',
   \ 'coc-angular',
-  \ 'coc-ccls',
+  \ 'coc-clangd',
   \ 'coc-css',
+  \ 'coc-cssmodules',
+  \ 'coc-elixir',
+  \ 'coc-ember',
   \ 'coc-fsharp',
   \ 'coc-go',
   \ 'coc-highlight',
@@ -959,16 +969,24 @@ let g:coc_global_extensions=[
   \ 'coc-lua',
   \ 'coc-omnisharp',
   \ 'coc-phpls',
+  \ 'coc-pyright',
   \ 'coc-python',
+  \ 'coc-r-lsp',
+  \ 'coc-reason',
   \ 'coc-rls',
+  \ 'coc-rust-analyzer',
   \ 'coc-snippets',
+  \ 'coc-sourcekit',
   \ 'coc-styled-components',
+  \ 'coc-spell-checker',
   \ 'coc-svelte',
   \ 'coc-svg',
+  \ 'coc-texlab',
   \ 'coc-tsserver',
   \ 'coc-vetur',
   \ 'coc-vimlsp',
   \ 'coc-vimtex',
+  \ 'coc-xml',
   \ 'coc-yaml',
 \ ]
 
@@ -976,8 +994,17 @@ let g:coc_global_extensions=[
 let g:markdown_fenced_languages=['css', 'js=javascript']
 
 " Coc : Exception : coc-snippets ===========================================================
-let g:coc_snippet_next='<TAB>'
-let g:coc_snippet_prev='<S-TAB>'
+"" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" let g:coc_snippet_next='<TAB>'
+" let g:coc_snippet_prev='<S-TAB>'
 " inoremap <silent><expr> <CR> pumvisible()
   " \ ? coc#_select_confirm()
   " \ : coc#expandableOrJumpable()
@@ -1046,8 +1073,8 @@ omap af <Plug>(coc-funcobj-a)
 " Use <TAB> for selections ranges.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+" nmap <silent> <TAB> <Plug>(coc-range-select)
+" xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -1102,7 +1129,7 @@ let g:far#source='rgnvim'
 " }}}
 
 " Fugitive {{{
-nnoremap <leader>? :Gstatus<cr>
+nnoremap <leader>? :Git<cr>
 " }}}
 
 " FZF {{{
@@ -1273,7 +1300,7 @@ let g:surround_{char2nr('^')}='/^\r$/'
 let g:surround_indent=1
 " }}}
 
-" VimDevIcon {{{
+" vim-devicons {{{
 let g:webdevicons_enable=1
 let g:webdevicons_enable_vimfiler=1
 let g:WebDevIconsUnicodeGlyphDoubleWidth=1
@@ -1291,7 +1318,6 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['tsv'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['graphql'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
-" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['node_modules']='' "      ﯵ
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\)*\.\%(spec\|test\)\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "  
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.module\.\%(ts\|tsx\|js\|es6\|jsx\)$']=' '
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.service\.\%(ts\|tsx\|js\|es6\|jsx\)$']='ﰩ'
@@ -1300,20 +1326,15 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.d\.\%(ts\|t
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.data\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
 
 
-" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.csv$']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.tsv$']=''
-
 "    簾               ﰩ          襁  
 "    ﯤ            
 
 
-let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
+" let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
 " TODO: Validate REGEX in Assignment
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['tsconfig\%(\..*\)\?\.json']=''
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(tslint\|eslint\)\?\.json']=''
-
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*\.js\%(\..\+\)\?\.map$']='慎'
-
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*Dockerfile\%(\..*\)*']=''
 
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
@@ -1455,6 +1476,18 @@ let g:jsdoc_enable_es6=1
 let g:jsx_ext_required=0 " Allow JSX in normal JS files
 " }}}
 
+" vim-jsx-pretty {{{
+let g:vim_jsx_pretty_highlight_close_tag=1
+let g:vim_jsx_pretty_colorful_config=1
+let g:vim_jsx_pretty_template_tags=[
+  \ 'html',
+  \ 'jsx',
+  \ 'tsx',
+  \ 'typescriptreact',
+  \ 'javascriptreact',
+\ ]
+" }}}
+
 " vim-move {{{
 let g:move_key_modifier='C-A'
 " }}}
@@ -1560,16 +1593,17 @@ function! s:get_project_name()
 endfunction
 
 let g:startify_lists=[
-  \ { 'type': 'files',      'header': ['   MRU']              },
-  \ { 'type': 'dir',        'header': [s:get_project_name()]  },
-  \ { 'type': 'sessions',   'header': ['   Sessions']         },
-  \ { 'type': 'bookmarks',  'header': ['   Bookmarks']        },
-  \ { 'type': 'commands',   'header': ['   Commands']         },
+  \ { 'type': 'files',      'header': ['   ﮟ  GLOBAL: MRU']                },
+  \ { 'type': 'dir',        'header': [s:get_project_name() . ': MRU']  },
+  \ { 'type': 'sessions',   'header': ['   Sessions']                   },
+  \ { 'type': 'bookmarks',  'header': ['   Bookmarks']                  },
+  \ { 'type': 'commands',   'header': ['   Commands']                   },
 \ ]
+
 if s:isGitRepository
   call add(
     \ g:startify_lists,
-    \ { 'type': function('s:list_commits'), 'header': ['   Commits'] }
+    \ { 'type': function('s:list_commits'), 'header': ['     Commits'] }
   \ )
 endif
 
@@ -1615,9 +1649,13 @@ augroup plug_startify
 augroup END
 " }}}
 
+" vim-unimpaired {{{
+noremap <silent>[og :set scrollbind cursorbind<CR>
+noremap <silent>]og :set noscrollbind nocursorbind<CR>
+" }}}
+
 " YATS {{{
 let g:yats_host_keyword=1
-set re=2
 " }}}
 
 " Vista {{{
