@@ -7,72 +7,10 @@
 
 call plug#begin('~/.nvim/bundle')
 
-" Plug : Helper ============================================================ {{{
-
-" Helper : vim-markdown-composer
-
-function! BuildComposer(info)
-  if a:info.status !=? 'unchanged' || a:info.force
-    if has('nvim')
-      !/usr/bin/env cargo build --release
-    else
-      !/usr/bin/env cargo build --release --no-default-features --features json-rpc
-    endif
-  endif
-endfunction
-
-" Helper : coc-fsharp
-
-function! BuildCocFsharp(info)
-  let shouldBuildCocFsharp = executable('dotnet') && (
-    \ a:info.status ==? 'installed'||
-    \ a:info.status ==? 'updated' ||
-    \ a:info.force
-  \)
-  if shouldBuildCocFsharp
-    !/usr/bin/env npm install
-    !/usr/bin/env dotnet build -C Release
-  endif
-endfunction
-
-"  }}}
-
 " Plug : Config ============================================================ {{{
 
-let plugNerdTreeConfig = { 'on': 'NERDTreeToggle' }
 let plugForMarkdown = { 'for': [ 'markdown', 'md' ] }
-let plugForJavaScript = { 'for': [
-    \ 'javascript',
-    \ 'javascript.jsx',
-    \ 'es6',
-  \ ]
-\ }
-let plugForJavaScriptBrowser = { 'for' : [
-    \ 'xml',
-    \ 'html',
-    \ 'javascript',
-    \ 'javascript.jsx',
-    \ 'es6',
-  \ ]
-\ }
-let plugForTypeScript = { 'for': [
-    \ 'typescript',
-    \ 'ts',
-    \ 'tsx',
-  \ ]
-\ }
 let plugForJavaScriptTypeScript = { 'for': [
-    \ 'javascript',
-    \ 'javascript.jsx',
-    \ 'es6',
-    \ 'typescript',
-    \ 'ts',
-    \ 'tsx',
-  \ ]
-\ }
-let plugForJavaScriptTypeScriptBrowser = { 'for' : [
-    \ 'xml',
-    \ 'html',
     \ 'javascript',
     \ 'javascript.jsx',
     \ 'es6',
@@ -91,9 +29,10 @@ Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
   Plug 'mhinz/vim-startify'
   Plug 'junegunn/gv.vim', { 'on': 'GV' }
-Plug 'scrooloose/nerdtree', plugNerdTreeConfig
-  Plug 'Xuyuanp/nerdtree-git-plugin', plugNerdTreeConfig
-  Plug 'ivalkeen/nerdtree-execute', plugNerdTreeConfig
+Plug 'scrooloose/nerdtree'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+  Plug 'ivalkeen/nerdtree-execute'
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
@@ -109,11 +48,11 @@ Plug 'dbakker/vim-projectroot'
 Plug 'Valloric/ListToggle'
 
 " COC Intellisense : Indention indicates Dependency
-Plug 'liuchengxu/vista.vim'   " TagBar Alternative
-Plug 'Shougo/neoinclude.vim'
-Plug 'jsfaint/coc-neoinclude'
+" Plug 'Shougo/neoinclude.vim'
+" Plug 'jsfaint/coc-neoinclude'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'jackguo380/vim-lsp-cxx-highlight'
+  Plug 'liuchengxu/vista.vim'   " TagBar Alternative
+  Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Editing
 Plug 'mileszs/ack.vim'
@@ -126,7 +65,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
 Plug 'brooth/far.vim'
@@ -154,8 +93,17 @@ Plug 'mechatroner/rainbow_csv', { 'for': ['csv'] }
 Plug 'honza/vim-snippets'
 Plug 'epilande/vim-es2015-snippets', plugForJavaScriptTypeScript
 Plug 'epilande/vim-react-snippets', plugForJavaScriptTypeScript
-Plug 'mhartington/vim-angular2-snippets', plugForJavaScriptTypeScriptBrowser
 Plug 'markwu/vim-laravel4-snippets', { 'for': 'php' }
+Plug 'mhartington/vim-angular2-snippets', { 'for' : [
+  \ 'xml',
+  \ 'html',
+  \ 'javascript',
+  \ 'javascript.jsx',
+  \ 'es6',
+  \ 'typescript',
+  \ 'ts',
+  \ 'tsx',
+\ ] }
 
 " >> Apache
 Plug 'vim-scripts/apachelogs.vim', { 'for': 'log' }
@@ -191,7 +139,6 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'chriskempson/base16-vim'
 " Plug 'icymind/NeoSolarized'
 
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
 
 
 " Devicons MUST be loaded last

@@ -1,6 +1,6 @@
 "===============================================================================
 " Maintainer Franky Martinez <frankymartz@gmail.com>
-" Version 0.1.1
+" Version 1.0.0
 " Note
 " To start nvim without using this .nvimrc file, use:
 "     nvim -u NORC
@@ -10,17 +10,17 @@
 "
 " Sections
 " => General
-" => File and Backup
 " => Text, Tab and Indent
 " => Mapping
 " => Search
 " => FileType
 " => Window
 " => Plug-Vim
+" => Helper Functions
+" => File and Backup
 " => Color and Font
 " => Plug:Configuration
 " => Color Scheme
-" => Helper Functions
 " => Destroy
 "
 "===============================================================================
@@ -127,9 +127,10 @@ set cpoptions+=d    " Use tags relative to CWD
 "set clipboard+=unnamedplus
 
 let g:python_host_prog='/usr/bin/python2'
-let g:python3_host_prog='/usr/local/bin/python3'
+let g:python3_host_prog='/usr/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
-let g:node_host_prog=systemlist('/usr/bin/env npm root -g')[0].'/neovim/bin/cli.js'
+let g:node_host_prog=systemlist('/usr/local/bin/npm root -g')[0].'/neovim/bin/cli.js'
+
 
 " Enable Project Based Configuration
 set exrc
@@ -177,16 +178,16 @@ nnoremap <c-l> <c-w>l
 " Buffer Horizontal Navigation
 nnoremap <ScrollWheelLeft> 20zh
 nnoremap <ScrollWheelRigth> 20zl
-imap <ScrollWheelLeft> <Left>
-imap <ScrollWheelRight> <Right>
+inoremap <ScrollWheelLeft> <Left>
+inoremap <ScrollWheelRight> <Right>
 nnoremap <M-h> 20zh
 nnoremap <M-l> 20zl
 
 " Switch (previous,next) Buffer
-nmap <leader>kk :bnext<CR>
-nmap <leader>jj :bprevious<CR>
-nmap <leader>hh :tabprevious<CR>
-nmap <leader>ll :tabnext<CR>
+nnoremap <leader>kk :bnext<CR>
+nnoremap <leader>jj :bprevious<CR>
+nnoremap <leader>hh :tabprevious<CR>
+nnoremap <leader>ll :tabnext<CR>
 
 " " Copy to clipboard
 vnoremap <leader>y "+y
@@ -731,7 +732,7 @@ set colorcolumn=80              " Column number to highlight
 " Ack {{{
 if executable('rg')
   let g:ackprg='rg --vimgrep '
-  command Todo Rg TODO|FIXME|XXXX|NOTE|BUG|CHANGED|OPTIMIZE
+  command Todo Rg TODO:|FIXME:|XXXX:|NOTE:|BUG:|CHANGED:|OPTIMIZE:
 elseif executable('ag')
   let g:ackprg='ag --vimgrep '
 endif
@@ -916,7 +917,7 @@ call ale#linter#Define('sql', {
 " nmap <leader>t :ALELint<cr>
 noremap <silent><leader>ek :ALEPrevious<cr>
 noremap <silent><leader>ej :ALENext<cr>
-noremap <silent><leader>et :ALELint<cr>
+noremap <silent><leader>el :ALELint<cr>
 noremap <silent><leader>er :ALEReset<cr>
 
 " Ale : TypeScript =============================================================
@@ -932,23 +933,37 @@ augroup END
 let g:coc_force_debug=0 " Make sure COC uses compiled code
 let g:coc_node_path = '/usr/local/bin/node'
 " let g:coc_force_debug=1
-function! s:check_back_space() abort
-  let columnPosition = col('.') - 1
-  return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
-endfunction
 
-" inoremap <expr><TAB> pumvisible() ? '<C-n>' : '<TAB>'
-" inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Coc : Config : Markdown ---------------------------------------------------------------
+
+let g:markdown_fenced_languages=['css', 'js=javascript']
 
 " Coc : Extension ==============================================================
 " \ 'coc-ccls',
@@ -975,10 +990,12 @@ let g:coc_global_extensions=[
   \ 'coc-reason',
   \ 'coc-rls',
   \ 'coc-rust-analyzer',
+  \ 'coc-sh',
   \ 'coc-snippets',
   \ 'coc-sourcekit',
+  \ 'coc-solargraph',
+  \ 'coc-sql',
   \ 'coc-styled-components',
-  \ 'coc-spell-checker',
   \ 'coc-svelte',
   \ 'coc-svg',
   \ 'coc-texlab',
@@ -989,30 +1006,61 @@ let g:coc_global_extensions=[
   \ 'coc-xml',
   \ 'coc-yaml',
 \ ]
+" \ 'coc-spell-checker',
 
-" Coc : Exception : markdown ===============================================================
-let g:markdown_fenced_languages=['css', 'js=javascript']
+" Coc : Helper-Functions =======================================================
 
-" Coc : Exception : coc-snippets ===========================================================
-"" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
+function! s:check_back_space() abort
+  let columnPosition = col('.') - 1
+  return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
+endfunction
 
-" let g:coc_snippet_next='<TAB>'
-" let g:coc_snippet_prev='<S-TAB>'
-" inoremap <silent><expr> <CR> pumvisible()
-  " \ ? coc#_select_confirm()
-  " \ : coc#expandableOrJumpable()
-    " \ ? '\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>'
-    " \ : <SID>check_back_space() ? '\<CR>' : coc#refresh()."\<CR>"
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Coc : Key-Mapping ============================================================
 "
+" Coc : Multiple Cursors -------------------------------------------------------
+
+nnoremap <silent> <c-a-p> <Plug>(coc-cursors-position)
+nnoremap <silent> <c-a-w> <Plug>(coc-cursors-word)
+xnoremap <silent> <c-a-w> <Plug>(coc-cursors-range)
+" use normal command like `<leader>xi(`
+nnoremap <leader>x  <Plug>(coc-cursors-operator)
+
+xnoremap <silent> <c-a-n> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
+nnoremap <expr> <silent> <c-a-d> <SID>select_current_word()
+function! s:select_current_word()
+  if !get(g:, 'coc_cursors_activated', 0)
+    return "\<Plug>(coc-cursors-word)"
+  endif
+  return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
+endfunc
+
+" ------------------------------------------------------------------------------
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for go-to
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 inoremap <C-c> <Esc><Esc>
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -1025,65 +1073,22 @@ inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
-  " Use `complete_info` if your (Neo)Vim version supports it.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
 " Symbol renaming.
-nmap <leader>mv <Plug>(coc-rename)
+nnoremap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != '-1' ? '\<C-y>' : '\<C-g>u\<CR>'
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current line.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Introduce function text object
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-
-" Use <TAB> for selections ranges.
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
-" nmap <silent> <TAB> <Plug>(coc-range-select)
-" xmap <silent> <TAB> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+nnoremap <leader>f  <Plug>(coc-format-selected)
 
 " Mappings using CoCList:
 " Show all diagnostics.
@@ -1103,8 +1108,43 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xnoremap <leader>a  <Plug>(coc-codeaction-selected)
+nnoremap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current line.
+nnoremap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nnoremap <leader>qf  <Plug>(coc-fix-current)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nnoremap <silent> <c-a-r> <Plug>(coc-range-select)
+xnoremap <silent> <c-a-r> <Plug>(coc-range-select)
+
+" Coc  : coc-snippets ----------------------------------------------------------
+
+"" Use <C-l> for trigger snippet expand.
+inoremap <C-l> <Plug>(coc-snippets-expand)
+" Use <C-j> for select text for visual placeholder of snippet.
+vnoremap <C-j> <Plug>(coc-snippets-select)
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+" use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != '-1' ? '\<C-y>' : '\<C-g>u\<CR>'
+
+" Coc  : coc-actions -----------------------------------------------------------
+
+xnoremap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . visualmode()<cr>
+nnoremap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<cr>g@
+
+" Coc  : Auto-Command ==========================================================
+
 augroup plug_coc
-  au!
+   autocmd!
   " au! CompleteDone * if pumvisible() == 0 | pclose | endif
   " Highlight the symbol and its references when holding the cursor.
   autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -1222,9 +1262,11 @@ let NERDTreeAutoDeleteBuffer=1
 let NERDTreeBookmarksFile=s:tempDir.'/NERDTreeBookmarks'
 let NERDTreeCascadeSingleChildDir=0
 let NERDTreeCaseSensitiveSort=1
+let NERDTreeUseTCD=1
 let NERDTreeChDirMode=2
 let NERDTreeHijackNetrw=0 " Startify Session Patch
 let NERDTreeQuitOnOpen=2
+let NERDTreeWinSize=40
 let NERDTreeMinimalUI=1
 let NERDTreeNaturalSort=1
 let NERDTreeMouseMode=2
@@ -1233,6 +1275,7 @@ let NERDTreeIgnore=[
   \ '\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index', 'xapian_index',
   \ '.*.pid', 'monitor.py', '.DS_Store', '.*-fixtures-.*.json', '.*\.o$',
   \ 'db.db', 'tags', 'tags.bak', '.*\.pdf$', '.*\.mid$', '.*\.midi$',
+  \ '\.DAT$', '\.LOG1$', '\.LOG1$',
   \ 'GPATH', 'GRTAGS', 'GTAGS'
 \ ]
 augroup plug_nerdtree
@@ -1242,18 +1285,21 @@ augroup END
 " }}}
 
 " NERDTree Git Plugin {{{
-let g:NERDTreeShowIgnoredStatus=1
-let g:NERDTreeIndicatorMapCustom={
-  \ 'Modified'  : '  ',
-  \ 'Staged'    : '  ',
-  \ 'Untracked' : '  ',
-  \ 'Renamed'   : '  ',
-  \ 'Unmerged'  : '  ',
-  \ 'Deleted'   : '  ',
-  \ 'Dirty'     : '  ',
-  \ 'Clean'     : '  ',
-  \ 'Ignored'   : '  ',
-  \ 'Unknown'   : '  '
+let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
+let g:NERDTreeGitStatusUseNerdFonts=1 " you should install nerdfonts by yourself. default: 0
+let g:NERDTreeGitStatusShowClean=1 " default: 0
+let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
+let g:NERDTreeGitStatusIndicatorMapCustom={
+  \ 'Modified'  : ' ',
+  \ 'Staged'    : ' ',
+  \ 'Untracked' : ' ',
+  \ 'Renamed'   : ' ',
+  \ 'Unmerged'  : ' ',
+  \ 'Deleted'   : ' ',
+  \ 'Dirty'     : ' ',
+  \ 'Clean'     : ' ',
+  \ 'Ignored'   : ' ',
+  \ 'Unknown'   : ' '
 \ }
 " Redefine NerdTree Git Ignored Icon Color
 " hi def link NERDTreeGitStatusModified Tag
@@ -1319,6 +1365,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['graphql'] = ''
 
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols={} " needed
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\)*\.\%(spec\|test\)\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "  
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.stories\.\%(ts\|tsx\|js\|es6\|jsx\)$']='' "     
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.module\.\%(ts\|tsx\|js\|es6\|jsx\)$']=' '
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.service\.\%(ts\|tsx\|js\|es6\|jsx\)$']='ﰩ'
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.component\.\%(ts\|tsx\|js\|es6\|jsx\)$']=''
@@ -1328,7 +1375,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['\%(.*\.\)*\.data\.\%(ts
 
 "    簾               ﰩ          襁  
 "    ﯤ            
-
+" 
 
 " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['package\%(-lock\)\?\.json']=''
 " TODO: Validate REGEX in Assignment
@@ -1493,7 +1540,7 @@ let g:move_key_modifier='C-A'
 " }}}
 
 " vim-multiple-cursors {{{
-let g:multi_cursor_exit_from_visual_mode=0
+" let g:multi_cursor_exit_from_visual_mode=0
 " }}}
 
 " vim-nerdtree-syntax-highlight {{{
@@ -1536,19 +1583,17 @@ let g:SignatureMap={
 " }}}
 
 " vim-signify {{{
-let g:signify_realtime=1 " autocmd User Fugitive SignifyRefresh
-let g:signify_update_on_bufenter=1
-let g:signify_update_on_focusgained=1
-let g:signify_vcs_list=['git', 'hg']
+" let g:signify_realtime=1 " autocmd User Fugitive SignifyRefresh
 let g:signify_sign_add='+'
 let g:signify_sign_delete='-'
 let g:signify_sign_delete_first_line='‾'
 let g:signify_sign_change='~'
 let g:signify_sign_changedelete='*'
-nmap <leader>gj <plug>(signify-next-hunk)<CR>
-nmap <leader>gk <plug>(signify-prev-hunk)<CR>
-nmap <leader>gd :SignifyDiff!<CR>
-nmap <leader>gf :SignifyFold!<CR>
+nnoremap <leader>gj <plug>(signify-next-hunk)<CR>
+nnoremap <leader>gk <plug>(signify-prev-hunk)<CR>
+nnoremap <leader>gd :SignifyDiff<CR>
+nnoremap <leader>gf :SignifyFold<CR>
+nnoremap <leader>gu :SignifyHunkUndo<CR>
 " }}}
 
 " vim-startify {{{

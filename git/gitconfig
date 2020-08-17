@@ -8,10 +8,11 @@
 [user]
   name = Franky Martinez
   email = FrankyMartz@gmail.com
-  signingKey = F9BC32852AF03AC8
+  ; signingKey = F9BC32852AF03AC8 ;PERSONAL
+  signingKey = EB0C1C22E3665B31 ;B2
 
 [core]
-  autocrlf = false
+	autocrlf = input
     ; pager = less
   pager = cat
   excludesfile = ~/.gitignore_global
@@ -80,7 +81,7 @@
 
   s = switch
   sc = switch -c
-  sm = switch master
+  sr = switch root
   sd = switch develop
   ss = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -c \"git switch \""
 
@@ -125,7 +126,7 @@
 
   p = pull
   po = pull origin
-  pom = pull origin master
+  por = pull origin root
   pod = pull origin develop
   parent = "!git show-branch --current | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
 
@@ -133,7 +134,7 @@
   puff = pull --ff --ff-only  # Instead of `pull`. Avoids creating a merge branch on `pull`
 
   rb = rebase --preserve-merges --stat
-  rbm = rebase --preserve-merges --stat master
+  rbr = rebase --preserve-merges --stat root
   rbd = rebase --preserve-merges --stat develop
   rba = rebase --abort
   rbc = rebase --continue
@@ -203,8 +204,8 @@
 
 ;[branch]
     ;autosetuprebase = always
-[branch "master"]
-  mergeoptions = --no-ff  # ensures that all merges into master create a merge commit
+[branch "root"]
+  mergeoptions = --no-ff  # ensures that all merges into root create a merge commit
 
 # Allow local customizations in the .gitconfig_local file
 [include]

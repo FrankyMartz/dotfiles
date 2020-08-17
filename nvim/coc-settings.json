@@ -12,8 +12,8 @@
 
   "snippets.snippets.author": "Franky Martinez",
   "snippets.extends": {
-    "javascriptreact": ["javascript", "html", "css"],
-    "typescriptreact": ["javascript", "html", "css"],
+    "javascriptreact": ["javascript", "xml"],
+    "typescriptreact": ["javascript", "xml"],
     "typescript": ["javascript"]
   },
   "snippets.ultisnips.directories": [
