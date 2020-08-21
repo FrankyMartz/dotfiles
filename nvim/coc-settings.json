@@ -3,8 +3,12 @@
   "coc.preferences.extensionUpdateCheck": "never",
 
   "codeLens.enable": true,
+  "codeLens.separator": " ",
+
   "suggest.enablePreview": true,
   "suggest.noselect": false,
+  "suggest.preselect": true,
+  "suggest.snippetIndicator": "  ",
 
   "diagnostic.enable": true,
   "diagnostic.displayByAle": true,
@@ -12,8 +16,8 @@
 
   "snippets.snippets.author": "Franky Martinez",
   "snippets.extends": {
-    "javascriptreact": ["javascript", "xml"],
-    "typescriptreact": ["javascript", "xml"],
+    "javascriptreact": ["javascript", "html", "xml"],
+    "typescriptreact": ["javascript", "html", "xml"],
     "typescript": ["javascript"]
   },
   "snippets.ultisnips.directories": [
@@ -63,5 +67,6 @@
       "args" : ["up", "--method", "stdio"],
       "filetypes": ["sql", "mysql"]
      }
+
   }
 }

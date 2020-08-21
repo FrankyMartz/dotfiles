@@ -65,7 +65,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-characterize'
 Plug 'brooth/far.vim'

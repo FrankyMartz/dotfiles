@@ -1032,20 +1032,22 @@ endfunction
 "
 " Coc : Multiple Cursors -------------------------------------------------------
 
-nnoremap <silent> <c-a-p> <Plug>(coc-cursors-position)
-nnoremap <silent> <c-a-w> <Plug>(coc-cursors-word)
-xnoremap <silent> <c-a-w> <Plug>(coc-cursors-range)
+"      ﯎ 
+" nnoremap <silent> <c-a-p> <Plug>(coc-cursors-position)
+" nnoremap <silent> <c-a-w> <Plug>(coc-cursors-word)
+" xnoremap <silent> <c-a-w> <Plug>(coc-cursors-range)
 " use normal command like `<leader>xi(`
-nnoremap <leader>x  <Plug>(coc-cursors-operator)
+" nnoremap <leader>x  <Plug>(coc-cursors-operator)
 
-xnoremap <silent> <c-a-n> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
-nnoremap <expr> <silent> <c-a-d> <SID>select_current_word()
-function! s:select_current_word()
-  if !get(g:, 'coc_cursors_activated', 0)
-    return "\<Plug>(coc-cursors-word)"
-  endif
-  return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
-endfunc
+" xnoremap <silent> <c-a-n> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
+" nnoremap <expr> <silent> <c-a-d> <SID>select_current_word()
+" function! s:select_current_word()
+  " if !get(g:, 'coc_cursors_activated', 0)
+  " " Remove extra backslash when un-commenting
+    " return \"\<Plug>(coc-cursors-word)"
+  " endif
+  " return \"*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
+" endfunc
 
 " ------------------------------------------------------------------------------
 
@@ -1289,6 +1291,7 @@ let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time
 let g:NERDTreeGitStatusUseNerdFonts=1 " you should install nerdfonts by yourself. default: 0
 let g:NERDTreeGitStatusShowClean=1 " default: 0
 let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
+" let g:NERDTreeGitStatusUntrackedFilesMode='all' " a heave feature too. default: normal
 let g:NERDTreeGitStatusIndicatorMapCustom={
   \ 'Modified'  : ' ',
   \ 'Staged'    : ' ',
