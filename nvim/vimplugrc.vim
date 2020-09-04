@@ -43,7 +43,7 @@ Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim' " needed for previews
 Plug 'dbakker/vim-projectroot'
 Plug 'Valloric/ListToggle'
 
@@ -53,6 +53,7 @@ Plug 'Valloric/ListToggle'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'liuchengxu/vista.vim'   " TagBar Alternative
   Plug 'jackguo380/vim-lsp-cxx-highlight'
+  Plug 'antoinemadec/coc-fzf'
 
 " Editing
 Plug 'mileszs/ack.vim'

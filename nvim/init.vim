@@ -869,7 +869,7 @@ let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
 " let g:ale_javascript_eslint_options='--no-color'
 
 let g:ale_linters={
-  \ 'go': ['gometalinter', 'gofmt'],
+  \ 'go': ['golangci-lint', 'gofmt'],
   \ 'html': ['stylelint', 'htmlhint', 'tidy'],
   \ 'javascript': ['standard'],
   \ 'javascriptreact': ['eslint'],
@@ -1092,23 +1092,10 @@ nnoremap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nnoremap <leader>f  <Plug>(coc-format-selected)
 
-" Mappings using CoCList:
-" Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
 nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
@@ -1193,6 +1180,40 @@ if executable('fzf')
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment']
   \ }
+
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+    " Mappings using CoCList:
+    " add_list_source(name, description, command)
+    call coc_fzf#common#add_list_source('fzf-buffers', 'display open buffers', 'Buffers')
+    " delete_list_source(name)
+    call coc_fzf#common#delete_list_source('fzf-buffers')
+    " Show all diagnostics.
+    nnoremap <silent> <space>a  :<C-u>CocFzfList diagnostics<cr>
+    " Manage extensions.
+    nnoremap <silent> <space>e  :<C-u>CocFzfList extensions<cr>
+    " Show commands.
+    nnoremap <silent> <space>c  :<C-u>CocFzfList commands<cr>
+    " Find symbol of current document.
+    nnoremap <silent> <space>o  :<C-u>CocFzfList outline<cr>
+    " Search workspace symbols.
+    nnoremap <silent> <space>s  :<C-u>CocFzfList -I symbols<cr>
+    " Resume latest coc list.
+    nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
+else
+    " Mappings using CoCList:
+    " Show all diagnostics.
+    nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+    " Manage extensions.
+    nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+    " Show commands.
+    nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+    " Find symbol of current document.
+    nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+    " Search workspace symbols.
+    nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+    " Resume latest coc list.
+    nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 endif
 " }}}
 

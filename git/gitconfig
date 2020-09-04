@@ -54,7 +54,8 @@
   bra = branch -vv --all
   bred = branch --edit-description
   brd = branch -d
-  brD = branch -D
+  brdf = branch -D
+  brds = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -ni -c \"git branch -d \""
   brl = blame -b -w
   brnm = branch --no-merged
   brr = branch --remote
@@ -83,7 +84,7 @@
   sc = switch -c
   sr = switch root
   sd = switch develop
-  ss = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -c \"git switch \""
+  ss = "!git branch | tr -d \"\\*[:blank:]\" | fpp -nfc -ai -ni -c \"git switch \""
 
   cleanup = !sh -c 'git remote prune origin && git gc'
   cp = cherry-pick
@@ -167,7 +168,7 @@
     ; diff = auto
   interactive = auto
   status = auto
-  ui = auto
+	ui = always
   grep = auto
 
 [color "diff"]

@@ -6,7 +6,7 @@
 # Author:   Franky Martinez <frankymartz@gmail.com>
 ################################################################################
 
-export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8;
 
 #===============================================================================
 # PATH Default
@@ -14,7 +14,7 @@ export LANG=en_US.UTF-8
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin";
 export XDG_CONFIG_HOME="${HOME}/.config";
-export XDG_DATA_HOME="${HOME}/.config/nvim"
+export XDG_DATA_HOME="${HOME}/.config/nvim";
 
 #===============================================================================
 # Foundation
@@ -28,7 +28,7 @@ if [[ -x "$(command -v brew)" ]]; then
   # GNU ------------------------------------------------------------------------
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
-  export PATH="/usr/local/opt/curl/bin:${PATH}"
+  export PATH="/usr/local/opt/curl/bin:${PATH}";
 fi
 
 #===============================================================================
@@ -45,17 +45,23 @@ fi
 # else
   # eval "$(gpg-agent --daemon ~/.gnupg/.gpg-agent-info)"
 # fi
-GPG_TTY="$(tty)"
-export GPG_TTY
+GPG_TTY="$(tty)";
+export GPG_TTY;
+
+#===============================================================================
+# GNUpg
+#===============================================================================
+
+export PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}";
 
 #===============================================================================
 # NEOVIM
 #===============================================================================
 
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='vim';
 else
-  export EDITOR='nvim'
+  export EDITOR='nvim';
 fi
 
 #===============================================================================
@@ -69,12 +75,12 @@ fi
   # fd --type f --hidden --follow --exclude .git
 # END
 # );
-FZF_DEFAULT_COMMAND=$(cat <<-END
+typeset FZF_DEFAULT_COMMAND=$(cat <<-END
   rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null ||
   fd --type f --hidden --follow --exclude .git
 END
 );
-export FZF_DEFAULT_COMMAND
+export FZF_DEFAULT_COMMAND;
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}";
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'";
 
@@ -95,13 +101,19 @@ if [[ -x "$(command -v fd)" ]]; then
 fi
 
 #===============================================================================
-# GNUpg
+# BAT
 #===============================================================================
-export PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
+
+if [[ $ITERM_PROFILE == "Light" ]]; then
+  export BAT_THEME="Solarized (light)";
+else
+  export BAT_THEME='OneHalfDark';
+fi
 
 #===============================================================================
 # IRC
 #===============================================================================
+
 export IRCNICK="frankymartz";
 export IRCNAME="No Konami Code.";
 export IRCSERVER="http://chat.freenode.net";
@@ -110,34 +122,34 @@ export IRCSERVER="http://chat.freenode.net";
 # OpenSSL
 #===============================================================================
 
-export PATH="/usr/local/opt/openssl/bin:${PATH}"
+export PATH="/usr/local/opt/openssl/bin:${PATH}";
 
 #===============================================================================
 # Tools
 #===============================================================================
 
-export PATH="/usr/local/mysql/bin/:${PATH}"
+export PATH="/usr/local/mysql/bin/:${PATH}";
 #===============================================================================
 # LANGUAGES
 #===============================================================================
 
 # C++ --------------------------------------------------------------------------
 
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
+export LDFLAGS="-L/usr/local/opt/llvm/lib";
+export CPPFLAGS="-I/usr/local/opt/llvm/include";
 
 # PYTHON -----------------------------------------------------------------------
 
 # Observe Python Tools
 # export PATH="/usr/local/opt/python@2/bin:${PATH}"
-export PATH="${HOME}/Library/Python/2.7/bin:${PATH}"
+export PATH="${HOME}/Library/Python/2.7/bin:${PATH}";
 export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 
 # PYENV
 if [[ -x "$(command -v pyenv)" ]]; then
   # export PYENV_ROOT="$(brew --prefix pyenv)";
   # export PATH="${PYENV_ROOT}/bin:${PATH}"
-  export PYTHON_CONFIGURE_OPTS="--enable-shared"
+  export PYTHON_CONFIGURE_OPTS="--enable-shared";
   eval "$(pyenv init -)";
 fi
 
@@ -155,8 +167,8 @@ export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 export PATH="/usr/local/opt/ruby/bin:${PATH}"
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
-  PATH="$(gem environment gemdir)/bin:${PATH}"
-  export PATH
+  PATH="$(gem environment gemdir)/bin:${PATH}";
+  export PATH;
 fi
 
 # PHP --------------------------------------------------------------------------
@@ -166,23 +178,23 @@ fi
 # NodeJS -----------------------------------------------------------------------
 
 # export PATH="/Users/frankymartz/npm/bin:${PATH}"
-export NODE_BUILD_DEFINITIONS="/usr/local/opt/node-build-update-defs/share/node-build"
-export NODENV_ROOT="/usr/local/var/nodenv"
-[[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)"
+export NODE_BUILD_DEFINITIONS="/usr/local/opt/node-build-update-defs/share/node-build";
+export NODENV_ROOT="/usr/local/var/nodenv";
+[[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)";
 
 # Mono -------------------------------------------------------------------------
 
-export MONO_GAC_PREFIX="/usr/local"
-export GTAGSLABEL="pygment"
-export PATH="${PATH}:/usr/local/share/dotnet"
+export MONO_GAC_PREFIX="/usr/local";
+export GTAGSLABEL="pygment";
+export PATH="${PATH}:/usr/local/share/dotnet";
 
 # .NET Core SDK Tools ----------------------------------------------------------
 
-export PATH="$PATH:${HOME}/.dotnet/tools"
+export PATH="$PATH:${HOME}/.dotnet/tools";
 
 # Rust -------------------------------------------------------------------------
 
-export PATH="${HOME}/.cargo/bin:${PATH}"
+export PATH="${HOME}/.cargo/bin:${PATH}";
 
 # ASDF -------------------------------------------------------------------------
 
