@@ -26,13 +26,9 @@ let plugForJavaScriptTypeScript = { 'for': [
 
 " Window
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
-  Plug 'mhinz/vim-startify'
-  Plug 'junegunn/gv.vim', { 'on': 'GV' }
-Plug 'scrooloose/nerdtree'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'ivalkeen/nerdtree-execute'
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tpope/vim-fugitive' |
+  \ Plug 'mhinz/vim-startify' |
+  \ Plug 'junegunn/gv.vim', { 'on': 'GV' }
 Plug 'mhinz/vim-signify'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'wesQ3/vim-windowswap'
@@ -44,6 +40,7 @@ Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim' " needed for previews
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 Plug 'dbakker/vim-projectroot'
 Plug 'Valloric/ListToggle'
 
@@ -60,7 +57,7 @@ Plug 'mileszs/ack.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'bkad/CamelCaseMotion'
 Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
-Plug 'rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
+" Plug 'rhysd/committia.vim', { 'for': [ 'gitcommit' ]}
 Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
@@ -139,11 +136,17 @@ Plug 'sheerun/vim-polyglot'
 Plug 'lifepillar/vim-solarized8'
 Plug 'chriskempson/base16-vim'
 " Plug 'icymind/NeoSolarized'
+" Plug 'mhartington/oceanic-next'
 
 
 
 " Devicons MUST be loaded last
-Plug 'ryanoasis/vim-devicons'
+Plug 'preservim/nerdtree' |
+  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+  \ Plug 'ryanoasis/vim-devicons' |
+
+Plug 'ivalkeen/nerdtree-execute'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " ========================================================================== }}}
 

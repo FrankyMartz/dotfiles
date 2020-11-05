@@ -126,8 +126,8 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
-let g:python_host_prog='/usr/bin/python2'
-let g:python3_host_prog='/usr/bin/python3'
+let g:python_host_prog='/usr/bin/python'
+let g:python3_host_prog='/usr/local/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
 let g:node_host_prog=systemlist('/usr/local/bin/npm root -g')[0].'/neovim/bin/cli.js'
 
@@ -977,6 +977,7 @@ let g:coc_global_extensions=[
   \ 'coc-ember',
   \ 'coc-fsharp',
   \ 'coc-go',
+  \ 'coc-graphql',
   \ 'coc-highlight',
   \ 'coc-html',
   \ 'coc-json',
@@ -992,12 +993,13 @@ let g:coc_global_extensions=[
   \ 'coc-rust-analyzer',
   \ 'coc-sh',
   \ 'coc-snippets',
-  \ 'coc-sourcekit',
   \ 'coc-solargraph',
+  \ 'coc-sourcekit',
   \ 'coc-sql',
   \ 'coc-styled-components',
   \ 'coc-svelte',
   \ 'coc-svg',
+  \ 'coc-tailwindcss',
   \ 'coc-texlab',
   \ 'coc-tsserver',
   \ 'coc-vetur',
@@ -1308,11 +1310,14 @@ augroup END
 " }}}
 
 " NERDTree Git Plugin {{{
-let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
+" let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
 let g:NERDTreeGitStatusUseNerdFonts=1 " you should install nerdfonts by yourself. default: 0
 let g:NERDTreeGitStatusShowClean=1 " default: 0
 let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
+" let g:NERDTreeGitStatusDirDirtyOnly=0
 " let g:NERDTreeGitStatusUntrackedFilesMode='all' " a heave feature too. default: normal
+" let g:NERDTreeGitStatusGitBinPath='/usr/local/bin/git'
+let g:NERDTreeGitStatusGitBinPath='/usr/bin/git'
 let g:NERDTreeGitStatusIndicatorMapCustom={
   \ 'Modified'  : ' ',
   \ 'Staged'    : ' ',
@@ -1745,6 +1750,7 @@ let g:vista_echo_cursor_strategy='both'
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
 let s:colorSchemeLight='solarized8'
+" let s:colorSchemeDark='OceanicNext'
 let s:colorSchemeDark='base16-materia'
 
 " let g:airline_theme='solarized'
@@ -1755,6 +1761,9 @@ let g:solarized_statusline='normal'
 let g:solarized_italics=1
 let g:solarized_old_cursor_style=0
 let g:solarized_enable_extra_hi_groups=1
+
+let g:oceanic_next_terminal_bold = 1
+let g:oceanic_next_terminal_italic = 1
 
 
 " $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset

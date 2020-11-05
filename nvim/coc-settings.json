@@ -30,6 +30,10 @@
     "markwu/vim-laravel4-snippets"
   ],
 
+  "graphql.filetypes": ["graphql", "reason"],
+
+  "graphql.watcherPattern": "**/*.{graphql,gql}",
+
   "tsserver.implicitProjectConfig.checkJs": true,
   "tsserver.implicitProjectConfig.experimentalDecorators": true,
 
@@ -67,6 +71,5 @@
       "args" : ["up", "--method", "stdio"],
       "filetypes": ["sql", "mysql"]
      }
-
   }
 }
