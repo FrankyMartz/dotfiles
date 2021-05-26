@@ -129,3 +129,13 @@ SPACESHIP_VI_MODE_COLOR="cyan";
 #===============================================================================
 
 eval "$(direnv hook zsh)"
+
+#===============================================================================
+# Google Cloud 
+#===============================================================================
+
+GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+
+[[ -x "$GoogleCloudSdkPath" ]] && source "$GoogleCloudSdkPath"
+[[ -x "$GoogleCloudCompletionPath" ]] && source "$GoogleCloudCompletionPath"

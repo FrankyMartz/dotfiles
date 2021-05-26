@@ -976,6 +976,7 @@ let g:coc_global_extensions=[
   \ 'coc-elixir',
   \ 'coc-ember',
   \ 'coc-fsharp',
+  \ 'coc-fzf-preview',
   \ 'coc-go',
   \ 'coc-graphql',
   \ 'coc-highlight',

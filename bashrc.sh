@@ -147,10 +147,11 @@ export PYTHONPATH="${HOME}/.dotfiles/bin/python";
 
 # PYENV
 if [[ -x "$(command -v pyenv)" ]]; then
-  # export PYENV_ROOT="$(brew --prefix pyenv)";
-  # export PATH="${PYENV_ROOT}/bin:${PATH}"
+  export PYENV_ROOT="$(brew --prefix pyenv)";
+  # export PYENV_ROOT="${HOME}/.pyenv";
+  export PATH="${PYENV_ROOT}/bin:${PATH}"
   export PYTHON_CONFIGURE_OPTS="--enable-shared";
-  eval "$(pyenv init -)";
+  eval "$(pyenv init --path)";
 fi
 
 # GO-LANG ----------------------------------------------------------------------
@@ -200,3 +201,5 @@ export PATH="${HOME}/.cargo/bin:${PATH}";
 
 # source "$(brew --prefix asdf)/asdf.sh"
 # source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"
+
+

@@ -39,8 +39,8 @@ Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
 Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim' " needed for previews
-Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
+Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install() } } " needed for previews
+" Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 Plug 'dbakker/vim-projectroot'
 Plug 'Valloric/ListToggle'
 

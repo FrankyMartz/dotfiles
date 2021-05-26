@@ -7,8 +7,10 @@
 ################################################################################
 [user]
   name = Franky Martinez
-  email = FrankyMartz@gmail.com
+  ; email = FrankyMartz@gmail.com
   ; signingKey = F9BC32852AF03AC8 ;PERSONAL
+  ; email = FrankyMartz@gmail.com
+  email = fmartinez@base2.io ;B2
   signingKey = EB0C1C22E3665B31 ;B2
 
 [core]
