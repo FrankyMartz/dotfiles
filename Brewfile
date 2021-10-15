@@ -1,3 +1,14 @@
+# ==============================================================================
+# Brewfile
+#
+# System Default Terminal Tools
+#
+# Quickstart:
+
+# $ brew bundle
+# ==============================================================================
+
+# Homebrew: Tap ================================================================
 tap "homebrew/dupes"
 tap "homebrew/core"
 tap "homebrew/php"
@@ -9,12 +20,53 @@ tap "go-delve/delve"
 tap "neovim/neovim"
 tap "universal-ctags/universal-ctags"
 tap "nodenv/nodenv"
+
+# Homebrew: Install ============================================================
+
+# SHELL ------------------------------------------------------------------------
+
+brew "bash"
+brew "bash-completion"
+
+brew "zsh"
+brew "zplug"
+brew "zsh-completion"
+
+# GNU: Core --------------------------------------------------------------------
+
+# GNU core utilities (those that come with OS X are outdated)
+brew "coreutils"
+
+# GNU awk
+brew "gawk"
+
+# GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
+brew "findutils"
+
+brew "gnu-sed", args: ["with-default-names"]
+brew "gnu-tar", args: ["with-default-names"]
+brew "gnu-which", args: ["with-default-names"]
+
+# Install more recent versions of some OS X tools
+brew "diffutils"
+brew "file-formula"
+brew "gzip"
+brew "grep", args: ["with-default-names"]
+brew "make", args: ["with-default-names"]
+brew "less"
+brew "openssh"
+brew "rsync"
+brew "screen"
+brew "unzip"
+
+# Utility ----------------------------------------------------------------------
+
+# Language ---------------------------------------------------------------------
+
 brew "readline"
 brew "autoconf"
 brew "automake"
 brew "aws-elasticbeanstalk"
-brew "bash"
-brew "bash-completion"
 brew "gettext"
 brew "sqlite"
 brew "ccls"
@@ -22,11 +74,9 @@ brew "certbot"
 brew "checkbashisms"
 brew "cmake"
 brew "composer"
-brew "coreutils"
 brew "go"
 brew "dep"
 brew "diff-so-fancy"
-brew "diffutils"
 brew "direnv"
 brew "libgpg-error"
 brew "libassuan"
@@ -34,8 +84,6 @@ brew "libgcrypt"
 brew "libksba"
 brew "pth"
 brew "dirmngr"
-brew "file-formula"
-brew "findutils"
 brew "libtool"
 brew "fontforge"
 brew "fpp"
@@ -44,25 +92,18 @@ brew "git"
 brew "git-extras"
 brew "git-flow-avh"
 brew "global"
-brew "gnu-sed", args: ["with-default-names"]
-brew "gnu-tar", args: ["with-default-names"]
-brew "gnu-which", args: ["with-default-names"]
 brew "libusb"
 brew "pinentry"
 brew "gnupg"
 brew "pkg-config"
 brew "gpg-agent"
-brew "grep", args: ["with-default-names"]
-brew "gzip"
 brew "jemalloc"
-brew "less"
 brew "libsass"
 brew "libtermkey"
 brew "libusb-compat"
 brew "libuv"
 brew "libvterm"
 brew "libyaml"
-brew "make", args: ["with-default-names"]
 brew "mercurial"
 brew "mongodb", restart_service: true
 brew "mono"
@@ -74,7 +115,6 @@ brew "neovim"
 brew "node"
 brew "node-build"
 brew "nodenv"
-brew "openssh"
 brew "path-extractor"
 brew "pipenv"
 brew "pyenv"
@@ -85,22 +125,18 @@ brew "rbenv-bundler"
 brew "redis", restart_service: true
 brew "rename"
 brew "ripgrep"
-brew "rsync"
 brew "ruby"
 brew "rust"
-brew "screen"
 brew "selenium-server-standalone", restart_service: true
 brew "shellcheck"
+brew "starship"
 brew "the_silver_searcher"
 brew "tidy-html5"
 brew "tree"
-brew "unzip"
 brew "watchman"
 brew "wget"
 brew "yamllint"
 brew "yank"
-brew "zsh"
-brew "zsh-completions"
 brew "drone/drone/drone"
 brew "nodenv/nodenv/nodenv-default-packages"
 brew "nodenv/nodenv/nodenv-package-json-engine"
