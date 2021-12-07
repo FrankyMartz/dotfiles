@@ -115,7 +115,6 @@ Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
 " >> JavaScript
 Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " >> Markdown
 Plug 'junegunn/goyo.vim', plugForMarkdown

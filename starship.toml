@@ -5,6 +5,7 @@
 add_newline = false
 # format = """$character"""
 # right_format = """$all"""
+command_timeout = 1500
 
 [character]
 success_symbol = "[](bold green) "
@@ -12,14 +13,14 @@ error_symbol = "[✗](bold red) "
 vicmd_symbol = "[卑](bold cyan) "
 
 [gcloud]
-symbol = " " # 
+symbol = " " #     
 
 [git_branch]
 symbol = " "
 
 [git_status]
 format = '([\[$all_status$ahead_behind \]]($style) )'
-conflicted = "  " #  
+conflicted = "  " #    "
 ahead = " ⬆"
 behind = " ⬇"
 diverged = " "
@@ -31,5 +32,5 @@ renamed = " ➡"
 deleted = " "
 
 [nodejs]
-symbol = "⬢ "
+# symbol = "⬢ "
 detect_extensions = ["js", "mjs", "cjs", "ts", "tsx"]

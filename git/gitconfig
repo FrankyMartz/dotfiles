@@ -14,7 +14,7 @@
   signingKey = EB0C1C22E3665B31 ;B2
 
 [core]
-	autocrlf = input
+	; autocrlf = input
     ; pager = less
   pager = cat
   excludesfile = ~/.gitignore_global

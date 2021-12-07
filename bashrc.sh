@@ -166,6 +166,8 @@ export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 
 ## Use Homebrew Ruby
 export PATH="/usr/local/opt/ruby/bin:${PATH}"
+# 1.1 may interfere w/older versions of Ruby which require < 1.1
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
   PATH="$(gem environment gemdir)/bin:${PATH}";
