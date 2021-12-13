@@ -174,6 +174,12 @@ if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
   export PATH;
 fi
 
+# RBENV ------------------------------------------------------------------------
+
+PATH="$HOME/.rbenv/bin:$PATH"
+[[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";
+
+
 # PHP --------------------------------------------------------------------------
 
 #PATH="${PATH}:${HOME}/.composer/vendor/bin"
