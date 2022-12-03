@@ -126,10 +126,11 @@ set cpoptions+=d    " Use tags relative to CWD
 " Always use system clipboard for ALL operations
 "set clipboard+=unnamedplus
 
-let g:python_host_prog='/usr/bin/python'
+" let g:python_host_prog='/usr/bin/python'
 let g:python3_host_prog='/usr/local/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
 let g:node_host_prog=systemlist('/usr/local/bin/npm root -g')[0].'/neovim/bin/cli.js'
+let g:loaded_perl_provider=0
 
 
 " Enable Project Based Configuration
@@ -1011,21 +1012,16 @@ let g:coc_global_extensions=[
 
 " Coc : Helper-Functions =======================================================
 
-function! s:check_back_space() abort
-  let columnPosition = col('.') - 1
-  return !columnPosition || getline('.')[columnPosition - 1]  =~# '\s'
+function! s:CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Remap for do codeAction of selected region
-function! s:cocActionsOpenFromSelected(type) abort
-  execute 'CocCommand actions.open ' . a:type
-endfunction
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
+function! s:showDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -1061,26 +1057,33 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
 inoremap <C-c> <Esc><Esc>
 
 " Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? '<C-n>' :
-      \ <SID>check_back_space() ? '<TAB>' :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? '<C-p>' : '<C-h>'
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" inoremap <expr> <cr> pumvisible() ? '<C-y>' : '<C-g>u<CR>'
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Use K to show documentation in preview window.
@@ -1103,10 +1106,12 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 xnoremap <leader>a  <Plug>(coc-codeaction-selected)
 nnoremap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap keys for applying codeAction to the current line.
-nnoremap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nnoremap <leader>qf  <Plug>(coc-fix-current)
+" Remap keys for apply code actions at the cursor position.
+nmap <leader>ac  <Plug>(coc-codeaction-cursor)
+" Remap keys for apply code actions affect whole buffer.
+nmap <leader>as  <Plug>(coc-codeaction-source)
+" Apply the most preferred quickfix action to fix diagnostic on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
@@ -1129,7 +1134,7 @@ let g:coc_snippet_prev = '<c-k>'
 " Coc  : coc-actions -----------------------------------------------------------
 
 xnoremap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . visualmode()<cr>
-nnoremap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<cr>g@
+nnoremap <silent> K :call s:showDocumentation()<CR>
 
 " Coc  : Auto-Command ==========================================================
 

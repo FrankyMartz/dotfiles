@@ -2,21 +2,25 @@
 # Local Git Ignore
 #
 # Author:   Franky Martinez <frankymartz@gmail.com>
-# Version:  0.1.0
+# Version:  1.0.0
 ################################################################################
 
 bin/
 NuGet/
 
 # Neovim
+nvim/.netrwhist
+nvim/JetBrains/
 nvim/autoload/plug.vim
 nvim/autoload/plug.vim.old
 nvim/bundle/
-nvim/tmp/
-nvim/spell/
-nvim/.netrwhist
+nvim/direnv/
 nvim/nvim/
 nvim/prisma/
+nvim/spell/
+nvim/SymbolSourceSymbols
+nvim/tmp/
+
 
 
 # Environment

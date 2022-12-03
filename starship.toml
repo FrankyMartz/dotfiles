@@ -1,11 +1,13 @@
 # =============================================================================
 # Shell: StarShip Configuration
 # =============================================================================
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
 # format = """$character"""
 # right_format = """$all"""
-command_timeout=5000
+command_timeout = 2000 # 1500
 
 [character]
 success_symbol = "[](bold green)"

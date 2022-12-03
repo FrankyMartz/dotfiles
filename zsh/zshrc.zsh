@@ -22,7 +22,7 @@ export LANG=en_US.UTF-8
 [[ -f "${DOTFILE_DIR}/bashrc.sh" ]] && source "${DOTFILE_DIR}/bashrc.sh";
 
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
   autoload -Uz compinit
   compinit
 fi
@@ -59,7 +59,7 @@ export BOOKMARKS_FILE="${DOTFILE_DIR}/bin/zsh_cd_bookmarks";
 ZSH_AUTOSUGGEST_USE_ASYNC=true;
 
 # StarShip-Prompt -------------------------------------------------------------
-#
+
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG="${DOTFILE_DIR}/starship.toml"
 
@@ -142,8 +142,9 @@ eval "$(direnv hook zsh)"
 # Google Cloud 
 #===============================================================================
 
-GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:${PATH}"
+# GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
-[[ -x "$GoogleCloudSdkPath" ]] && source "$GoogleCloudSdkPath"
+# [[ -x "$GoogleCloudSdkPath" ]] && source "$GoogleCloudSdkPath"
 [[ -x "$GoogleCloudCompletionPath" ]] && source "$GoogleCloudCompletionPath"

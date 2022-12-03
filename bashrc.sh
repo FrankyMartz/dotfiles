@@ -12,9 +12,11 @@ export LANG=en_US.UTF-8;
 # PATH Default
 #===============================================================================
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin";
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/git/bin:${PATH}";
 export XDG_CONFIG_HOME="${HOME}/.config";
 export XDG_DATA_HOME="${HOME}/.config/nvim";
+
+export PATH="${PATH}:${HOME}/.gem/ruby/2.7.0/bin"
 
 #===============================================================================
 # Foundation
@@ -129,6 +131,8 @@ export PATH="/usr/local/opt/openssl/bin:${PATH}";
 #===============================================================================
 
 export PATH="/usr/local/mysql/bin/:${PATH}";
+export PATH="/Users/franky/.config/JetBrains/:${PATH}"
+
 #===============================================================================
 # LANGUAGES
 #===============================================================================
@@ -168,6 +172,8 @@ export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 export PATH="/usr/local/opt/ruby/bin:${PATH}"
 # 1.1 may interfere w/older versions of Ruby which require < 1.1
 # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/ruby/lib"
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/ruby/include"
 
 if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
   PATH="$(gem environment gemdir)/bin:${PATH}";
@@ -176,8 +182,7 @@ fi
 
 # RBENV ------------------------------------------------------------------------
 
-PATH="$HOME/.rbenv/bin:$PATH"
-[[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init -)";
+[[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init - zsh)";
 
 
 # PHP --------------------------------------------------------------------------
@@ -199,7 +204,7 @@ export PATH="${PATH}:/usr/local/share/dotnet";
 
 # .NET Core SDK Tools ----------------------------------------------------------
 
-export PATH="$PATH:${HOME}/.dotnet/tools";
+export PATH="${PATH}:${HOME}/.dotnet/tools";
 
 # Rust -------------------------------------------------------------------------
 
@@ -210,4 +215,13 @@ export PATH="${HOME}/.cargo/bin:${PATH}";
 # source "$(brew --prefix asdf)/asdf.sh"
 # source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"
 
+# Android ----------------------------------------------------------------------
 
+if [[ -d "$HOME/Library/Android/sdk" ]]; then
+  export ANDROID_HOME="$HOME/Library/Android/sdk";
+  export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+  export PATH="${PATH}:$ANDROID_HOME/emulator";
+  export PATH="${PATH}:$ANDROID_HOME/tools";
+  export PATH="${PATH}:$ANDROID_HOME/tools/bin";
+  export PATH="${PATH}:$ANDROID_HOME/platform-tools";
+fi

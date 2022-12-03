@@ -133,7 +133,7 @@ Plug 'sheerun/vim-polyglot'
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'
-Plug 'chriskempson/base16-vim'
+Plug 'base16-project/base16-vim'
 " Plug 'icymind/NeoSolarized'
 " Plug 'mhartington/oceanic-next'
 
