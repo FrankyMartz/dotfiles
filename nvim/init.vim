@@ -127,9 +127,9 @@ set cpoptions+=d    " Use tags relative to CWD
 "set clipboard+=unnamedplus
 
 " let g:python_host_prog='/usr/bin/python'
-let g:python3_host_prog='/usr/local/bin/python3'
+let g:python3_host_prog='/opt/homebrew/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
-let g:node_host_prog=systemlist('/usr/local/bin/npm root -g')[0].'/neovim/bin/cli.js'
+let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
 let g:loaded_perl_provider=0
 
 
@@ -932,7 +932,7 @@ augroup END
 " Coc {{{
 " let g:coc_enabled=0
 let g:coc_force_debug=0 " Make sure COC uses compiled code
-let g:coc_node_path = '/usr/local/bin/node'
+let g:coc_node_path = '/opt/homebrew/bin/node'
 " let g:coc_force_debug=1
 
 " Always show the signcolumn, otherwise it would shift the text each time
@@ -1321,7 +1321,7 @@ let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
 " let g:NERDTreeGitStatusDirDirtyOnly=0
 " let g:NERDTreeGitStatusUntrackedFilesMode='all' " a heave feature too. default: normal
 " let g:NERDTreeGitStatusGitBinPath='/usr/local/bin/git'
-let g:NERDTreeGitStatusGitBinPath='/usr/bin/git'
+let g:NERDTreeGitStatusGitBinPath='/opt/homebrew/bin/git'
 let g:NERDTreeGitStatusIndicatorMapCustom={
   \ 'Modified'  : ' ',
   \ 'Staged'    : ' ',

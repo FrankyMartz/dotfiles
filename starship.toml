@@ -12,13 +12,19 @@ command_timeout = 2000 # 1500
 [character]
 success_symbol = "[](bold green)"
 error_symbol = "[](bold red)"
-vicmd_symbol = "[卑](bold cyan)"
+vimcmd_symbol = "[▲](bold cyan)"
+vimcmd_replace_one_symbol = "[▲](bold purple)"
+vimcmd_replace_symbol = "[▲](bold purple)"
+vimcmd_visual_symbol = "[▲](bold yellow)"
 
 [gcloud]
-symbol = " " #     
+symbol = " " #      
 
 [git_branch]
 symbol = " "
+
+[git_commit]
+tag_symbol = "  "
 
 [git_status]
 format = '([\[$all_status$ahead_behind \]]($style) )'
@@ -26,11 +32,11 @@ conflicted = "  " #    "
 ahead = " ⬆"
 behind = " ⬇"
 diverged = " "
-untracked = " "
+untracked = " "
 stashed = " "
-modified = " ○"
+modified = " "
 staged = " ●"
-renamed = " ➡"
+renamed = " 󰊍"
 deleted = " "
 
 [nodejs]

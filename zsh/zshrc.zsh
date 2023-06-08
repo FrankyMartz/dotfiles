@@ -18,8 +18,9 @@ DOTFILE_DIR="${HOME}/.dotfiles"
 export LANG=en_US.UTF-8
 
 # shellcheck source=/dev/null
-# [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
+[[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
 [[ -f "${DOTFILE_DIR}/bashrc.sh" ]] && source "${DOTFILE_DIR}/bashrc.sh";
+[[ -f "${DOTFILE_DIR}/alias.sh" ]] && source "${DOTFILE_DIR}/alias.sh";
 
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
@@ -60,91 +61,30 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true;
 
 # StarShip-Prompt -------------------------------------------------------------
 
-eval "$(starship init zsh)"
-export STARSHIP_CONFIG="${DOTFILE_DIR}/starship.toml"
-
-
-# SpaceShip-Prompt -------------------------------------------------------------
-# ZSH_THEME="spaceship"
-
-# SPACESHIP_PROMPT_ADD_NEWLINE=true
-# # SPACESHIP_PROMPT_SEPARATE_LINE=false
-# SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
-#
-# SPACESHIP_CHAR_SYMBOL="";          #       
-# SPACESHIP_CHAR_SUFFIX=" ";          # 
-# SPACESHIP_DIR_LOCK_SYMBOL=""       #   
-#
-# SPACESHIP_TIME_SHOW=true
-# SPACESHIP_TIME_PREFIX="%{%B%F{yellow}%} %{%b%f%}" # 
-# # SPACESHIP_TIME_12HR=true
-#
-# SPACESHIP_EXIT_CODE_SHOW=true
-# SPACESHIP_EXIT_CODE_PREFIX=""
-# SPACESHIP_EXIT_CODE_SUFFIX=" "
-# SPACESHIP_EXIT_CODE_SYMBOL=" "     # ✘  
-#
-# SPACESHIP_GIT_SYMBOL=" ";
-# SPACESHIP_GIT_STATUS_PREFIX=" [";
-# SPACESHIP_GIT_STATUS_SUFFIX=" ]";
-# SPACESHIP_GIT_STATUS_UNTRACKED=" ";    # ◎ ◉  
-# SPACESHIP_GIT_STATUS_ADDED=" ●";        #  ● ✚
-# SPACESHIP_GIT_STATUS_MODIFIED=" ○";     # ○  
-# SPACESHIP_GIT_STATUS_RENAMED=" ➡";      #   
-# SPACESHIP_GIT_STATUS_DELETED=" ";
-# SPACESHIP_GIT_STATUS_STASHED=" ";
-# SPACESHIP_GIT_STATUS_UNMERGED="  ";    #  劣
-# SPACESHIP_GIT_STATUS_AHEAD=" ⬆";
-# SPACESHIP_GIT_STATUS_BEHIND=" ⬇";
-# SPACESHIP_GIT_STATUS_DIVERGED=" ";     #  咽
-#
-# SPACESHIP_HG_SYMBOL="ךּ "                # ךּ כּ ﴯ
-# SPACESHIP_HG_STATUS_PREFIX=$SPACESHIP_GIT_STATUS_PREFIX
-# SPACESHIP_HG_STATUS_SUFFIX=$SPACESHIP_GIT_STATUS_SUFFIX
-# SPACESHIP_HG_STATUS_UNTRACKED=$SPACESHIP_GIT_STATUS_UNTRACKED
-# SPACESHIP_HG_STATUS_ADDED=$SPACESHIP_GIT_STATUS_ADDED
-# SPACESHIP_HG_STATUS_MODIFIED=$SPACESHIP_GIT_STATUS_MODIFIED
-# SPACESHIP_HG_STATUS_DELETED=$SPACESHIP_GIT_STATUS_DELETED
-#
-#
-# SPACESHIP_BATTERY_SHOW=true;                    # Only show when battery <= threshold
-# SPACESHIP_BATTERY_PREFIX=" ";
-# SPACESHIP_BATTERY_SUFFIX=" ";
-# SPACESHIP_BATTERY_SYMBOL_CHARGING=" ";         # ⇡    ﴏ     
-# SPACESHIP_BATTERY_SYMBOL_DISCHARGING="  ";     # ⇣  ﴐ   ﴆ    
-# SPACESHIP_BATTERY_SYMBOL_FULL="  ";            # •    ﴅ
-# SPACESHIP_BATTERY_THRESHOLD=15;
-#
-# SPACESHIP_EXIT_CODE_SHOW=true
-#
-# SPACESHIP_VI_MODE_SHOW=true;
-# # SPACESHIP_VI_MODE_PREFIX=" ";     # [
-# # SPACESHIP_VI_MODE_SUFFIX=" ";     # ]
-# SPACESHIP_VI_MODE_INSERT="卑";      #  卑    
-# SPACESHIP_VI_MODE_NORMAL="喝";      #  喝        
-# SPACESHIP_VI_MODE_COLOR="cyan";
-#
-# # spaceship_vi_mode_enable
+if [ -x "$(command -v starship)" ]; then
+	eval "$(starship init zsh)"
+	export STARSHIP_CONFIG="${DOTFILE_DIR}/starship.toml"
+fi
 
 #===============================================================================
 # Alias
 #===============================================================================
 
-# source "${DOTFILE_DIR}/alias.sh";
+[[ -f "${DOTFILE_DIR}/alias.sh" ]] && source "${DOTFILE_DIR}/alias.sh";
 
 #===============================================================================
 # DOTENV LOAD
 #===============================================================================
 
-eval "$(direnv hook zsh)"
+[[ -x "$(command -v direnv)" ]] && eval "$(direnv hook zsh)"
 
 #===============================================================================
 # Google Cloud 
 #===============================================================================
 
-export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:${PATH}"
+# export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:${PATH}"
 # GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+# GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 # [[ -x "$GoogleCloudSdkPath" ]] && source "$GoogleCloudSdkPath"
-[[ -x "$GoogleCloudCompletionPath" ]] && source "$GoogleCloudCompletionPath"
+# [[ -x "$GoogleCloudCompletionPath" ]] && source "$GoogleCloudCompletionPath"

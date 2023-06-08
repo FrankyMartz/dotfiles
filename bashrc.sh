@@ -8,6 +8,7 @@
 
 export LANG=en_US.UTF-8;
 
+DOTFILE_BIN_DIR="${HOME}/.dotfiles/bin"
 #===============================================================================
 # PATH Default
 #===============================================================================
@@ -23,10 +24,11 @@ export PATH="${PATH}:${HOME}/.gem/ruby/2.7.0/bin"
 #===============================================================================
 
 if [[ -d "${HOME}/.iterm2" ]]; then
-    export PATH="${PATH}:${HOME}/.iterm2";
+  export PATH="${PATH}:${HOME}/.iterm2";
 fi
 
-if [[ -x "$(command -v brew)" ]]; then
+if [[ -x "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   # GNU ------------------------------------------------------------------------
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
   export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
@@ -124,13 +126,16 @@ export IRCSERVER="http://chat.freenode.net";
 # OpenSSL
 #===============================================================================
 
-export PATH="/usr/local/opt/openssl/bin:${PATH}";
+export PATH="$(brew --prefix)/opt/openssl@3/bin:$PATH"
+# export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib ${LDFLAGS}"
+# export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include ${CPPFLAGS}"
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig"
 
 #===============================================================================
 # Tools
 #===============================================================================
 
-export PATH="/usr/local/mysql/bin/:${PATH}";
+# export PATH="/usr/local/mysql/bin/:${PATH}";
 export PATH="/Users/franky/.config/JetBrains/:${PATH}"
 
 #===============================================================================
@@ -139,15 +144,15 @@ export PATH="/Users/franky/.config/JetBrains/:${PATH}"
 
 # C++ --------------------------------------------------------------------------
 
-export LDFLAGS="-L/usr/local/opt/llvm/lib";
-export CPPFLAGS="-I/usr/local/opt/llvm/include";
+# export LDFLAGS="-L/usr/local/opt/llvm/lib";
+# export CPPFLAGS="-I/usr/local/opt/llvm/include";
 
 # PYTHON -----------------------------------------------------------------------
 
 # Observe Python Tools
 # export PATH="/usr/local/opt/python@2/bin:${PATH}"
 export PATH="${HOME}/Library/Python/2.7/bin:${PATH}";
-export PYTHONPATH="${HOME}/.dotfiles/bin/python";
+export PYTHONPATH="${DOTFILE_BIN_DIR}/python";
 
 # PYENV
 if [[ -x "$(command -v pyenv)" ]]; then
@@ -160,30 +165,32 @@ fi
 
 # GO-LANG ----------------------------------------------------------------------
 
-export GOROOT="/usr/local/opt/go/libexec";
-export GOPATH="${HOME}/go";
-# export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
-export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
-# PATH="${PATH}:${HOME}/go_appengine";
+if [[ -x "$(command -v go)" ]]; then
+  export GOROOT="/usr/local/opt/go/libexec";
+  export GOPATH="${HOME}/go";
+  # export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
+  export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
+  # PATH="${PATH}:${HOME}/go_appengine";
+fi
 
 # RUBY -------------------------------------------------------------------------
 
-## Use Homebrew Ruby
-export PATH="/usr/local/opt/ruby/bin:${PATH}"
-# 1.1 may interfere w/older versions of Ruby which require < 1.1
-# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-export LDFLAGS="${LDFLAGS} -L/usr/local/opt/ruby/lib"
-export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/ruby/include"
-
-if [[ -x "$(command -v ruby)" && -x "$(command -v gem)" ]]; then
-  PATH="$(gem environment gemdir)/bin:${PATH}";
-  export PATH;
+if [[ -x "$(brew --prefix)/opt/ruby" ]]; then
+  ## Use Homebrew Ruby
+  export PATH="$(brew --prefix)/opt/ruby/bin:${PATH}"
+  # 1.1 may interfere w/older versions of Ruby which require < 1.1
+  # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  # export LDFLAGS="${LDFLAGS} -L$(brew --prefix)/opt/ruby/lib"
+  # export CPPFLAGS="${CPPFLAGS} -I$(brew --prefix)/opt/ruby/include"
+  if [[ -x "$(command -v gem)" ]]; then
+    PATH="$(gem environment gemdir)/bin:${PATH}";
+    export PATH;
+  fi
 fi
 
-# RBENV ------------------------------------------------------------------------
-
-[[ -x "$(command -v rbenv)" ]] && eval "$(rbenv init - zsh)";
-
+if [[ -x "$(command -v rbenv)" ]]; then
+  eval "$(rbenv init - zsh)";
+fi
 
 # PHP --------------------------------------------------------------------------
 
@@ -192,23 +199,31 @@ fi
 # NodeJS -----------------------------------------------------------------------
 
 # export PATH="/Users/frankymartz/npm/bin:${PATH}"
-export NODE_BUILD_DEFINITIONS="/usr/local/opt/node-build-update-defs/share/node-build";
-export NODENV_ROOT="/usr/local/var/nodenv";
-[[ -x "$(command -v nodenv)" ]] && eval "$(nodenv init -)";
+# export NODE_BUILD_DEFINITIONS="${brew --prefix}/opt/node-build-update-defs/share/node-build";
+if [[ -x "$(command -v nodenv)" ]]; then
+  eval "$(nodenv init - --no-rehash)";
+  export NODENV_ROOT="${HOME}/.nodenv"
+fi
+
+if [[ -d "$(brew --prefix)/opt/jetbrains-npm/bin" ]]; then
+  export PATH="/opt/homebrew/opt/jetbrains-npm/bin:$PATH"
+fi
 
 # Mono -------------------------------------------------------------------------
 
-export MONO_GAC_PREFIX="/usr/local";
-export GTAGSLABEL="pygment";
-export PATH="${PATH}:/usr/local/share/dotnet";
+# export MONO_GAC_PREFIX="/usr/local";
+# export GTAGSLABEL="pygment";
+# export PATH="${PATH}:/usr/local/share/dotnet";
 
 # .NET Core SDK Tools ----------------------------------------------------------
 
-export PATH="${PATH}:${HOME}/.dotnet/tools";
+# export PATH="${PATH}:${HOME}/.dotnet/tools";
 
 # Rust -------------------------------------------------------------------------
 
-export PATH="${HOME}/.cargo/bin:${PATH}";
+if [[ -x "$(command -v rust)" ]];then
+  export PATH="${HOME}/.cargo/bin:${PATH}";
+fi
 
 # ASDF -------------------------------------------------------------------------
 
