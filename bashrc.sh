@@ -166,7 +166,7 @@ fi
 # GO-LANG ----------------------------------------------------------------------
 
 if [[ -x "$(command -v go)" ]]; then
-  export GOROOT="/usr/local/opt/go/libexec";
+  export GOROOT="$(brew --prefix go)/libexec";
   export GOPATH="${HOME}/go";
   # export GOPATH="${HOME}/go:${HOME}/go_appengine/gopath";
   export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
@@ -177,7 +177,7 @@ fi
 
 if [[ -x "$(brew --prefix)/opt/ruby" ]]; then
   ## Use Homebrew Ruby
-  export PATH="$(brew --prefix)/opt/ruby/bin:${PATH}"
+  export PATH="$(brew --prefix ruby)/bin:${PATH}"
   # 1.1 may interfere w/older versions of Ruby which require < 1.1
   # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
   # export LDFLAGS="${LDFLAGS} -L$(brew --prefix)/opt/ruby/lib"
@@ -205,8 +205,8 @@ if [[ -x "$(command -v nodenv)" ]]; then
   export NODENV_ROOT="${HOME}/.nodenv"
 fi
 
-if [[ -d "$(brew --prefix)/opt/jetbrains-npm/bin" ]]; then
-  export PATH="/opt/homebrew/opt/jetbrains-npm/bin:$PATH"
+if [[ -d "$(brew --prefix jetbrains-npm)/bin" ]]; then
+  export PATH="$(brew --prefix jetbrains-npm)/bin:$PATH"
 fi
 
 # Mono -------------------------------------------------------------------------
@@ -232,11 +232,23 @@ fi
 
 # Android ----------------------------------------------------------------------
 
+if [[ -d "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home" ]]; then
+  export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+fi
+
 if [[ -d "$HOME/Library/Android/sdk" ]]; then
-  export ANDROID_HOME="$HOME/Library/Android/sdk";
+  # export ANDROID_HOME="$HOME/Library/Android/sdk";
+  # export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+  # export PATH="${PATH}:$ANDROID_HOME/emulator";
+  # export PATH="${PATH}:$ANDROID_HOME/tools";
+  # export PATH="${PATH}:$ANDROID_HOME/tools/bin";
+  # export PATH="${PATH}:$ANDROID_HOME/platform-tools";
+  # export PATH="${PATH}:$ANDROID_HOME/cmdline-tools/latest/bin";
+
   export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
-  export PATH="${PATH}:$ANDROID_HOME/emulator";
-  export PATH="${PATH}:$ANDROID_HOME/tools";
-  export PATH="${PATH}:$ANDROID_HOME/tools/bin";
-  export PATH="${PATH}:$ANDROID_HOME/platform-tools";
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"
+  export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"
+  export PATH="$PATH:$ANDROID_HOME/platform-tools"
+  export PATH="$PATH:$ANDROID_HOME/cmdline-tools/10.0/bin"
 fi

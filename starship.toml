@@ -32,10 +32,10 @@ conflicted = "  " #    "
 ahead = " ⬆"
 behind = " ⬇"
 diverged = " "
-untracked = " "
+untracked = " " # ◌
 stashed = " "
-modified = " "
-staged = " ●"
+modified = " ○" # ⭘  ⭘
+staged = " ●" # ● ●
 renamed = " 󰊍"
 deleted = " "
 
