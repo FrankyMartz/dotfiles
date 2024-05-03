@@ -9,13 +9,11 @@
 __configZSH(){
     dLog "${BLUE}ZShell Configuration..."
 
-    local _ZSH="${_PWD}/zsh"
-
     #===========================================================================
     # Symbolic Links
     #===========================================================================
 
-    ln -fs "${_ZSH}/zshrc.zsh" "$(HOME)/.bashrc";
+    ln -fs "$${_PWD}/shell/zsh/ohmyzsh.zsh" "$(HOME)/.zshrc";
 
     dLog "${BLUE}ZShell Configuration...DONE"
 }

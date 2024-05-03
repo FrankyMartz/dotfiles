@@ -1,0 +1,40 @@
+# =============================================================================
+# Shell: StarShip Configuration
+# =============================================================================
+
+add_newline = false
+# format = """$character"""
+# right_format = """$all"""
+command_timeout=5000
+
+[character]
+success_symbol = "[](bold green)"
+error_symbol = "[](bold red)"
+vicmd_symbol = "[卑](bold cyan)"
+
+[gcloud]
+symbol = " " #     
+
+[git_branch]
+symbol = " "
+
+[git_status]
+format = '([\[$all_status$ahead_behind \]]($style) )'
+conflicted = "  " #    "
+ahead = " ⬆"
+behind = " ⬇"
+diverged = " "
+untracked = " "
+stashed = " "
+modified = " ○"
+staged = " ●"
+renamed = " ➡"
+deleted = " "
+
+[nodejs]
+# symbol = "⬢ "
+detect_extensions = ["js", "mjs", "cjs", "ts", "tsx"]
+
+[ruby]
+symbol = " "
+style = "bold green" 

@@ -71,5 +71,6 @@
       "args" : ["up", "--method", "stdio"],
       "filetypes": ["sql", "mysql"]
      }
-  }
+  },
+  "svelte.enable-ts-plugin": false
 }

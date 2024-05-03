@@ -8,7 +8,6 @@
 [user]
   name = Franky Martinez
   email = FrankyMartz@gmail.com
-  ; signingKey = F9BC32852AF03AC8 ;PERSONAL
 
 [core]
   autocrlf = input
@@ -222,11 +221,14 @@
 [gpg]
   program = gpg
 
-; [commit]
-	; gpgsign = true
-
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+
+[commit]
+	gpgsign = false
+
+[init]
+	defaultBranch = main

@@ -20,6 +20,17 @@ export XDG_DATA_HOME="${HOME}/.config/nvim";
 export PATH="${PATH}:${HOME}/.gem/ruby/2.7.0/bin"
 
 #===============================================================================
+# Homebrew
+#===============================================================================
+
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar";
+export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}";
+export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin${PATH+:$PATH}";
+export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}";
+
+#===============================================================================
 # Foundation
 #===============================================================================
 
@@ -27,13 +38,18 @@ if [[ -d "${HOME}/.iterm2" ]]; then
   export PATH="${PATH}:${HOME}/.iterm2";
 fi
 
+<<<<<<< Updated upstream:bashrc.sh
 if [[ -x "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+=======
+# if [[ -x "$(command -v brew)" ]]; then
+>>>>>>> Stashed changes:shell/core.sh
   # GNU ------------------------------------------------------------------------
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}";
-  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}";
-  export PATH="/usr/local/opt/curl/bin:${PATH}";
-fi
+  export MANPATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$MANPATH"
+  export PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+  export PATH="${HOMEBREW_PREFIX}/opt/curl/bin:$PATH"
+  export PATH="${HOMEBREW_PREFIX}/opt/gnu-which/libexec/gnubin:$PATH"
+# fi
 
 #===============================================================================
 # GPG
@@ -56,7 +72,7 @@ export GPG_TTY;
 # GNUpg
 #===============================================================================
 
-export PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}";
+# export PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}";
 
 #===============================================================================
 # NEOVIM
@@ -126,17 +142,11 @@ export IRCSERVER="http://chat.freenode.net";
 # OpenSSL
 #===============================================================================
 
-export PATH="$(brew --prefix)/opt/openssl@3/bin:$PATH"
-# export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib ${LDFLAGS}"
-# export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include ${CPPFLAGS}"
-# export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig"
+# export PATH="/usr/local/opt/openssl/bin:${PATH}";
 
 #===============================================================================
 # Tools
 #===============================================================================
-
-# export PATH="/usr/local/mysql/bin/:${PATH}";
-export PATH="/Users/franky/.config/JetBrains/:${PATH}"
 
 #===============================================================================
 # LANGUAGES
@@ -154,9 +164,12 @@ export PATH="/Users/franky/.config/JetBrains/:${PATH}"
 export PATH="${HOME}/Library/Python/2.7/bin:${PATH}";
 export PYTHONPATH="${DOTFILE_BIN_DIR}/python";
 
-# PYENV
+
+# PYENV ------------------------------------------------------------------------
+
 if [[ -x "$(command -v pyenv)" ]]; then
-  export PYENV_ROOT="$(brew --prefix pyenv)";
+  PYENV_ROOT="$(brew --prefix pyenv)";
+  export PYENV_ROOT
   # export PYENV_ROOT="${HOME}/.pyenv";
   export PATH="${PYENV_ROOT}/bin:${PATH}"
   export PYTHON_CONFIGURE_OPTS="--enable-shared";
@@ -230,7 +243,18 @@ fi
 # source "$(brew --prefix asdf)/asdf.sh"
 # source "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"
 
+# JAVA -------------------------------------------------------------------------
+
+
+if [[ -d "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home" ]]; then
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home";
+fi
+
 # Android ----------------------------------------------------------------------
+
+if [[ -x "/opt/homebrew/opt/postgresql@15/bin" ]]; then
+  export PATH="$PATH:/opt/homebrew/opt/postgresql@15/bin"
+fi
 
 if [[ -d "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home" ]]; then
   export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home

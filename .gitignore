@@ -10,21 +10,24 @@ NuGet/
 
 # Neovim
 nvim/.netrwhist
-nvim/JetBrains/
-nvim/autoload/plug.vim
-nvim/autoload/plug.vim.old
-nvim/bundle/
-nvim/direnv/
-nvim/nvim/
-nvim/prisma/
-nvim/spell/
+nvim/IsolatedStorage
+nvim/Jetbrains
+nvim/NuGet
 nvim/SymbolSourceSymbols
-nvim/tmp/
-
-
+nvim/autoload
+nvim/bun
+nvim/bundle
+nvim/direnv
+nvim/gem
+nvim/nvim
+nvim/prisma
+nvim/pry
+nvim/spell
+nvim/tmp
 
 # Environment
 .env
 
 # ZSHELL
 zsh/zsh_plugins.sh
+

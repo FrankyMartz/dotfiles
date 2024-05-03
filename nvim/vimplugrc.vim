@@ -38,8 +38,9 @@ Plug 'kshenoy/vim-signature'
 Plug 'yggdroot/indentline', { 'on': 'IndentLinesToggle' }
 Plug 'direnv/direnv.vim'
 Plug 'tpope/vim-obsession'
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install() } } " needed for previews
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " needed for previews
+  Plug 'junegunn/fzf.vim'
+
 " Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 Plug 'dbakker/vim-projectroot'
 Plug 'Valloric/ListToggle'
@@ -136,6 +137,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'base16-project/base16-vim'
 " Plug 'icymind/NeoSolarized'
 " Plug 'mhartington/oceanic-next'
+Plug 'rose-pine/neovim', { 'as': 'rose-pine' }
 
 
 

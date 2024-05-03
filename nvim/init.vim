@@ -132,7 +132,6 @@ let g:python3_host_prog='/opt/homebrew/bin/python3'
 let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
 let g:loaded_perl_provider=0
 
-
 " Enable Project Based Configuration
 set exrc
 set secure
@@ -277,7 +276,7 @@ set showmatch               " Highlight closing ), >, }, ], etc...
 nnoremap / /\v
 vnoremap / /\v
 
-set runtimepath+=/usr/local/opt/fzf
+set runtimepath+=/opt/homebrew/opt/fzf/install
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if (
@@ -1754,8 +1753,10 @@ let g:vista_echo_cursor_strategy='both'
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
 let s:colorSchemeLight='solarized8'
+" let s:colorSchemeLight='rose-pine'
 " let s:colorSchemeDark='OceanicNext'
-let s:colorSchemeDark='base16-materia'
+" let s:colorSchemeDark='base16-materia'
+let s:colorSchemeDark='rose-pine-moon'
 
 " let g:airline_theme='solarized'
 let g:solarized_visibility='normal'
