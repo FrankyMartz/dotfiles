@@ -16,21 +16,7 @@ DOTFILES="${HOME}/.dotfiles"
 
 export LANG=en_US.UTF-8
 
-[[ -x "${DOTFILES}/shell/core.sh" ]] && source "${DOTFILES}/shell/core.sh";
 [[ -x "${DOTFILES}/shell/alias.sh" ]] && source "${DOTFILES}/shell/alias.sh";
-
-# shellcheck source=/dev/null
-# [[ -f "${HOME}/.fzf.zsh" ]] && source "${HOME}/.fzf.zsh";
-
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-  autoload -Uz compinit
-  compinit
-fi
-
-# iTerm Integration ------------------------------------------------------------
-# shellcheck source=/dev/null
-[[ -x "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh";
 
 #===============================================================================
 # Foundation
@@ -45,9 +31,29 @@ KEYTIMEOUT=1
 setopt appendhistory autocd extendedglob nomatch notify
 unsetopt beep
 
+# DIRENV -----------------------------------------------------------------------
+
+if [[ -x "$(command -v direnv)" ]]; then
+  eval "$(direnv hook zsh)"
+fi
+
+# ZSH-Completions --------------------------------------------------------------
+
+if [[ -x "$(command -v brew)" ]]; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  [[ -x "$(brew --prefix)/share/zsh-completions" ]] && FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  [[ -x "~/.rbenv/completions" ]] && FPATH=~/.rbenv/completions:"$FPATH"
+  autoload -Uz compinit
+  compinit
+fi
+
 #===============================================================================
 # PLUGINS
 #===============================================================================
+
+# iTerm Integration ------------------------------------------------------------
+# shellcheck source=/dev/null
+[[ -x "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh";
 
 # HOTFIX: https://github.com/zsh-users/antigen/issues/593
 # autoload -U is-at-least
@@ -60,22 +66,25 @@ export BOOKMARKS_FILE="${DOTFILES}/bin/zsh_cd_bookmarks";
 ZSH_AUTOSUGGEST_USE_ASYNC=true;
 
 # StarShip-Prompt -------------------------------------------------------------
-#
-eval "$(starship init zsh)"
-export STARSHIP_CONFIG="${DOTFILES}/shell/zsh/starship.toml"
 
-#===============================================================================
-# DOTENV LOAD
-#===============================================================================
+if [[ "$(command -v starship)" ]]; then
+  eval "$(starship init zsh)"
+  export STARSHIP_CONFIG="${DOTFILES}/shell/starship.toml"
+fi
 
-eval "$(direnv hook zsh)"
+# Google Cloud -----------------------------------------------------------------
 
-#===============================================================================
-# Google Cloud 
-#===============================================================================
+if [[ -x "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]]; then
+  GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source $GoogleCloudSdkPath
+fi
 
-GoogleCloudSdkPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+if [[ -x "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc" ]]; then
+  GoogleCloudCompletionPath="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+  source $GoogleCloudCompletionPath
+fi
 
-[[ -x "$GoogleCloudSdkPath" ]] && source "$GoogleCloudSdkPath"
-[[ -x "$GoogleCloudCompletionPath" ]] && source "$GoogleCloudCompletionPath"
+# Git-Town ---------------------------------------------------------------------
+
+[[ -x "$(command -v git-town)" ]] && source <(git-town completions zsh)
+

@@ -73,6 +73,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
 plugins=(
 	bookmark
 	common-aliases
@@ -84,8 +85,8 @@ plugins=(
 	git-extras
 	httpie
 	vi-mode
-	zsh-completions
-	zsh-syntax-highlighting
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 	git
 )
 

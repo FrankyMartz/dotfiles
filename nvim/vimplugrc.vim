@@ -5,6 +5,12 @@
 " vim:set ft=vim et sw=2 ts=2 tw=80:
 "===============================================================================
 
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.nvim/bundle')
 
 " Plug : Config ============================================================ {{{
@@ -130,7 +136,8 @@ Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'sebdah/vim-delve', { 'for': 'go' }
 
 " Make Sure Polyglot Highlighting/Indent takes precedence
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Color and Font
 Plug 'lifepillar/vim-solarized8'

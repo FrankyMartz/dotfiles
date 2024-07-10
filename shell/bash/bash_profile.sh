@@ -10,58 +10,57 @@
 stty -ixon -ixoff
 set -o vi
 
-#===============================================================================
+# ------------------------------------------------------------------------------
 # Foundation
-#===============================================================================
+# ------------------------------------------------------------------------------
 
-DOTFILE_DIR='${HOME}/.dotfiles';
-BREW_PREFIX="$(brew --prefix)"
+DOTFILES="${HOME}/.dotfiles"
 
-# Sensible Defaults ------------------------------------------------------------
-[[ -f "${DOTFILE_DIR}/bin/sensible/sensible.bash" ]] && source "${DOTFILE_DIR}/.dotfiles/bin/sensible/sensible.bash"
-
-[[ -f "${DOTFILE_DIR}/.bashrc" ]] && source "${DOTFILE_DIR}/.bashrc";
-
-
-# shellcheck source=/dev/null
-[[ -x "${DOTFILE_DIR}/.profile" ]] && source "${DOTFILE_DIR}/.profile"
+[[ -x "${DOTFILES}/shell/core.sh" ]] && source "${DOTFILES}/shell/core.sh";
+[[ -x "${DOTFILES}/shell/alias.sh" ]] && source "${DOTFILES}/shell/alias.sh";
+[[ -x "${DOTFILES}/bin/bash-sensible/sensible.bash" ]] && source "${DOTFILES}/bin/bash-sensible/sensible.bash";
 
 if [[ -x "$(command -v brew)" ]]; then
-    # BASH ---------------------------------------------------------------------
-    if [[ -x "${BREW_PREFIX}/bin/bash" ]]; then
-        SHELL="${BREW_PREFIX}/bin/bash";
-        export SHELL;
-    fi
 
-    # BASH Completion ----------------------------------------------------------
-    # shellcheck source=/dev/null
-    [[ -f "${BREW_PREFIX}/etc/bash_completion" ]] && source "${BREW_PREFIX}/etc/bash_completion";
+  # BASH -----------------------------------------------------------------------
+
+  if [[ -x "$(brew --prefix bash)" ]]; then
+    SHELL="$(brew --prefix bash)";
+    export SHELL;
+  fi
+
+  # Bash-Completion ------------------------------------------------------------
+
+  BREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh";
+  fi
 fi
 
-# iTerm Integration ------------------------------------------------------------
-# shellcheck source=/dev/null
-[[ -x "${HOME}/.iterm2_shell_integration.bash" ]] && source "${HOME}/.iterm2_shell_integration.bash";
+# FZF --------------------------------------------------------------------------
 
+if [[ -x "$(command -v fzf)" ]]; then
+  eval "$(fzf --bash)"
+fi
+
+# DIRENV -----------------------------------------------------------------------
+
+if [[ -x "$(command -v direnv)" ]]; then
+  eval "$(direnv hook bash)"
+fi
 
 #===============================================================================
-# PROMPT LOOK
+# PLUGINS
 #===============================================================================
 
 # BASH_POWERLINE ---------------------------------------------------------------
-# shellcheck source=/dev/null
-[[ -f "${DOTFILE_DIR}/bin/shell_prompt.sh" ]] && source "${DOTFILE_DIR}/bin/shell_prompt.sh";
 
-# FZF --------------------------------------------------------------------------
-# shellcheck source=/dev/null
-[[ -f "${HOME}/.fzf.bash" ]] || source "${HOME}/.fzf.bash";
+if [[ -f "${DOTFILES}/bin/shell_prompt.sh" ]]; then
+  source "${DOTFILES}/bin/shell_prompt.sh";
+fi
 
-# GNUpg ------------------------------------------------------------------------
-PATH="/usr/local/opt/gnupg/libexec/gpgbin:${PATH}"
 
-#===============================================================================
-# DOTENV LOAD
-#===============================================================================
+# Git-Town ---------------------------------------------------------------------
 
-eval "$(direnv hook bash)"
+[[ -x "$(command -v git-town)" ]] && source <(git-town completions zsh)
 
-. "$HOME/.cargo/env"

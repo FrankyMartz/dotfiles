@@ -127,9 +127,13 @@ set cpoptions+=d    " Use tags relative to CWD
 "set clipboard+=unnamedplus
 
 " let g:python_host_prog='/usr/bin/python'
-let g:python3_host_prog='/opt/homebrew/bin/python3'
+" let g:python3_host_prog='/opt/homebrew/bin/python3'
+let g:python3_host_prog='/opt/homebrew/opt/python'
 " Direct Neovim to NPM 'neovim' package install
-let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
+" let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
+if executable('volta')
+  let g:node_host_prog = trim(system("volta which neovim-node-host"))
+endif
 let g:loaded_perl_provider=0
 
 " Enable Project Based Configuration
@@ -931,7 +935,10 @@ augroup END
 " Coc {{{
 " let g:coc_enabled=0
 let g:coc_force_debug=0 " Make sure COC uses compiled code
-let g:coc_node_path = '/opt/homebrew/bin/node'
+
+if executable('volta')
+  let g:coc_node_path = trim(system("volta which node"))
+endif
 " let g:coc_force_debug=1
 
 " Always show the signcolumn, otherwise it would shift the text each time
@@ -1066,17 +1073,17 @@ inoremap <C-c> <Esc><Esc>
 " no select by `"suggest.noselect": true` in your configuration file.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" inoremap <silent><expr> <TAB>
+      " \ coc#pum#visible() ? coc#pum#next(1) :
+      " \ CheckBackspace() ? "\<Tab>" :
+      " \ coc#refresh()
+" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              " \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use <c-space> to trigger completion.
 if has('nvim')
@@ -1267,7 +1274,7 @@ let g:lt_quickfix_list_toggle_map = '<leader>qq'
 let g:mkdp_auto_start=0
 let g:mkdp_auto_close=1
 let g:mkdp_refresh_slow=0
-nnoremap <C-p> :MarkdownPreview<cr>
+nnoremap <C-p> :MarkdownPreviewToggle<cr>
 " }}}
 
 " NERDCommenter {{{
@@ -1670,7 +1677,7 @@ function! s:get_project_name()
 endfunction
 
 let g:startify_lists=[
-  \ { 'type': 'files',      'header': ['   ﮟ  GLOBAL: MRU']                },
+  \ { 'type': 'files',      'header': ['     GLOBAL: MRU']                },
   \ { 'type': 'dir',        'header': [s:get_project_name() . ': MRU']  },
   \ { 'type': 'sessions',   'header': ['   Sessions']                   },
   \ { 'type': 'bookmarks',  'header': ['   Bookmarks']                  },
@@ -1680,7 +1687,7 @@ let g:startify_lists=[
 if s:isGitRepository
   call add(
     \ g:startify_lists,
-    \ { 'type': function('s:list_commits'), 'header': ['     Commits'] }
+    \ { 'type': function('s:list_commits'), 'header': ['     Commits'] }
   \ )
 endif
 
@@ -1752,8 +1759,8 @@ let g:vista_echo_cursor_strategy='both'
 " => Color Scheme {{{
 "-------------------------------------------------------------------------------
 " airline doesn't behave when set before Vundle:Config
-let s:colorSchemeLight='solarized8'
-" let s:colorSchemeLight='rose-pine'
+" let s:colorSchemeLight='solarized8'
+let s:colorSchemeLight='rose-pine'
 " let s:colorSchemeDark='OceanicNext'
 " let s:colorSchemeDark='base16-materia'
 let s:colorSchemeDark='rose-pine-moon'

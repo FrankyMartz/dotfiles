@@ -72,5 +72,6 @@
       "filetypes": ["sql", "mysql"]
      }
   },
-  "svelte.enable-ts-plugin": false
+  "svelte.enable-ts-plugin": false,
+  "snippets.ultisnips.pythonPrompt": false
 }

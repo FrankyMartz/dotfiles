@@ -5,6 +5,7 @@
 # Version:  1.0.0
 ################################################################################
 
+.DS_Store
 bin/
 NuGet/
 
@@ -24,6 +25,7 @@ nvim/prisma
 nvim/pry
 nvim/spell
 nvim/tmp
+nvim/yarn
 
 # Environment
 .env
