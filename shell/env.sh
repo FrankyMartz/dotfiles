@@ -8,6 +8,9 @@
 
 export LANG=en_US.UTF-8;
 
+autoload -Uz compinit;
+compinit;
+
 # ------------------------------------------------------------------------------
 # PATH: Default
 # ------------------------------------------------------------------------------
@@ -129,3 +132,12 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export PATH="$PATH:$ANDROID_HOME/platform-tools"
   export PATH="$PATH:$ANDROID_HOME/cmdline-tools/10.0/bin"
 fi
+
+#===============================================================================
+# Tools
+#===============================================================================
+
+if [[ -x "$(command -v ngrok)" ]]; then
+  eval "$(ngrok completion)"
+fi
+

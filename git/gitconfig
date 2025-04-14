@@ -7,7 +7,7 @@
 ################################################################################
 [user]
   name = Franky Martinez
-  email = FrankyMartz@gmail.com
+  email = FrankyMartz@users.noreply.github.com
 
 [core]
   autocrlf = input
@@ -194,6 +194,12 @@
   default = simple
   followTags = true
 
+[fetch]
+	prune = true
+
+[pull]
+	rebase = merges
+
 [grep]
   lineNumber = true
 
@@ -201,11 +207,6 @@
   clean = git media clean %f
   smudge = git media smudge %f
   required = true
-
-;[branch]
-    ;autosetuprebase = always
-[branch "root"]
-  mergeoptions = --no-ff  # ensures that all merges into root create a merge commit
 
 # Allow local customizations in the .gitconfig_local file
 [include]

@@ -26,7 +26,7 @@
 "===============================================================================
 "=> General {{{
 "-------------------------------------------------------------------------------
-set encoding=utf-8
+" set encoding=utf-8
 scriptencoding=utf-8
 " let &shell='/usr/bin/env zsh --login'
 
@@ -128,11 +128,13 @@ set cpoptions+=d    " Use tags relative to CWD
 
 " let g:python_host_prog='/usr/bin/python'
 " let g:python3_host_prog='/opt/homebrew/bin/python3'
-let g:python3_host_prog='/opt/homebrew/opt/python'
+" let g:python3_host_prog='/opt/homebrew/opt/python'
+let g:python3_host_prog='/usr/bin/python3'
 " Direct Neovim to NPM 'neovim' package install
 " let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
 if executable('volta')
   let g:node_host_prog = trim(system("volta which neovim-node-host"))
+  " let g:node_host_prog=trim(system("\"$(volta which npm)\" root -g")).'/neovim/bin/cli.js'
 endif
 let g:loaded_perl_provider=0
 
@@ -676,7 +678,7 @@ command! FormatJSON :%!python -m json.tool
 "-------------------------------------------------------------------------------
 let s:tempDir=s:getNeovimTempDir()
 
-set termencoding=utf-8          " Encoding used for the terminal
+" set termencoding=utf-8          " Encoding used for the terminal
 set fileformats=unix
 set fileformat=unix
 set sessionoptions-=options     " Do not save options in mksession
@@ -943,12 +945,13 @@ endif
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
+" if has("patch-8.1.1564")
+  " " Recently vim can merge signcolumn and number column into one
+  " set signcolumn=number
+" else
+  " set signcolumn=yes
+" endif
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -988,6 +991,7 @@ let g:coc_global_extensions=[
   \ 'coc-highlight',
   \ 'coc-html',
   \ 'coc-json',
+  \ 'coc-kotlin',
   \ 'coc-lit-html',
   \ 'coc-lua',
   \ 'coc-omnisharp',
@@ -1018,12 +1022,12 @@ let g:coc_global_extensions=[
 
 " Coc : Helper-Functions =======================================================
 
-function! s:CheckBackspace() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-function! s:showDocumentation()
+function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
@@ -1068,24 +1072,23 @@ nmap <leader>cl  <Plug>(coc-codelens-action)
 
 inoremap <C-c> <Esc><Esc>
 
-" Use tab for trigger completion with characters ahead and navigate.
+" Use tab for trigger completion with characters ahead and navigate
 " NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file.
+" no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-" inoremap <silent><expr> <TAB>
-      " \ coc#pum#visible() ? coc#pum#next(1) :
-      " \ CheckBackspace() ? "\<Tab>" :
-      " \ coc#refresh()
-" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice.
-" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              " \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use <c-space> to trigger completion.
+" Use <c-space> to trigger completion
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
@@ -1146,14 +1149,24 @@ nnoremap <silent> K :call s:showDocumentation()<CR>
 
 augroup plug_coc
    autocmd!
-  " au! CompleteDone * if pumvisible() == 0 | pclose | endif
-  " Highlight the symbol and its references when holding the cursor.
+  " Highlight the symbol and its references when holding the cursor
   autocmd CursorHold * silent call CocActionAsync('highlight')
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
+
+" Remap <C-f> and <C-b> to scroll float windows/popups
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
 " }}}
 
 " DelimitMate {{{
@@ -1249,20 +1262,6 @@ let g:indentLine_setConceal = 1
 let g:indentLine_setColors=0
 let g:indentLine_showFirstIndentLevel = 1
 nnoremap <leader>ti :IndentLinesToggle<CR>
-" }}}
-
-" javascript-libraries-syntax {{{
-" ex. local .nvimrc
-" autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
-" autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
-" autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 1
-" autocmd BufReadPre *.js let b:javascript_lib_use_prelude = 0
-" autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 0
-let g:used_javascript_libs=join([
-  \ 'jquery',
-  \ 'requirejs',
-  \ 'underscore',
-\ ], ',')
 " }}}
 
 " ListToggle {{{
@@ -1531,22 +1530,6 @@ augroup plug_graphql
 augroup END
 " }}}
 
-" vim-javascript {{{
-let g:javascript_plugin_jsdoc=1
-let g:javascript_plugin_ngdoc=1
-let g:javascript_plugin_flow=1
-let g:javascript_conceal_function='ƒ'
-let g:javascript_conceal_null='ø'
-let g:javascript_conceal_this='@'
-let g:javascript_conceal_return='⇚'
-let g:javascript_conceal_undefined='¿'
-let g:javascript_conceal_NaN='ℕ'
-let g:javascript_conceal_prototype='¶'
-let g:javascript_conceal_static='•'
-let g:javascript_conceal_super='Ω'
-let g:javascript_conceal_arrow_function='⇒'
-" }}}
-
 " vim-jsdoc {{{
 nmap <leader>jsd :JsDoc<CR>
 let g:jsdoc_additional_descriptions=1
@@ -1556,22 +1539,6 @@ let g:jsdoc_access_descriptions=1
 let g:jsdoc_underscore_private=1
 let g:jsdoc_param_description_separator=' - '
 let g:jsdoc_enable_es6=1
-" }}}
-
-" vim-jsx {{{
-let g:jsx_ext_required=0 " Allow JSX in normal JS files
-" }}}
-
-" vim-jsx-pretty {{{
-let g:vim_jsx_pretty_highlight_close_tag=1
-let g:vim_jsx_pretty_colorful_config=1
-let g:vim_jsx_pretty_template_tags=[
-  \ 'html',
-  \ 'jsx',
-  \ 'tsx',
-  \ 'typescriptreact',
-  \ 'javascriptreact',
-\ ]
 " }}}
 
 " vim-move {{{
@@ -1584,14 +1551,6 @@ let g:move_key_modifier='C-A'
 
 " vim-nerdtree-syntax-highlight {{{
 let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact match
-" }}}
-
-" vim-polyglot {{{
-" let g:polyglot_disabled=[
-  " \ 'typescript',
-  " \ 'typescriptreact',
-" \ ]
-" \ 'csv',
 " }}}
 
 " vim-signature {{{
@@ -1736,10 +1695,6 @@ augroup END
 " vim-unimpaired {{{
 noremap <silent>[og :set scrollbind cursorbind<CR>
 noremap <silent>]og :set noscrollbind nocursorbind<CR>
-" }}}
-
-" YATS {{{
-let g:yats_host_keyword=1
 " }}}
 
 " Vista {{{

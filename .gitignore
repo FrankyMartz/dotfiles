@@ -33,3 +33,6 @@ nvim/yarn
 # ZSHELL
 zsh/zsh_plugins.sh
 
+
+## IDE
+.idea/

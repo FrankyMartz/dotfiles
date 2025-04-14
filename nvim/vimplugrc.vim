@@ -56,8 +56,8 @@ Plug 'Valloric/ListToggle'
 " Plug 'jsfaint/coc-neoinclude'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'liuchengxu/vista.vim'   " TagBar Alternative
-  Plug 'jackguo380/vim-lsp-cxx-highlight'
   Plug 'antoinemadec/coc-fzf'
+  " Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Editing
 Plug 'mileszs/ack.vim'
@@ -116,9 +116,6 @@ Plug 'vim-scripts/apachestyle', { 'for': 'log' }
 
 " >> HTML
 Plug 'tpope/vim-ragtag'
-
-" >> CSS
-Plug 'hail2u/vim-css3-syntax', { 'for': ['css', 'scss', 'less', 'stylus'] }
 
 " >> JavaScript
 Plug 'heavenshell/vim-jsdoc', plugForJavaScriptTypeScript
