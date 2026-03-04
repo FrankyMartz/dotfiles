@@ -8,9 +8,6 @@
 
 export LANG=en_US.UTF-8;
 
-autoload -Uz compinit;
-compinit;
-
 # ------------------------------------------------------------------------------
 # PATH: Default
 # ------------------------------------------------------------------------------
@@ -25,7 +22,7 @@ export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin"
 # Homebrew
 # ------------------------------------------------------------------------------
 
-if [[ -x "/opt/homebrew/bin/brew" ]]; then
+if [[ -x "/opt/homebrew/bin/brew" ]]  && ! command -v brew &>/dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
@@ -78,6 +75,11 @@ if [[ -x "$(command -v pyenv)" ]]; then
   export PATH="${PYENV_ROOT}/bin:${PATH}"
   export PYTHON_CONFIGURE_OPTS="--enable-shared";
   eval "$(pyenv init --path)";
+  if [[ -n "$(brew list | grep 'pyenv-virtualenv')" ]]; then
+    eval "$(pyenv virtualenv-init -)"
+  fi
+  # PIPX
+  export PATH="$PATH:/Users/frankymartz/.local/bin"
 fi
 
 # GO-LANG ----------------------------------------------------------------------
@@ -92,12 +94,16 @@ fi
 # RUBY -------------------------------------------------------------------------
 
 if [[ -x "$(command -v rbenv)" ]]; then
-  eval "$(rbenv init -)";
+  if [[ "$0" == *zsh ]]; then
+    eval "$(rbenv init - --no-rehash zsh)"
+  else
+    eval "$(rbenv init -)";
+  fi
 fi
 
 # NodeJS -----------------------------------------------------------------------
 
-if [[ -x "$(brew --prefix volta)" ]]; then
+if [[ -x "$(command -v volta)" ]]; then
   export VOLTA_HOME="${HOME}/.volta";
   export PATH="${VOLTA_HOME}/bin:${PATH}"
   unset _VOLTA_TOOL_RECURSION
@@ -105,7 +111,7 @@ fi
 
 # Rust -------------------------------------------------------------------------
 
-if [[ -x "$(command -v rust)" ]];then
+if [[ -x "$(command -v rustc)" ]];then
   export PATH="${HOME}/.cargo/bin:${PATH}";
 fi
 
@@ -118,7 +124,7 @@ fi
 
 # PostgreSQL -------------------------------------------------------------------
 
-if [[ -x "$(brew --prefix libpq)/bin" ]]; then
+if [[ -d "$(brew --prefix libpq)/bin" ]]; then
   export PATH="${PATH}:/opt/homebrew/opt/libpq/bin"
 fi
 
@@ -137,7 +143,15 @@ fi
 # Tools
 #===============================================================================
 
+# NGROK ------------------------------------------------------------------------
+
 if [[ -x "$(command -v ngrok)" ]]; then
   eval "$(ngrok completion)"
+fi
+
+# Jetbrains --------------------------------------------------------------------
+
+if [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]]; then
+  export PATH="$PATH:/Users/frankymartz/Library/Application Support/JetBrains/Toolbox/scripts"
 fi
 

@@ -5,8 +5,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-[[ -f "${HOME}/.dotfiles/shell/zsh/zshrc.zsh" ]] && source "${HOME}/.dotfiles/shell/zsh/zshrc.zsh"
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -75,6 +73,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Add wisely, as too many plugins slow down shell startup.
 
 plugins=(
+  # asdf
 	bookmark
 	common-aliases
 	compleat
@@ -85,9 +84,15 @@ plugins=(
 	git-extras
 	httpie
 	vi-mode
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+	zsh-autosuggestions
+	zsh-syntax-highlighting
 	git
 )
 
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/frankymartz/.docker/completions $fpath)
+# End of Docker CLI completions
+
 source $ZSH/oh-my-zsh.sh
+
+[[ -f "${HOME}/.dotfiles/shell/zsh/zshrc.zsh" ]] && source "${HOME}/.dotfiles/shell/zsh/zshrc.zsh"

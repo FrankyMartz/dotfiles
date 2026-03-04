@@ -19,16 +19,19 @@ function __GET_LESS_THEME () {
         echo "solarized-dark";
     fi
 }
-LESSOPEN="| $(command -v highlight) %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
-export LESSOPEN
 # export LESS=" -R";
 alias less='less -m -N -g -i -J --line-numbers --underline-special';
 alias more='less';
 
 alias g='git';
 
-# Use "highlight" in place of "cat"
-alias cat="$(command -v highlight) $1 --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)";
+# Use "highlight" for syntax-colored output — only if installed
+if command -v highlight >/dev/null 2>&1; then
+  export LESSOPEN="| highlight %s --out-format xterm256 --line-numbers --quiet --force --style $(__GET_LESS_THEME)"
+  function cat() {
+    highlight --out-format xterm256 --line-numbers --quiet --force --style "$(__GET_LESS_THEME)" "$@"
+  }
+fi
 
 alias la='ls -lAFh --color --group-directories-first'; # color-mode
 alias lad='ls -dlAh --color */'; # color-mode

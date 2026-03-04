@@ -130,11 +130,12 @@ set cpoptions+=d    " Use tags relative to CWD
 " let g:python3_host_prog='/opt/homebrew/bin/python3'
 " let g:python3_host_prog='/opt/homebrew/opt/python'
 let g:python3_host_prog='/usr/bin/python3'
+
 " Direct Neovim to NPM 'neovim' package install
 " let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
 if executable('volta')
-  let g:node_host_prog = trim(system("volta which neovim-node-host"))
   " let g:node_host_prog=trim(system("\"$(volta which npm)\" root -g")).'/neovim/bin/cli.js'
+  let g:node_host_prog=trim(system("\"$(volta which npm)\" root -g"))
 endif
 let g:loaded_perl_provider=0
 
@@ -976,7 +977,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 let g:markdown_fenced_languages=['css', 'js=javascript']
 
 " Coc : Extension ==============================================================
-" \ 'coc-ccls',
+
 let g:coc_global_extensions=[
   \ 'coc-actions',
   \ 'coc-angular',
@@ -1012,13 +1013,12 @@ let g:coc_global_extensions=[
   \ 'coc-tailwindcss',
   \ 'coc-texlab',
   \ 'coc-tsserver',
-  \ 'coc-vetur',
+  \ '@yaegassy/coc-volar',
   \ 'coc-vimlsp',
   \ 'coc-vimtex',
   \ 'coc-xml',
   \ 'coc-yaml',
 \ ]
-" \ 'coc-spell-checker',
 
 " Coc : Helper-Functions =======================================================
 
@@ -1322,7 +1322,7 @@ augroup END
 " let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
 let g:NERDTreeGitStatusUseNerdFonts=1 " you should install nerdfonts by yourself. default: 0
 let g:NERDTreeGitStatusShowClean=1 " default: 0
-let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
+" let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
 " let g:NERDTreeGitStatusDirDirtyOnly=0
 " let g:NERDTreeGitStatusUntrackedFilesMode='all' " a heave feature too. default: normal
 " let g:NERDTreeGitStatusGitBinPath='/usr/local/bin/git'

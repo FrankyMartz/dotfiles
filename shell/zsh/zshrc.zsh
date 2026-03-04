@@ -41,10 +41,9 @@ fi
 
 if [[ -x "$(command -v brew)" ]]; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-  [[ -x "$(brew --prefix)/share/zsh-completions" ]] && FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-  [[ -x "~/.rbenv/completions" ]] && FPATH=~/.rbenv/completions:"$FPATH"
-  autoload -Uz compinit
-  compinit
+  [[ -d "$(brew --prefix)/share/zsh-completions" ]] && FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  [[ -d "$HOME/.rbenv/completions" ]] && FPATH="$HOME/.rbenv/completions:$FPATH"
+  # compinit is called by OMZ — no need to call it here
 fi
 
 #===============================================================================

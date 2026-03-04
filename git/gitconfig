@@ -8,6 +8,7 @@
 [user]
   name = Franky Martinez
   email = FrankyMartz@users.noreply.github.com
+  signingkey = 3D519E99424E57EE
 
 [core]
   autocrlf = input
@@ -233,3 +234,6 @@
 
 [init]
 	defaultBranch = main
+
+[tag]
+	gpgsign = false
