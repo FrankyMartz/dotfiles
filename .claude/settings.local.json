@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rbenv init:*)",
+      "Bash(ngrok completion:*)",
+      "Bash(pyenv virtualenv-init:*)",
+      "Bash(pyenv init:*)"
+    ]
+  }
+}

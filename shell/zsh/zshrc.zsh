@@ -14,8 +14,6 @@ DOTFILES="${HOME}/.dotfiles"
 # COMMON
 #===============================================================================
 
-export LANG=en_US.UTF-8
-
 [[ -x "${DOTFILES}/shell/alias.sh" ]] && source "${DOTFILES}/shell/alias.sh";
 
 #===============================================================================
@@ -35,15 +33,6 @@ unsetopt beep
 
 if [[ -x "$(command -v direnv)" ]]; then
   eval "$(direnv hook zsh)"
-fi
-
-# ZSH-Completions --------------------------------------------------------------
-
-if [[ -x "$(command -v brew)" ]]; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-  [[ -d "$(brew --prefix)/share/zsh-completions" ]] && FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-  [[ -d "$HOME/.rbenv/completions" ]] && FPATH="$HOME/.rbenv/completions:$FPATH"
-  # compinit is called by OMZ — no need to call it here
 fi
 
 #===============================================================================
@@ -86,4 +75,10 @@ fi
 # Git-Town ---------------------------------------------------------------------
 
 [[ -x "$(command -v git-town)" ]] && source <(git-town completions zsh)
+
+# NGROK ------------------------------------------------------------------------
+
+if [[ -x "$(command -v ngrok)" ]]; then
+  eval "$(ngrok completion)"
+fi
 

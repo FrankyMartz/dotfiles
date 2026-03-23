@@ -89,9 +89,15 @@ plugins=(
 	git
 )
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+# ZSH-Completions (must be before compinit/oh-my-zsh)
+if [[ -x "$(command -v brew)" ]]; then
+  FPATH=${HOMEBREW_PREFIX}/share/zsh/site-functions:$FPATH
+  [[ -d "${HOMEBREW_PREFIX}/share/zsh-completions" ]] && FPATH=${HOMEBREW_PREFIX}/share/zsh-completions:$FPATH
+  [[ -d "$HOME/.rbenv/completions" ]] && FPATH="$HOME/.rbenv/completions:$FPATH"
+fi
+
+# Docker CLI completions
 fpath=(/Users/frankymartz/.docker/completions $fpath)
-# End of Docker CLI completions
 
 source $ZSH/oh-my-zsh.sh
 

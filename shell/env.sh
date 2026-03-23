@@ -69,13 +69,13 @@ export IRCSERVER="http://chat.freenode.net";
 # PYTHON -----------------------------------------------------------------------
 
 if [[ -x "$(command -v pyenv)" ]]; then
-  PYENV_ROOT="$(brew --prefix pyenv)";
+  PYENV_ROOT="${HOMEBREW_PREFIX}/opt/pyenv";
   export PYENV_ROOT
   # export PYENV_ROOT="${HOME}/.pyenv";
   export PATH="${PYENV_ROOT}/bin:${PATH}"
   export PYTHON_CONFIGURE_OPTS="--enable-shared";
   eval "$(pyenv init --path)";
-  if [[ -n "$(brew list | grep 'pyenv-virtualenv')" ]]; then
+  if [[ -d "${HOMEBREW_PREFIX}/opt/pyenv-virtualenv" ]]; then
     eval "$(pyenv virtualenv-init -)"
   fi
   # PIPX
@@ -85,7 +85,7 @@ fi
 # GO-LANG ----------------------------------------------------------------------
 
 if [[ -x "$(command -v go)" ]]; then
-  GOROOT="$(brew --prefix go)/libexec";
+  GOROOT="${HOMEBREW_PREFIX}/opt/go/libexec";
   export GOROOT;
   export GOPATH="${HOME}/go";
   export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
@@ -124,7 +124,7 @@ fi
 
 # PostgreSQL -------------------------------------------------------------------
 
-if [[ -d "$(brew --prefix libpq)/bin" ]]; then
+if [[ -d "${HOMEBREW_PREFIX}/opt/libpq/bin" ]]; then
   export PATH="${PATH}:/opt/homebrew/opt/libpq/bin"
 fi
 
@@ -142,12 +142,6 @@ fi
 #===============================================================================
 # Tools
 #===============================================================================
-
-# NGROK ------------------------------------------------------------------------
-
-if [[ -x "$(command -v ngrok)" ]]; then
-  eval "$(ngrok completion)"
-fi
 
 # Jetbrains --------------------------------------------------------------------
 
