@@ -22,8 +22,20 @@ export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin"
 # Homebrew
 # ------------------------------------------------------------------------------
 
-if [[ -x "/opt/homebrew/bin/brew" ]]  && ! command -v brew &>/dev/null; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+if ! command -v brew &>/dev/null; then
+  for _brew_path in /opt/homebrew/bin/brew /usr/local/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
+    if [[ -x "${_brew_path}" ]]; then
+      eval "$("${_brew_path}" shellenv)"
+      break
+    fi
+  done
+  unset _brew_path
+fi
+
+# Ensure Homebrew bin/sbin take priority over system paths.
+# brew shellenv calls path_helper which reorders PATH, putting /usr/bin first.
+if [[ -n "${HOMEBREW_PREFIX}" ]]; then
+  export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH}"
 fi
 
 # ------------------------------------------------------------------------------
@@ -36,8 +48,12 @@ fi
 
 # GNU --------------------------------------------------------------------------
 
-if [[ -x "$(command -v brew)" ]]; then
-  export MANPATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:$MANPATH"
+if [[ -n "${HOMEBREW_PREFIX}" ]]; then
+  _gnubin="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin"
+  _gnuman="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman"
+  [[ -d "${_gnubin}" ]] && export PATH="${_gnubin}:${PATH}"
+  [[ -d "${_gnuman}" ]] && export MANPATH="${_gnuman}:${MANPATH}"
+  unset _gnubin _gnuman
 fi
 
 # BAT --------------------------------------------------------------------------
@@ -79,7 +95,7 @@ if [[ -x "$(command -v pyenv)" ]]; then
     eval "$(pyenv virtualenv-init -)"
   fi
   # PIPX
-  export PATH="$PATH:/Users/frankymartz/.local/bin"
+  export PATH="$PATH:${HOME}/.local/bin"
 fi
 
 # GO-LANG ----------------------------------------------------------------------
@@ -125,7 +141,7 @@ fi
 # PostgreSQL -------------------------------------------------------------------
 
 if [[ -d "${HOMEBREW_PREFIX}/opt/libpq/bin" ]]; then
-  export PATH="${PATH}:/opt/homebrew/opt/libpq/bin"
+  export PATH="${PATH}:${HOMEBREW_PREFIX}/opt/libpq/bin"
 fi
 
 # Android ----------------------------------------------------------------------
@@ -146,6 +162,6 @@ fi
 # Jetbrains --------------------------------------------------------------------
 
 if [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]]; then
-  export PATH="$PATH:/Users/frankymartz/Library/Application Support/JetBrains/Toolbox/scripts"
+  export PATH="$PATH:${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
 fi
 

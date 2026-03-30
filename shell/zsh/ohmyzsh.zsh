@@ -97,7 +97,7 @@ if [[ -x "$(command -v brew)" ]]; then
 fi
 
 # Docker CLI completions
-fpath=(/Users/frankymartz/.docker/completions $fpath)
+fpath=("${HOME}/.docker/completions" $fpath)
 
 source $ZSH/oh-my-zsh.sh
 

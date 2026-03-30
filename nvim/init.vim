@@ -1716,9 +1716,9 @@ let g:vista_echo_cursor_strategy='both'
 " airline doesn't behave when set before Vundle:Config
 " let s:colorSchemeLight='solarized8'
 let s:colorSchemeLight='rose-pine'
-" let s:colorSchemeDark='OceanicNext'
+let s:colorSchemeDark='OceanicNext'
 " let s:colorSchemeDark='base16-materia'
-let s:colorSchemeDark='rose-pine-moon'
+" let s:colorSchemeDark='rose-pine-moon'
 
 " let g:airline_theme='solarized'
 let g:solarized_visibility='normal'

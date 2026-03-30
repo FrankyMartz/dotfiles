@@ -140,7 +140,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'lifepillar/vim-solarized8'
 Plug 'base16-project/base16-vim'
 " Plug 'icymind/NeoSolarized'
-" Plug 'mhartington/oceanic-next'
+Plug 'mhartington/oceanic-next'
 Plug 'rose-pine/neovim', { 'as': 'rose-pine' }
 
 
