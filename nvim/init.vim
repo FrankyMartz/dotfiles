@@ -26,17 +26,10 @@
 "===============================================================================
 "=> General {{{
 "-------------------------------------------------------------------------------
-" set encoding=utf-8
 scriptencoding=utf-8
-" let &shell='/usr/bin/env zsh --login'
 
-if has('autocmd')
-  filetype plugin indent on
-endif
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable                 " Enable Syntax Highlighting
-  " syntax on                   " Enable Syntax Highlighting–Allow VIM override
-endif
+filetype plugin indent on
+syntax enable
 
 set autoread                    " Automatically read externally changes to file
 set autowriteall                " Automatically write to file if modified
@@ -56,46 +49,22 @@ set switchbuf=useopen           " Jump to specified buffer when jumping buffers
 let mapleader=','
 let maplocalleader=','
 
-" GUI nvim
-set guioptions-=T
-set guioptions-=l
-set guioptions-=L
-set guioptions-=r
-set guioptions-=R
-
-if has('mouse') | set mouse=a | endif
-
+set mouse=a
 set cursorline                  " Show me my position I'm blind
 set nocursorbind                " Prevent scroll bind (2 windows w/ same buffer)
 set modelines=0                 " Prevent security exploit. Disable
-set showcmd                     " Show (partial) command at bottom of buffer
 set title                       " Set window title
-set ruler                       " Show line/column position number
 set number                      " Show line number in front of each line
 set cmdheight=1                 " Set command bar to 1 line
-set complete-=i                 " Disable Included Files autocomplete Search
-set laststatus=2                " Always display the statusline in all windows
-set display+=lastline           " Show as much of lastline of text as possible
 set updatetime=300              " ms to update SWAP files
 set shortmess+=c                " No ins completion menu give messages
 
-set regexpengine=0              " [0, automatic], [1, oldengine], [2 NFA engine]
 set maxmempattern=5000          " Max Mem (in KB) allowed for pattern matching
 
-if !&scrolloff
-  set scrolloff=1               " Number of lines to keep above/below cursor
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-
+set scrolloff=1                 " Number of lines to keep above/below cursor
+set sidescrolloff=5
 
 set notimeout
-if !has('nvim') && &ttimeoutlen == -1
-  " Timeout on key codes but not mappings. Make terminal nvim work sanely
-  set ttimeout
-  set ttimeoutlen=100
-endif
 
 set lazyredraw
 set visualbell                  " NO bell please
@@ -119,22 +88,12 @@ set wildignore+=migrations                          " Django migrations
 set wildignore+=*.pyc                               " Python byte code
 set wildignore+=*.orig                              " Merge resolution files
 
-set backspace=indent,eol,start  " Allow backspace over everything in insert mode
-
 set cpoptions+=d    " Use tags relative to CWD
 
-" Always use system clipboard for ALL operations
-"set clipboard+=unnamedplus
-
-" let g:python_host_prog='/usr/bin/python'
-" let g:python3_host_prog='/opt/homebrew/bin/python3'
-" let g:python3_host_prog='/opt/homebrew/opt/python'
+" let g:python3_host_prog=exepath('python3')
 let g:python3_host_prog='/usr/bin/python3'
 
-" Direct Neovim to NPM 'neovim' package install
-" let g:node_host_prog=systemlist('/opt/homebrew/bin/npm root -g')[0].'/neovim/bin/cli.js'
 if executable('volta')
-  " let g:node_host_prog=trim(system("\"$(volta which npm)\" root -g")).'/neovim/bin/cli.js'
   let g:node_host_prog=trim(system("\"$(volta which npm)\" root -g"))
 endif
 let g:loaded_perl_provider=0
@@ -151,9 +110,7 @@ set secure
 " => Text, Tab and Indent {{{
 "-------------------------------------------------------------------------------
 set formatoptions=qrn1j         " Pasted Content Handling
-set autoindent                  " Always set autoindenting on
 set smartindent                 " Smart autoindenting when starting on newline
-set smarttab                    " Smart autoindent w/shiftwidth or {soft}tabstop
 set shiftround                  " Round indent to multiple of 'shiftwidth'
 set nowrap                      " Don't wrap text to textwidth
 set linebreak                   " Don't break words in two if wrap is enabled
@@ -184,7 +141,7 @@ nnoremap <c-l> <c-w>l
 
 " Buffer Horizontal Navigation
 nnoremap <ScrollWheelLeft> 20zh
-nnoremap <ScrollWheelRigth> 20zl
+nnoremap <ScrollWheelRight> 20zl
 inoremap <ScrollWheelLeft> <Left>
 inoremap <ScrollWheelRight> <Right>
 nnoremap <M-h> 20zh
@@ -250,17 +207,8 @@ else
   nnoremap <silent> <leader><space> :noh<cr>
 endif
 
-" Strip all trailing whitespace in current buffer
-" nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
-
 " Terminal Commands
-if exists(':tnoremap')  " Neovim
-  tnoremap <Leader>e <C-\><C-n>
-endif
-
-" Location List - Open/Close
-" noremap <silent><leader>eo :lopen<cr>
-" noremap <silent><leader>ec :lclose<cr>
+tnoremap <Leader>e <C-\><C-n>
 
 nnoremap <silent> <Leader>1 :call s:LoadComponentTypeFile('.ts')<CR>
 nnoremap <silent> <Leader>2 :call s:LoadComponentTypeFile('.scss')<CR>
@@ -275,24 +223,15 @@ nnoremap <silent> <Leader>3 :call s:LoadComponentTypeFile('.html')<CR>
 "-------------------------------------------------------------------------------
 set ignorecase              " Ignore case when searching
 set smartcase               " Make case-sensitive if has uppercase char
-set incsearch               " Show search as you type
-set hlsearch                " Highlight search items
 set gdefault                " Search/Replace 'globally' (on line) by default
 set showmatch               " Highlight closing ), >, }, ], etc...
 " Use Sane Regexes
 nnoremap / /\v
 vnoremap / /\v
 
-set runtimepath+=/opt/homebrew/opt/fzf/install
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if (
-  \ !exists('g:loaded_matchit')
-  \ && findfile('plugin/matchit.vim', &runtimepath) ==# ''
-\)
-  runtime! macros/matchit.vim
+if !empty($HOMEBREW_PREFIX)
+  let &runtimepath .= ',' . $HOMEBREW_PREFIX . '/opt/fzf'
 endif
-
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -302,13 +241,6 @@ endif
 " => FileType {{{
 "-------------------------------------------------------------------------------
 
-" Blade {{{
-augroup ft_blade
-  au!
-  au BufNewFile,BufRead *.blade setlocal filetype=blade
-augroup END
-" }}}
-
 " C {{{
 augroup ft_c
   au!
@@ -316,53 +248,16 @@ augroup ft_c
 augroup END
 " }}}
 
-" CoffeeScript {{{
-augroup ft_coffee
-  au!
-  au BufNewFile,BufRead *.coffee    setlocal filetype=coffee
-  au BufNewFile,BufRead *.js.coffee setlocal filetype=coffee
-augroup END
-" }}}
-
 " CSS, SASS, Stylus, LESS  {{{
 augroup ft_css
   au!
-  au BufNewFile,BufRead *.css   setlocal filetype=css
-  au BufNewFile,BufRead *.scss  setlocal filetype=scss
-  au BufNewFile,BufRead *.sass  setlocal filetype=sass
-  au BufNewFile,BufRead *.less  setlocal filetype=less
   au BufNewFile,BufRead *.styl  setlocal filetype=stylus
-  " au FileType css set omnifunc=csscomplete#CompleteCSS
-
   au FileType scss,sass,less,css setlocal foldmethod=marker foldmarker={,}
-  " Make {<cr> insert a pair of brackets in such a way that the cursor is
-  " correctly positioned inside of them AND the following code doesn't get
-  " unfolded.
-  " au FileType css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
-augroup END
-" }}}
-
-" Django {{{
-augroup ft_django
-  au!
-  au BufNewFile,BufRead urls.py           setlocal nowrap
-  au BufNewFile,BufRead dashboard.py      normal! zR
-  au BufNewFile,BufRead local_settings.py normal! zR
-
-  au BufNewFile,BufRead admin.py     setlocal filetype=python.django
-  au BufNewFile,BufRead urls.py      setlocal filetype=python.django
-  au BufNewFile,BufRead models.py    setlocal filetype=python.django
-  au BufNewFile,BufRead views.py     setlocal filetype=python.django
-  au BufNewFile,BufRead settings.py  setlocal filetype=python.django
-  au BufNewFile,BufRead settings.py  setlocal foldmethod=marker
-  au BufNewFile,BufRead forms.py     setlocal filetype=python.django
-  au BufNewFile,BufRead common_settings.py  setlocal filetype=python.django
-  au BufNewFile,BufRead common_settings.py  setlocal foldmethod=marker
 augroup END
 " }}}
 
 " Docker {{{
-augroup ft_dotenv
+augroup ft_docker
   au!
   au BufRead,BufNewFile *.Dockerfile setlocal filetype=Dockerfile
 augroup END
@@ -382,21 +277,6 @@ augroup ft_git
 augroup END
 " }}}
 
-" GO-Lang {{{
-augroup ft_go
-  au!
-  au BufRead,BufNewFile *.go setlocal filetype=go
-augroup END
-" }}}
-
-" Handlebars {{{
-augroup ft_handlebars
-  au!
-  au BufNewFile,BufRead *.handlebars setlocal filetype=handlebars
-  au BufNewFile,BufRead *.hbs setlocal filetype=handlebars
-augroup END
-" }}}
-
 " HTML {{{
 augroup ft_html
   au!
@@ -407,20 +287,14 @@ augroup END
 " JavaScript {{{
 augroup ft_javascript
   au!
-  au BufNewFile,BufRead *.js      setlocal filetype=javascript
-  au BufNewFile,BufRead *.jsx     setlocal filetype=javascript.jsx
   au BufNewFile,BufRead *.es6     setlocal filetype=javascript
   au BufNewFile,BufRead *.spec.js setlocal filetype=javascript.spec
-  " au FileType javascript setlocal foldmethod=marker foldmarker={,}
-  " au FileType javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
-  " au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 augroup END
 " }}}
 
 " JSON {{{
 augroup ft_json
   au!
-  au BufNewFile,BufRead *.json  setlocal filetype=json
   au BufNewFile,BufRead *.jsonp setlocal filetype=json
   au FileType json setlocal foldmethod=marker foldmarker={,}
 augroup END
@@ -429,42 +303,7 @@ augroup END
 " Markdown {{{
 augroup ft_markdown
   au!
-  au BufNewFile,BufRead *.md        setlocal filetype=markdown
-  au BufNewFile,BufRead *.markdown  setlocal filetype=markdown
   au FileType markdown setlocal wrap linebreak nolist spell
-augroup END
-" }}}
-
-" Mustache {{{
-augroup ft_mustache
-  au!
-  au BufNewFile,BufRead *.mustache setlocal filetype=mustache
-augroup END
-" }}}
-
-" Nginx {{{
-augroup ft_nginx
-  au!
-  au BufRead,BufNewFile /etc/nginx/conf/*                       setlocal ft=nginx
-  au BufRead,BufNewFile /etc/nginx/sites-available/*            setlocal ft=nginx
-  au BufRead,BufNewFile /usr/local/etc/nginx/sites-available/*  setlocal ft=nginx
-  au BufRead,BufNewFile vhost.nginx                             setlocal ft=nginx
-  au FileType nginx setlocal foldmethod=marker foldmarker={,}
-augroup END
-" }}}
-
-" PHP {{{
-augroup ft_php
-  au!
-  au BufNewFile,BufRead *.php setlocal filetype=php
-  au FileType php setlocal ts=4 sts=4 sw=4
-augroup END
-" }}}
-
-" Puppet {{{
-augroup ft_puppet
-  au!
-  au FileType puppet setlocal foldmethod=marker foldmarker={,}
 augroup END
 " }}}
 
@@ -480,18 +319,9 @@ augroup ft_python
 augroup END
 " }}}
 
-" Ruby {{{
-augroup ft_ruby
-  au!
-  au BufRead,BufNewFile Capfile setlocal filetype=ruby
-  au FileType ruby setlocal foldmethod=syntax
-augroup END
-" }}}
-
 " Text {{{
 augroup ft_text
   au!
-  au BufRead,BufNewFile *.txt setlocal filetype=text
   au FileType text setlocal spell textwidth=80 colorcolumn=1
 augroup END
 " }}}
@@ -499,8 +329,6 @@ augroup END
 " TypeScript {{{
 augroup ft_typescript
   au!
-  au BufRead,BufNewFile *.ts  setlocal filetype=typescript
-  au BufRead,BufNewFile *.tsx setlocal filetype=typescriptreact
   au FileType typescript setlocal cocu="" foldmethod=syntax
 augroup END
 " }}}
@@ -508,22 +336,13 @@ augroup END
 " SQL {{{
 augroup ft_sql
   au!
-  au BufNewFile,BufRead *.sql setlocal filetype=sql
   au FileType sql setlocal foldmethod=indent commentstring=--\ %s comments=:--
-augroup END
-" }}}
-
-" Vagrant {{{
-augroup ft_vagrant
-  au!
-  au BufNewFile,BufRead Vagrantfile setlocal filetype=ruby
 augroup END
 " }}}
 
 " Vim {{{
 augroup ft_vim
   au!
-  au BufRead,BufNewFile *.vim setlocal filetype=vim
   au FileType vim setlocal foldmethod=marker
   au FileType help setlocal textwidth=78
 augroup END
@@ -534,7 +353,6 @@ augroup ft_xml
   au!
   au BufNewFile,BufRead *.rss setlocal filetype=xml
   au FileType xml setlocal foldmethod=syntax
-  " au FileType xml setlocal foldmethod=manual
 augroup END
 " }}}
 
@@ -542,17 +360,8 @@ augroup END
 augroup ft_vimrc
   au!
   au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
-  " Disable Line Numbers in Terminal
   au TermOpen * setlocal nonumber norelativenumber
-  " Save when losing focus
-  " au FocusLost * :silent! wa
-  au BufEnter * :syntax sync fromstart
-  " Prevent Location List color column and numbers
   au FileType qf setlocal nonumber colorcolumn=
-  au BufReadPre * setlocal foldmethod=indent
-  " Automatically save folding
-  au BufWinLeave * silent! mkview
-  au BufWinEnter * silent! loadview
   au WinEnter * setlocal cursorline
   au WinLeave * setlocal nocursorline
   " Make Neovim return to same line on file reopen
@@ -578,9 +387,6 @@ set diffopt+=iwhite
 set nofoldenable    " Expand folds by default
 set foldcolumn=0    " Hide fold depth info from gutter
 
-noremap <silent>[og :set scrollbind cursorbind<CR>
-noremap <silent>]og :set noscrollbind nocursorbind<CR>
-
 "-------------------------------------------------------------------------------
 " }}}
 "-------------------------------------------------------------------------------
@@ -589,15 +395,6 @@ noremap <silent>]og :set noscrollbind nocursorbind<CR>
 " => Plug-Vim {{{
 "-------------------------------------------------------------------------------
 
-augroup plug_vim
-  au!
-  if empty(glob('~/.nvim/autoload/plug.vim'))
-    silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    au!
-    autocmd VimEnter * PlugInstall
-  endif
-augroup END
 source ~/.config/nvim/vimplugrc.vim
 
 let s:dotfileRoot=expand('$HOME/.dotfiles/nvim/tmp')
@@ -611,13 +408,6 @@ let s:isGitRepository=isdirectory(s:projectRoot . '/.git')
 "-------------------------------------------------------------------------------
 " => Helper Functions {{{
 "-------------------------------------------------------------------------------
-
-" function! NcmsTag()
-    " let randId = system('openssl rand -base64 24')
-    " let randId = substitute(randId, '\n$', '', '')
-    " return ' data-ncms-uuid="' . randId . '"'
-" endfunction
-" nnoremap <leader>nc "=NcmsTag()<cr>p<esc>
 
 function! s:getNeovimTempDir()
   if s:isGitRepository
@@ -668,7 +458,7 @@ function! s:VerifyOnBattery()
   return 0
 endfunction
 
-command! FormatJSON :%!python -m json.tool
+command! FormatJSON :%!python3 -m json.tool
 
 "-------------------------------------------------------------------------------
 " }}}
@@ -777,9 +567,6 @@ let g:airline#extensions#ctrlspace#enabled=1
 let g:airline#extensions#ctrlp#show_adjacent_modes=1
 let g:CtrlSpaceStatuslineFunction='airline#extensions#ctrlspace#statusline()'
 
-" Airline : CursorMode =========================================================
-" let g:airline#extensions#cursormode#enabled=1
-
 " Airline : Fugitive ===========================================================
 let g:airline#extensions#fugitiveline#enabled=1
 
@@ -791,10 +578,6 @@ let g:airline#extensions#branch#sha1_len=10
 let g:airline#extensions#branch#displayed_head_limit=10
 
 " Airline : Hunks ==============================================================
-let g:airline#extensions#hunks#enabled=1
-let g:airline#extensions#hunks#non_zero_only=0
-
-" Airline : Signify ============================================================
 let g:airline#extensions#hunks#enabled=1
 let g:airline#extensions#hunks#non_zero_only=0
 let g:airline#extensions#hunks#hunk_symbols=['+', '~', '-']
@@ -850,17 +633,7 @@ let g:ale_cache_executable_check_failures=1
 let g:ale_cursor_detail=0 " Use (coc.nvim) codelens
 let g:ale_completion_enabled=0 " Use coc.nvim autocomplete
 
-" let g:ale_disable_lsp=1 " Push from coc.nvim
-" let g:ale_lint_on_save=1
-" let g:ale_lint_delay=500
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_enter=1
-" let g:ale_lint_on_insert_leave=0
-" let g:ale_lint_on_filetype_changed=1
-" let g:ale_open_list=1
-" let g:ale_keep_list_window_open=0
 
-" let g:ale_echo_delay=50
 
 let g:ale_sign_error='✘'
 let g:ale_sign_warning=''
@@ -869,11 +642,8 @@ let g:ale_sign_column_always=1
 
 let g:ale_virtualtext_cursor=1
 let g:ale_virtualtext_prefix='  ' " ⌫ ﱥ                 
-" let g:ale_virtualtext_delay=50
 
 let g:ale_pattern_options={'\.env$': {'ale_enabled': 0}}
-" let g:ale_go_gometalinter_options='--fast'
-" let g:ale_javascript_eslint_options='--no-color'
 
 let g:ale_linters={
   \ 'go': ['golangci-lint', 'gofmt'],
@@ -886,8 +656,6 @@ let g:ale_linters={
 \ }
 
 let g:ale_fix_on_save=0
-" let g:ale_fix_on_save_ignore=['eslint', 'tsserver', 'standard']
-" let g:ale_fixers={}
 
 " ALE : LINTER : SQL-LINT
 " ale_linters/sql/sqllint.vim
@@ -902,12 +670,10 @@ function! AleLinterSqlLint(buffer, lines) abort
     let l:output = []
 
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
-    " echom l:match[0]
         call add(l:output, {
           \ 'lnum': l:match[1] + 0,
-          \ 'col': l:match[2] + 0,
-          \ 'type': l:match[3][0],
-          \ 'text': l:match[0],
+          \ 'type': 'E',
+          \ 'text': l:match[2],
         \})
     endfor
 
@@ -921,7 +687,6 @@ call ale#linter#Define('sql', {
   \ 'callback': 'AleLinterSqlLint',
 \})
 
-" nmap <leader>t :ALELint<cr>
 noremap <silent><leader>ek :ALEPrevious<cr>
 noremap <silent><leader>ej :ALENext<cr>
 noremap <silent><leader>el :ALELint<cr>
@@ -936,23 +701,11 @@ augroup END
 "  }}}
 
 " Coc {{{
-" let g:coc_enabled=0
-let g:coc_force_debug=0 " Make sure COC uses compiled code
-
 if executable('volta')
   let g:coc_node_path = trim(system("volta which node"))
 endif
-" let g:coc_force_debug=1
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
 set signcolumn=yes
-" if has("patch-8.1.1564")
-  " " Recently vim can merge signcolumn and number column into one
-  " set signcolumn=number
-" else
-  " set signcolumn=yes
-" endif
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -979,43 +732,29 @@ let g:markdown_fenced_languages=['css', 'js=javascript']
 " Coc : Extension ==============================================================
 
 let g:coc_global_extensions=[
-  \ 'coc-actions',
   \ 'coc-angular',
   \ 'coc-clangd',
   \ 'coc-css',
   \ 'coc-cssmodules',
-  \ 'coc-elixir',
-  \ 'coc-ember',
-  \ 'coc-fzf-preview',
   \ 'coc-go',
   \ 'coc-graphql',
   \ 'coc-highlight',
   \ 'coc-html',
   \ 'coc-json',
-  \ 'coc-kotlin',
   \ 'coc-lit-html',
   \ 'coc-lua',
-  \ 'coc-omnisharp',
-  \ 'coc-phpls',
   \ 'coc-pyright',
-  \ 'coc-python',
-  \ 'coc-r-lsp',
-  \ 'coc-rls',
   \ 'coc-rust-analyzer',
   \ 'coc-sh',
   \ 'coc-snippets',
-  \ 'coc-solargraph',
-  \ 'coc-sourcekit',
   \ 'coc-sql',
   \ 'coc-styled-components',
   \ 'coc-svelte',
   \ 'coc-svg',
   \ 'coc-tailwindcss',
-  \ 'coc-texlab',
   \ 'coc-tsserver',
   \ '@yaegassy/coc-volar',
   \ 'coc-vimlsp',
-  \ 'coc-vimtex',
   \ 'coc-xml',
   \ 'coc-yaml',
 \ ]
@@ -1036,27 +775,6 @@ function! ShowDocumentation()
 endfunction
 
 " Coc : Key-Mapping ============================================================
-"
-" Coc : Multiple Cursors -------------------------------------------------------
-
-"      ﯎ 
-" nnoremap <silent> <c-a-p> <Plug>(coc-cursors-position)
-" nnoremap <silent> <c-a-w> <Plug>(coc-cursors-word)
-" xnoremap <silent> <c-a-w> <Plug>(coc-cursors-range)
-" use normal command like `<leader>xi(`
-" nnoremap <leader>x  <Plug>(coc-cursors-operator)
-
-" xnoremap <silent> <c-a-n> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
-" nnoremap <expr> <silent> <c-a-d> <SID>select_current_word()
-" function! s:select_current_word()
-  " if !get(g:, 'coc_cursors_activated', 0)
-  " " Remove extra backslash when un-commenting
-    " return \"\<Plug>(coc-cursors-word)"
-  " endif
-  " return \"*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
-" endfunc
-
-" ------------------------------------------------------------------------------
 
 " Use `[c` and `]c` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -1089,14 +807,7 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use <c-space> to trigger completion
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Symbol renaming.
 nnoremap <leader>rn <Plug>(coc-rename)
@@ -1137,13 +848,12 @@ vnoremap <C-j> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-j>'
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-k>'
-" use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != '-1' ? '\<C-y>' : '\<C-g>u\<CR>'
 
 " Coc  : coc-actions -----------------------------------------------------------
 
 xnoremap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . visualmode()<cr>
-nnoremap <silent> K :call s:showDocumentation()<CR>
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
 " Coc  : Auto-Command ==========================================================
 
@@ -1158,14 +868,12 @@ augroup plug_coc
 augroup END
 
 " Remap <C-f> and <C-b> to scroll float windows/popups
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
+nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
 " }}}
 
@@ -1245,8 +953,8 @@ endif
 " Goyo {{{
 augroup plug_goyo
   au!
-  au! User GoyoEnter nested :setlocal noshowmode scrolloff=999
-  au! User GoyoLeave nested :setlocal showmode scrolloff=3
+  au User GoyoEnter nested :setlocal noshowmode scrolloff=999
+  au User GoyoLeave nested :setlocal showmode scrolloff=3
 augroup END
 " }}}
 
@@ -1313,20 +1021,17 @@ let NERDTreeIgnore=[
   \ 'GPATH', 'GRTAGS', 'GTAGS'
 \ ]
 augroup plug_nerdtree
-  " Quit when NERDTree is only open buffer
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+  autocmd!
+  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 " }}}
 
 " NERDTree Git Plugin {{{
-" let g:NERDTreeGitStatusShowIgnored = 1 " a heavy feature may cost much more time. default: 0
-let g:NERDTreeGitStatusUseNerdFonts=1 " you should install nerdfonts by yourself. default: 0
-let g:NERDTreeGitStatusShowClean=1 " default: 0
-" let g:NERDTreeGitStatusConcealBrackets=1 " default: 0
-" let g:NERDTreeGitStatusDirDirtyOnly=0
-" let g:NERDTreeGitStatusUntrackedFilesMode='all' " a heave feature too. default: normal
-" let g:NERDTreeGitStatusGitBinPath='/usr/local/bin/git'
-let g:NERDTreeGitStatusGitBinPath='/opt/homebrew/bin/git'
+let g:NERDTreeGitStatusUseNerdFonts=1
+let g:NERDTreeGitStatusShowClean=1
+if !empty($HOMEBREW_PREFIX)
+  let g:NERDTreeGitStatusGitBinPath=$HOMEBREW_PREFIX . '/bin/git'
+endif
 let g:NERDTreeGitStatusIndicatorMapCustom={
   \ 'Modified'  : ' ',
   \ 'Staged'    : ' ',
@@ -1429,7 +1134,6 @@ let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['node_modules']=''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitconfig']=''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitignore']=''
 
-<
 
 " vimDevIcon: NERDTree
 let g:webdevicons_enable_nerdtree=1
@@ -1545,9 +1249,6 @@ let g:jsdoc_enable_es6=1
 let g:move_key_modifier='C-A'
 " }}}
 
-" vim-multiple-cursors {{{
-" let g:multi_cursor_exit_from_visual_mode=0
-" }}}
 
 " vim-nerdtree-syntax-highlight {{{
 let g:NERDTreeHighlightFolders=1 " enables folder icon highlighting using exact match
@@ -1650,15 +1351,6 @@ if s:isGitRepository
   \ )
 endif
 
-
-" let g:startify_lists = [
-  " \ { 'type': 'files',                    'header': ['   MRU']              },
-  " \ { 'type': 'dir',                      'header': [s:get_project_name()]  },
-  " \ { 'type': 'sessions',                 'header': ['   Sessions']         },
-  " \ { 'type': 'bookmarks',                'header': ['   Bookmarks']        },
-  " \ { 'type': 'commands',                 'header': ['   Commands']         },
-  " \ { 'type': function('s:list_commits'), 'header': ['   Commits']          }
-" \ ]
 let g:startify_custom_header=[
   \ '   Web browsers are useless here.',
   \ ' ',
@@ -1732,15 +1424,26 @@ let g:solarized_enable_extra_hi_groups=1
 let g:oceanic_next_terminal_bold = 1
 let g:oceanic_next_terminal_italic = 1
 
-
-" $ITERM_PROFILE variable requires (Iterm Shell integration) Toolset
-if $ITERM_PROFILE =~? 'Night'
-  let &background='dark'
-  exe 'colorscheme ' . s:colorSchemeDark
-else
-  let &background='light'
-  exe 'colorscheme ' . s:colorSchemeLight
-endif
+function! s:checkDarkMode()
+  let bg = 'dark' " Default
+  if has('mac') && executable('defaults')
+    if system('defaults read -g AppleInterfaceStyle') =~ 'Dark'
+      let bg = 'dark'
+    else
+      let bg = 'light'
+    endif
+  elseif executable('gsettings')
+    let schema = system('gsettings get org.gnome.desktop.interface color-scheme')
+    let bg = (schema =~ 'dark') ? 'dark' : 'light'
+  elseif has('win32') || has('win64')
+    let res = system('powershell -c "Get-ItemPropertyValue -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme"')
+    let bg = (trim(res) == '0') ? 'dark' : 'light'
+  endif
+  let &background=bg
+  let _colorscheme=(bg =~ 'dark') ? s:colorSchemeDark : s:colorSchemeLight
+  execute 'colorscheme ' . _colorscheme
+endfunction
+call s:checkDarkMode()
 
 function! s:ToggleBackground()
   let fmShade=&background =~? 'dark' ? 'light' : 'dark'

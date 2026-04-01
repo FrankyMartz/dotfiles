@@ -25,9 +25,7 @@
     "gosnippets/UltiSnips",
     "honza/vim-snippets",
     "epilande/vim-es2015-snippets",
-    "epilande/vim-react-snippets",
-    "mhartington/vim-angular2-snippets",
-    "markwu/vim-laravel4-snippets"
+    "epilande/vim-react-snippets"
   ],
 
   "graphql.filetypes": ["graphql", "reason"],
@@ -53,17 +51,6 @@
           "directory": "/tmp/ccls"
         },
         "highlight": { "lsRanges" : true }
-      }
-    },
-    "cquery": {
-      "command": "cquery",
-      "args": ["--log-file=/tmp/cq.log"],
-      "filetypes": ["c", "cpp"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-      "initializationOptions": {
-        "cacheDirectory": "/tmp/cquery",
-        "highlight": { "enabled" : true },
-        "emitInactiveRegions" : true
       }
     },
     "sql": {
