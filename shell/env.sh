@@ -165,3 +165,6 @@ if [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]]; then
   export PATH="$PATH:${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
 fi
 
+
+# uv
+export PATH="/Users/frankymartz/.config/nvim/../bin:$PATH"

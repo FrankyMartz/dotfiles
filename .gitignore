@@ -36,3 +36,5 @@ zsh/zsh_plugins.sh
 
 ## IDE
 .idea/
+*/**/.claude/
+*/**/lesshst
