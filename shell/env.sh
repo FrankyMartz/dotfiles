@@ -14,7 +14,6 @@ export LANG=en_US.UTF-8;
 
 export PATH="/usr/sbin:/sbin:${PATH}";
 export XDG_CONFIG_HOME="${HOME}/.config";
-export XDG_DATA_HOME="${HOME}/.config/nvim";
 
 export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin"
 
@@ -34,9 +33,9 @@ fi
 
 # Ensure Homebrew bin/sbin take priority over system paths.
 # brew shellenv calls path_helper which reorders PATH, putting /usr/bin first.
-if [[ -n "${HOMEBREW_PREFIX}" ]]; then
-  export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH}"
-fi
+# if [[ -n "${HOMEBREW_PREFIX}" ]]; then
+#   export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH}"
+# fi
 
 # ------------------------------------------------------------------------------
 # Foundation
@@ -167,4 +166,4 @@ fi
 
 
 # uv
-export PATH="/Users/frankymartz/.config/nvim/../bin:$PATH"
+export PATH="/Users/frankymartz/.dotfiles/bin:$PATH"

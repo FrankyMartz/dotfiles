@@ -129,3 +129,5 @@ CS_SESSION
 .node-version
 .tern-port
 
+
+**/.claude/settings.local.json

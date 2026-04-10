@@ -11,21 +11,7 @@ NuGet/
 
 # Neovim
 nvim/.netrwhist
-nvim/IsolatedStorage
-nvim/Jetbrains
-nvim/NuGet
-nvim/SymbolSourceSymbols
-nvim/autoload
-nvim/bun
-nvim/bundle
-nvim/direnv
-nvim/gem
-nvim/nvim
-nvim/prisma
-nvim/pry
 nvim/spell
-nvim/tmp
-nvim/yarn
 
 # Environment
 .env

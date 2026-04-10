@@ -59,7 +59,7 @@ return {
     ft = "go",
     init = function()
       vim.g.delve_backend = "native"
-      local cache_path = vim.fn.expand("~/.nvim/tmp/vim-delve//")
+      local cache_path = vim.fn.stdpath("cache") .. "/vim-delve//"
       if vim.fn.isdirectory(cache_path) == 0 then
         vim.fn.mkdir(cache_path, "p")
       end

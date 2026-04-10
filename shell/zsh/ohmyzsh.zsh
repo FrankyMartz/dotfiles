@@ -101,4 +101,5 @@ fpath=("${HOME}/.docker/completions" $fpath)
 
 source $ZSH/oh-my-zsh.sh
 
+[[ -f "${HOME}/.dotfiles/shell/env.sh" ]] && source "${HOME}/.dotfiles/shell/env.sh"
 [[ -f "${HOME}/.dotfiles/shell/zsh/zshrc.zsh" ]] && source "${HOME}/.dotfiles/shell/zsh/zshrc.zsh"

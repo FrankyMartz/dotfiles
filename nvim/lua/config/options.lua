@@ -120,16 +120,16 @@ opt.undofile = true
 opt.backup = true
 opt.backupskip = "/tmp/*,/private/tmp/*"
 
-local tmp_dir = fn.expand("~/.dotfiles/nvim/tmp")
-opt.undodir = tmp_dir .. "/undo//"
-opt.backupdir = tmp_dir .. "/backup//"
-opt.viewdir = tmp_dir .. "/view//"
-opt.directory = tmp_dir .. "/swap//"
+local state_dir = fn.stdpath("state")
+opt.undodir = state_dir .. "/undo//"
+opt.backupdir = state_dir .. "/backup//"
+opt.viewdir = state_dir .. "/view//"
+opt.directory = state_dir .. "/swap//"
 opt.tags = "./tags,tags"
 
 -- Create directories if they do not exist
 for _, dir in ipairs({ "undo", "backup", "view", "swap" }) do
-  local path = tmp_dir .. "/" .. dir
+  local path = state_dir .. "/" .. dir
   if fn.isdirectory(path) == 0 then
     fn.mkdir(path, "p")
   end

@@ -14,17 +14,18 @@ DOTFILES="${HOME}/.dotfiles"
 # COMMON
 #===============================================================================
 
+[[ -x "${DOTFILES}/shell/env.sh" ]] && source "${DOTFILES}/shell/env.sh";
 [[ -x "${DOTFILES}/shell/alias.sh" ]] && source "${DOTFILES}/shell/alias.sh";
 
 # Re-assert Homebrew/gnubin PATH priority.
 # macOS /etc/zprofile runs path_helper AFTER ~/.zshenv, reordering PATH so
 # system paths (/usr/bin) come first again. Fix that here in .zshrc.
-if [[ -n "${HOMEBREW_PREFIX}" ]]; then
-  _gnubin="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin"
-  [[ -d "${_gnubin}" ]] && export PATH="${_gnubin}:${PATH}"
-  export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH}"
-  unset _gnubin
-fi
+# if [[ -n "${HOMEBREW_PREFIX}" ]]; then
+#   _gnubin="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin"
+#   [[ -d "${_gnubin}" ]] && export PATH="${_gnubin}:${PATH}"
+#   export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH}"
+#   unset _gnubin
+# fi
 
 #===============================================================================
 # Foundation
