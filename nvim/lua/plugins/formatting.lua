@@ -26,9 +26,13 @@ return {
         yaml = { "prettier" },
         markdown = { "prettier" },
         lua = { "stylua" },
-        python = { "black" },
+        python = { "ruff", "black" },
         rust = { "rustfmt" },
       },
+    },
+    format_on_save = {
+      timeout_ms = 500,
+      lsp_fallback = true,
     },
   },
 }

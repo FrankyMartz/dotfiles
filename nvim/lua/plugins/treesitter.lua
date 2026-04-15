@@ -1,13 +1,15 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
-      -- Ensure parsers are installed
+      require("nvim-treesitter").setup()
+
       local ensure_installed = {
         "bash", "c", "cpp", "css", "dockerfile", "go", "gomod",
         "graphql", "html", "javascript", "json", "lua", "markdown",
@@ -15,45 +17,59 @@ return {
         "tsx", "typescript", "vim", "vimdoc", "xml", "yaml",
       }
 
-      -- Auto-install missing parsers
-      local installed = require("nvim-treesitter.install")
-      for _, lang in ipairs(ensure_installed) do
-        local ok, _ = pcall(vim.treesitter.language.inspect, lang)
-        if not ok then
-          pcall(installed.install, lang)
-        end
+      -- Install any missing parsers (async; will not block startup).
+      local installed = require("nvim-treesitter.config").get_installed("parsers")
+      local missing = vim.tbl_filter(function(lang)
+        return not vim.tbl_contains(installed, lang)
+      end, ensure_installed)
+      if #missing > 0 then
+        require("nvim-treesitter").install(missing)
       end
 
-      -- Enable treesitter highlighting and indentation
+      -- Start treesitter highlighting + indentation on matching filetypes.
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
-          pcall(vim.treesitter.start, args.buf)
+          local ft = args.match
+          local lang = vim.treesitter.language.get_lang(ft) or ft
+          if not pcall(vim.treesitter.language.add, lang) then
+            return
+          end
+          pcall(vim.treesitter.start, args.buf, lang)
+          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
 
-      -- Textobjects (replaces CoC funcobj/classobj mappings)
+      -- Textobjects (main-branch API: keymaps set manually).
       require("nvim-treesitter-textobjects").setup({
         select = {
-          enable = true,
           lookahead = true,
-          keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-          },
         },
         move = {
-          enable = true,
           set_jumps = true,
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-          },
         },
       })
+
+      local select = require("nvim-treesitter-textobjects.select")
+      vim.keymap.set({ "x", "o" }, "af", function()
+        select.select_textobject("@function.outer", "textobjects")
+      end, { desc = "Select around function" })
+      vim.keymap.set({ "x", "o" }, "if", function()
+        select.select_textobject("@function.inner", "textobjects")
+      end, { desc = "Select inside function" })
+      vim.keymap.set({ "x", "o" }, "ac", function()
+        select.select_textobject("@class.outer", "textobjects")
+      end, { desc = "Select around class" })
+      vim.keymap.set({ "x", "o" }, "ic", function()
+        select.select_textobject("@class.inner", "textobjects")
+      end, { desc = "Select inside class" })
+
+      local move = require("nvim-treesitter-textobjects.move")
+      vim.keymap.set({ "n", "x", "o" }, "]m", function()
+        move.goto_next_start("@function.outer", "textobjects")
+      end, { desc = "Next function start" })
+      vim.keymap.set({ "n", "x", "o" }, "[m", function()
+        move.goto_previous_start("@function.outer", "textobjects")
+      end, { desc = "Previous function start" })
     end,
   },
 }

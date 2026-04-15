@@ -8,7 +8,20 @@ return {
       "MunifTanjim/nui.nvim",
     },
     keys = {
-      { "<F8>", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
+      {
+        "<F8>",
+        function()
+          -- Skip implicit reveal for URI-scheme buffers (health://, term://,
+          -- fugitive://, etc.) which break neo-tree's path splitter.
+          local bufname = vim.api.nvim_buf_get_name(0)
+          if bufname:match("^%w+://") then
+            vim.cmd("Neotree toggle reveal=false")
+          else
+            vim.cmd("Neotree toggle")
+          end
+        end,
+        desc = "Toggle Neo-tree",
+      },
     },
     config = function()
       require("neo-tree").setup({

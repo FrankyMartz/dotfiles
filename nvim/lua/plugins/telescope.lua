@@ -39,10 +39,26 @@ return {
             width = 0.9,
             height = 0.6,
           },
+          wrap_results = true,
+          dynamic_preview_title = true,
           mappings = {
             i = {
               ["<C-j>"] = actions.move_selection_next,
               ["<C-k>"] = actions.move_selection_previous,
+              ["<C-q>"] = function(...)
+                require("trouble.sources.telescope").open(...)
+              end,
+            },
+          },
+        },
+        pickers = {
+          diagnostics = {
+            line_width = "full",
+            layout_strategy = "vertical",
+            layout_config = {
+              width = 0.95,
+              height = 0.9,
+              preview_height = 0.4,
             },
           },
         },

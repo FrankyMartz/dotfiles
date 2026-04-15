@@ -132,26 +132,6 @@ map("n", "<Leader>1", function() load_component_type_file(".ts") end, { silent =
 map("n", "<Leader>2", function() load_component_type_file(".scss") end, { silent = true, desc = "Load .scss component" })
 map("n", "<Leader>3", function() load_component_type_file(".html") end, { silent = true, desc = "Load .html component" })
 
--------------------------------------------------------------------------------
--- Quickfix / Location List Toggles (replacing ListToggle plugin)
--------------------------------------------------------------------------------
-local function toggle_list(list_type)
-  local win_count = #vim.api.nvim_list_wins()
-  if list_type == "loclist" then
-    pcall(vim.cmd.lclose)
-    if #vim.api.nvim_list_wins() == win_count then
-      pcall(vim.cmd.lopen)
-    end
-  else
-    pcall(vim.cmd.cclose)
-    if #vim.api.nvim_list_wins() == win_count then
-      pcall(vim.cmd.copen)
-    end
-  end
-end
-
-map("n", "<leader>ee", function() toggle_list("loclist") end, { silent = true, desc = "Toggle location list" })
-map("n", "<leader>qq", function() toggle_list("quickfix") end, { silent = true, desc = "Toggle quickfix list" })
 
 -------------------------------------------------------------------------------
 -- Scrollbind Toggles (from vim-unimpaired)

@@ -35,6 +35,7 @@ return {
           "tailwindcss",
           "sqlls",
           "bashls",
+          "ruff",
         },
         automatic_installation = true,
       })
@@ -59,9 +60,9 @@ return {
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = "✘",
-            [vim.diagnostic.severity.WARN] = "",
-            [vim.diagnostic.severity.HINT] = "",
-            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.HINT] = "",
+            [vim.diagnostic.severity.INFO] = "",
           },
         },
         underline = true,
@@ -85,7 +86,7 @@ return {
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          -- gr is handled by trouble.nvim (LSP references panel)
 
           -- Hover (CoC: K)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
@@ -140,15 +141,30 @@ return {
       -- Server configurations using vim.lsp.config (Neovim 0.11+ API)
       -- Simple servers (default config)
       local simple_servers = {
-        "gopls", "pyright", "rust_analyzer", "cssls", "html",
+        "gopls", "ruff", "rust_analyzer", "cssls", "html",
         "graphql", "svelte", "vue_ls", "tailwindcss", "sqlls",
-        "bashls", "jsonls", "yamlls", "lemminx", "clangd",
+        "bashls", "jsonls", "yamlls", "lemminx", "clangd"
       }
       for _, server in ipairs(simple_servers) do
         vim.lsp.config(server, {
           capabilities = capabilities,
         })
       end
+
+      vim.lsp.config("pyright", {
+        capabilities = capabilities,
+        settings = {
+          pyright = {
+            disableOrganizeImports = true, -- Use Ruff instead
+          },
+          python = {
+            analysis = {
+              ignore = { '*' }, -- Disable Pyright's basic linting
+              typeCheckingMode = 'strict', -- Keep Pyright for type checking
+            },
+          }
+        },
+      })
 
       -- ts_ls: TypeScript/JavaScript (mirrors CoC tsserver settings)
       vim.lsp.config("ts_ls", {
@@ -199,6 +215,7 @@ return {
       vim.lsp.enable(simple_servers)
       vim.lsp.enable("ts_ls")
       vim.lsp.enable("lua_ls")
+      vim.lsp.enable("pyright")
 
       -- :Format command (CoC: Format)
       vim.api.nvim_create_user_command("Format", function()
