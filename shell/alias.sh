@@ -36,12 +36,12 @@ fi
 if command ls --color=auto / &>/dev/null; then
   # GNU ls (Linux, or macOS with coreutils gnubin in PATH)
   # Use "command" to bypass oh-my-zsh's ls alias (which adds BSD flags)
-  alias la='command ls -lAFh --color --group-directories-first'
-  alias lad='command ls -dlAh --color */'
+  alias la='command gls -lAFh --color --group-directories-first'
+  alias lad='command gls -dlAh --color */'
 else
   # BSD ls fallback (macOS without GNU coreutils)
-  alias la='command ls -lAFhG'
-  alias lad='command ls -dlAhG */'
+  alias la='command gls -lAFhG'
+  alias lad='command gls -dlAhG */'
 fi
 alias irc='screen -t 1 irssi';
 

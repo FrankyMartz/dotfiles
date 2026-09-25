@@ -3,8 +3,8 @@
 -- Translated from init.vim.bak (Color Scheme section)
 -------------------------------------------------------------------------------
 
-local color_scheme_light = "rose-pine"
-local color_scheme_dark = "OceanicNext"
+local color_scheme_light = "rose-pine-dawn"
+local color_scheme_dark = "rose-pine-moon"
 
 --- Detect system dark/light mode
 ---@return string "dark" or "light"

@@ -16,6 +16,7 @@ export PATH="/usr/sbin:/sbin:${PATH}";
 export XDG_CONFIG_HOME="${HOME}/.config";
 
 export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin"
+export HOMEBREW_PREFIX="$(brew --prefix)"
 
 # ------------------------------------------------------------------------------
 # Homebrew
@@ -100,8 +101,7 @@ fi
 # GO-LANG ----------------------------------------------------------------------
 
 if [[ -x "$(command -v go)" ]]; then
-  GOROOT="${HOMEBREW_PREFIX}/opt/go/libexec";
-  export GOROOT;
+  export GOROOT="${HOMEBREW_PREFIX}/opt/go/libexec";
   export GOPATH="${HOME}/go";
   export PATH="${PATH}:${GOROOT}/bin:${GOPATH}/bin";
 fi
@@ -163,6 +163,9 @@ fi
 if [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]]; then
   export PATH="$PATH:${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
 fi
+
+# Claude Code ------------------------------------------------------------------
+export PATH="$HOME/.local/bin:$PATH"
 
 
 # uv

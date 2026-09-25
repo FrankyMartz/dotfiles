@@ -50,6 +50,8 @@ fi
 # PLUGINS
 #===============================================================================
 
+export ENABLE_LSP_TOOL=1
+
 # iTerm Integration ------------------------------------------------------------
 # shellcheck source=/dev/null
 [[ -x "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh";
